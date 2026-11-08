@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Ecom App</string>
+    <string name="header_title">E-Commerce App</string>
+    <string name="back">Quay lại</string>
+
+    <!-- Auth -->
+    <string name="hint_name">Họ và tên</string>
+    <string name="hint_phone">Số điện thoại</string>
+    <string name="hint_password">Mật khẩu</string>
+    <string name="btn_login">Đăng nhập</string>
+    <string name="btn_register">Đăng ký</string>
+    <string name="go_register">Chưa có tài khoản? Đăng ký</string>
+    <string name="go_login">Đã có tài khoản? Đăng nhập</string>
+    <string name="demo_account_hint">Tài khoản demo: 0123456789 / 123456</string>
+    <string name="btn_logout">Đăng xuất</string>
+
+    <!-- Tabs -->
+    <string name="tab_home">Trang chủ</string>
+    <string name="tab_orders">Đơn hàng</string>
+    <string name="tab_profile">Tài khoản</string>
+
+    <!-- Home / Product -->
+    <string name="welcome_message">Chào mừng bạn!</string>
+    <string name="hint_search">Tìm sản phẩm…</string>
+    <string name="empty_products">Không có sản phẩm nào</string>
+    <string name="title_product_detail">Chi tiết sản phẩm</string>
+    <string name="btn_order">Đặt hàng</string>
+    <string name="minus">−</string>
+    <string name="plus">+</string>
+    <string name="one">1</string>
+
+    <!-- Order -->
+    <string name="empty_orders">Bạn chưa có đơn hàng nào</string>
+    <string name="title_order_detail">Chi tiết đơn hàng</string>
+    <string name="order_items">Sản phẩm</string>
+    <string name="btn_cancel_order">Hủy đơn hàng</string>
+</resources>

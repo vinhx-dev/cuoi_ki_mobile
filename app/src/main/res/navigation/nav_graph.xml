@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ===== KHAI BÁO TẤT CẢ CÁC TRANG =====
+     - android:label  = tiêu đề hiển thị trên header
+     - Layout khung (header/back/bottom nav) khai báo ở frontend/navigation/RouteConfig.java
+     - Điều hướng gọi qua frontend/navigation/AppRouter.java -->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <!-- BLANK -->
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.myapplication.frontend.ui.splash.SplashFragment"
+        android:label="@string/header_title"
+        tools:layout="@layout/fragment_splash" />
+
+    <!-- AUTH -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.myapplication.frontend.ui.auth.LoginFragment"
+        android:label="@string/btn_login"
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.myapplication.frontend.ui.auth.RegisterFragment"
+        android:label="@string/btn_register"
+        tools:layout="@layout/fragment_register" />
+
+    <!-- MAIN (có bottom nav) -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.myapplication.frontend.ui.home.HomeFragment"
+        android:label="@string/tab_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="com.example.myapplication.frontend.ui.order.OrdersFragment"
+        android:label="@string/tab_orders"
+        tools:layout="@layout/fragment_orders" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.myapplication.frontend.ui.profile.ProfileFragment"
+        android:label="@string/tab_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <!-- DETAIL (có nút back) -->
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.example.myapplication.frontend.ui.product.ProductDetailFragment"
+        android:label="@string/title_product_detail"
+        tools:layout="@layout/fragment_product_detail">
+        <argument
+            android:name="productId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.example.myapplication.frontend.ui.order.OrderDetailFragment"
+        android:label="@string/title_order_detail"
+        tools:layout="@layout/fragment_order_detail">
+        <argument
+            android:name="orderId"
+            app:argType="integer" />
+    </fragment>
+
+</navigation>
