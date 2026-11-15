@@ -1,0 +1,6 @@
+<resources>
+    <string name="btn_logout">Đăng xuất</string>
+    <string name="profile_phone">SĐT: %1$s</string>
+    <string name="profile_address">Địa chỉ: %1$s</string>
+    <string name="profile_no_address">(chưa có)</string>
+</resources>

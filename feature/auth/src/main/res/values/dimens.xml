@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="logo_size">80dp</dimen>
+    <dimen name="input_height">48dp</dimen>
+    <dimen name="form_margin_horizontal">40dp</dimen>
+    <dimen name="text_size_input">14sp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="text_size_button">16sp</dimen>
+    <dimen name="text_size_link">13sp</dimen>
+    <dimen name="text_size_other">13sp</dimen>
+</resources>

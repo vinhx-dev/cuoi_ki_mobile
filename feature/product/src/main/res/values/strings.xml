@@ -1,0 +1,8 @@
+<resources>
+    <string name="btn_order">Đặt hàng</string>
+    <string name="minus">−</string>
+    <string name="plus">+</string>
+    <string name="one">1</string>
+    <string name="product_stock">Kho: %1$d</string>
+    <string name="msg_order_success">Đặt hàng thành công #%1$d</string>
+</resources>

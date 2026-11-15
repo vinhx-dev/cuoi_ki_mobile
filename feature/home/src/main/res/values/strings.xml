@@ -1,0 +1,7 @@
+<resources>
+    <string name="welcome_message">Chào mừng bạn!</string>
+    <string name="hint_search">Tìm sản phẩm…</string>
+    <string name="empty_products">Không có sản phẩm nào</string>
+    <string name="product_stock">Còn %1$d sản phẩm</string>
+    <string name="welcome_user">Xin chào, %1$s!</string>
+</resources>

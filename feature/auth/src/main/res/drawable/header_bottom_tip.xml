@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="180dp"
+    android:height="26dp"
+    android:viewportWidth="360"
+    android:viewportHeight="52">
+    <!-- Đỉnh nền trắng cắt nhọn sắc xảo và sâu:
+         - Phẳng 2 bên mép ở y=6
+         - Uốn lượn cong thanh thoát từ y=6 đâm sâu và hội tụ thành chóp nhọn sắc bén tại (180, 52)
+    -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M 0,6
+                         L 115,6
+                         C 142,6 166,28 180,52
+                         C 194,28 218,6 245,6
+                         L 360,6
+                         L 360,52
+                         L 0,52
+                         Z" />
+</vector>

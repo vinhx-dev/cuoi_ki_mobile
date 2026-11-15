@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Style bo tròn 4 góc 20dp cho logo -->
+    <style name="ShapeAppearance.LogoCorner20" parent="">
+        <item name="cornerSize">20dp</item>
+    </style>
+</resources>

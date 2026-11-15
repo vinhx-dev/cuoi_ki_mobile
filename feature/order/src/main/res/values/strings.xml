@@ -1,0 +1,12 @@
+<resources>
+    <string name="empty_orders">Bạn chưa có đơn hàng nào</string>
+    <string name="order_items">Sản phẩm</string>
+    <string name="btn_cancel_order">Hủy đơn hàng</string>
+    <string name="order_code">Đơn hàng #%1$d</string>
+    <string name="msg_order_cancelled">Đã hủy đơn hàng</string>
+    <string name="order_status">Trạng thái: %1$s</string>
+    <string name="order_date">Ngày đặt: %1$s</string>
+    <string name="order_address">Giao đến: %1$s</string>
+    <string name="order_item_line">• %1$s  x%2$d  —  %3$s</string>
+    <string name="order_total">Tổng: %1$s</string>
+</resources>
