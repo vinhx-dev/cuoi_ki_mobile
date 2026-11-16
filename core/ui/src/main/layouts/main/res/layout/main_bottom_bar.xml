@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Phần dùng chung: BOTTOM BAR. Các tab khai báo ở main/res/menu/main_bottom_bar_menu.xml. ≈ <BottomBar/> -->
+<com.google.android.material.bottomnavigation.BottomNavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:menu="@menu/main_bottom_bar_menu"
+    app:paddingBottomSystemWindowInsets="false" />

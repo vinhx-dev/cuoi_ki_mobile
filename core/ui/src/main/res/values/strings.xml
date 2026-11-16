@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Header -->
+    <string name="back">Quay lại</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="search_hint">Tìm kiếm sản phẩm...</string>
+    <string name="clear">Xoá</string>
+</resources>

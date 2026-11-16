@@ -8,6 +8,8 @@ android {
 
     defaultConfig {
         minSdk = 24
+        // Rule giữ tên Fragment, tự áp dụng cho app khi bật minify
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     compileOptions {

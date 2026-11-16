@@ -1,9 +1,8 @@
 package com.example.ecom;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -11,56 +10,36 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 
-import com.example.ecom.core.data.api.ApiClient;
+import com.example.ecom.core.api.ApiClient;
+import com.example.ecom.core.data.SessionManager;
 import com.example.ecom.core.navigation.AppRouter;
-import com.example.ecom.core.navigation.LayoutType;
-import com.example.ecom.core.navigation.RouteConfig;
-import com.example.ecom.core.ui.base.AppShell;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /**
- * Activity duy nhất (Single Activity). Đóng vai trò "App Shell":
- *  - chứa NavHost (nơi các trang được hiển thị)
- *  - đổi layout khung (header / back / bottom nav) theo từng trang
- *  - loading overlay dùng chung
- *  - xử lý hết phiên đăng nhập (401) toàn cục
+ * ===== TRANG DUY NHẤT CỦA APP: CHỈ HIỂN THỊ NAVIGATION (≈ <RouterProvider> trong React) =====
+ *
+ *  - Chứa NavHost: nơi trang hiện tại được hiển thị
+ *  - Nạp danh sách trang đã khai báo ở core/navigation/AppPages.java
+ *  - Hết phiên đăng nhập (401) ở bất kỳ API nào -> về trang đăng nhập
+ *
+ * Không khai báo trang, không chứa header / bottom bar ở đây.
  */
-public class MainActivity extends AppCompatActivity implements AppShell {
-
-    private NavController navController;
-    private View header;
-    private TextView headerTitle;
-    private ImageButton btnBack;
-    private BottomNavigationView bottomNav;
-    private View loadingOverlay;
-    private int loadingCount = 0;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         applyWindowInsets();
 
-        header = findViewById(R.id.header);
-        headerTitle = findViewById(R.id.textViewHeaderTitle);
-        btnBack = findViewById(R.id.btnBack);
-        bottomNav = findViewById(R.id.bottomNav);
-        loadingOverlay = findViewById(R.id.loadingOverlay);
-
         NavHostFragment navHost = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navHostFragment);
-        navController = navHost.getNavController();
+        NavController nav = navHost.getNavController();
 
-        NavigationUI.setupWithNavController(bottomNav, navController);
-        btnBack.setOnClickListener(v -> navController.navigateUp());
-        navController.addOnDestinationChangedListener((controller, destination, args) -> applyLayout(destination));
+        Context app = getApplicationContext();
+        AppRouter.install(nav, () -> new SessionManager(app).isLoggedIn());
 
-        // Hết phiên đăng nhập ở bất kỳ API nào -> về màn đăng nhập
-        ApiClient.getInstance(this).setUnauthorizedListener(() -> AppRouter.toLogin(navController));
+        ApiClient.getInstance(this).setUnauthorizedListener(() -> AppRouter.toLogin(nav));
     }
 
     @Override
@@ -69,29 +48,9 @@ public class MainActivity extends AppCompatActivity implements AppShell {
         super.onDestroy();
     }
 
-    private void applyLayout(NavDestination destination) {
-        LayoutType layout = RouteConfig.layoutOf(destination.getId());
-        header.setVisibility(layout.showHeader ? View.VISIBLE : View.GONE);
-        btnBack.setVisibility(layout.showBack ? View.VISIBLE : View.GONE);
-        bottomNav.setVisibility(layout.showBottomNav ? View.VISIBLE : View.GONE);
-        headerTitle.setText(destination.getLabel());
-    }
-
-    @Override
-    public void setHeaderTitle(CharSequence title) {
-        headerTitle.setText(title);
-    }
-
-    @Override
-    public void setLoading(boolean loading) {
-        loadingCount = Math.max(0, loadingCount + (loading ? 1 : -1));
-        loadingOverlay.setVisibility(loadingCount > 0 ? View.VISIBLE : View.GONE);
-    }
-
     /** targetSdk 35+ bắt buộc edge-to-edge: chừa chỗ cho status bar / navigation bar / bàn phím. */
     private void applyWindowInsets() {
-        View root = findViewById(R.id.root);
-        // Nền status bar là màu sáng -> icon status bar màu tối
+        View root = findViewById(R.id.navHostFragment);
         new WindowInsetsControllerCompat(getWindow(), root).setAppearanceLightStatusBars(true);
         ViewCompat.setOnApplyWindowInsetsListener(root, (v, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

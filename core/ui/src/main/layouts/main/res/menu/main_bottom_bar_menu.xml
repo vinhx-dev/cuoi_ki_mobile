@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Các tab của bottom bar. Tab nào mở trang nào: xem TABS trong core/ui/.../layout/PageLayout.java -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tabHome"
+        android:icon="@drawable/ic_home"
+        android:title="@string/tab_home" />
+    <item
+        android:id="@+id/tabOrders"
+        android:icon="@drawable/ic_orders"
+        android:title="@string/tab_orders" />
+    <item
+        android:id="@+id/tabProfile"
+        android:icon="@drawable/ic_person"
+        android:title="@string/tab_profile" />
+</menu>

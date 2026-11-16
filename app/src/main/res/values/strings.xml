@@ -1,13 +1,3 @@
 <resources>
     <string name="app_name">Ecom App</string>
-    <string name="back">Quay lại</string>
-
-    <!-- Tiêu đề trang (nav_graph.xml) và tab (bottom_nav_menu.xml) -->
-    <string name="title_login">Đăng nhập</string>
-    <string name="title_register">Đăng ký</string>
-    <string name="tab_home">Trang chủ</string>
-    <string name="tab_orders">Đơn hàng</string>
-    <string name="tab_profile">Tài khoản</string>
-    <string name="title_product_detail">Chi tiết sản phẩm</string>
-    <string name="title_order_detail">Chi tiết đơn hàng</string>
 </resources>

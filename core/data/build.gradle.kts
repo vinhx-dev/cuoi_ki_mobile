@@ -1,28 +1,14 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.library)
 }
 
-val localProperties = Properties().apply {
-    val localPropertiesFile = rootProject.file("local.properties")
-    if (localPropertiesFile.exists()) {
-        localPropertiesFile.inputStream().use { load(it) }
-    }
-}
-val baseUrl: String = localProperties.getProperty("api.baseUrl") ?: "http://10.0.2.2:8080/api"
-
+// Lưu trữ cục bộ trên máy (≈ localStorage): token, thông tin user, cài đặt...
 android {
     namespace = "com.example.ecom.core.data"
     compileSdk = 37
 
     defaultConfig {
         minSdk = 24
-        buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
-    }
-
-    buildFeatures {
-        buildConfig = true
     }
 
     compileOptions {

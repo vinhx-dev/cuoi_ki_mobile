@@ -29,11 +29,10 @@ android {
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
-    implementation(libs.navigation.ui)
 
     implementation(project(":core:data"))
+    implementation(project(":core:api"))
     implementation(project(":core:ui"))
     implementation(project(":core:navigation"))
 

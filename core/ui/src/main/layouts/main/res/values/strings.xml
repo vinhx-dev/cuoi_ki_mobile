@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tên các tab ở bottom bar (menu/main_bottom_bar_menu.xml) -->
+    <string name="tab_home">Trang chủ</string>
+    <string name="tab_orders">Đơn hàng</string>
+    <string name="tab_profile">Tài khoản</string>
+</resources>

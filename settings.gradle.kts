@@ -24,15 +24,16 @@ dependencyResolutionManagement {
 
 rootProject.name = "ecom_app"
 
-// App shell: MainActivity, header, bottom nav, theme
+// App: chỉ có MainActivity để hiển thị navigation
 include(":app")
 
 // Core: code dùng chung cho mọi feature
-include(":core:data")        // gọi API, model, repository, session
-include(":core:ui")          // BaseFragment, AppShell, màu & chuỗi dùng chung
-include(":core:navigation")  // nav_graph, AppRouter, LayoutType
+include(":core:data")        // lưu trữ cục bộ trên máy (≈ localStorage): LocalStorage, SessionManager
+include(":core:api")         // 1 hàm gọi API chung cho cả app: JSON + gửi ảnh (multipart)
+include(":core:navigation")  // khai báo trang (layout, cần đăng nhập) + điều hướng: AppPages, AppRouter
+include(":core:ui")          // UI dùng chung: layouts/ (none, main, detail, admin), BaseFragment, BaseViewModel
 
-// Feature: mỗi màn hình/nhóm màn hình là 1 module, mỗi người/nhóm phụ trách 1 module
+// Feature: giao diện + Java + dữ liệu riêng (data/, ViewModel) của từng chức năng; mỗi người/nhóm phụ trách 1 module
 include(":feature:splash")
 include(":feature:auth")
 include(":feature:home")
