@@ -26,7 +26,6 @@ public class ProfileViewModel extends BaseViewModel {
         return user;
     }
 
-    /** Tải thông tin; đã tải rồi (vd. khi xoay màn hình) thì không gọi API lại. */
     public void load() {
         if (user.getValue() != null) return;
         fetch(user, profileApi::getMe);

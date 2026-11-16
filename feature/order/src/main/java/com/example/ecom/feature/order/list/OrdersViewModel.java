@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.ecom.core.api.ApiCallback;
 import com.example.ecom.core.ui.base.BaseViewModel;
 import com.example.ecom.core.ui.base.UiState;
 import com.example.ecom.feature.order.data.Order;
@@ -31,5 +32,9 @@ public class OrdersViewModel extends BaseViewModel {
     /** Luôn tải lại (đơn có thể vừa được tạo / huỷ ở trang khác); trong lúc tải vẫn hiện danh sách cũ. */
     public void refresh() {
         fetch(orders, orderApi::getMyOrders);
+    }
+
+    public void cancelOrder(int orderId, ApiCallback<Order> callback) {
+        orderApi.cancelOrder(orderId, callback);
     }
 }

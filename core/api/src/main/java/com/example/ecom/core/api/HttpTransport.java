@@ -24,7 +24,7 @@ public class HttpTransport implements ApiTransport {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         try {
             conn.setRequestMethod(method);
-            conn.setConnectTimeout(ApiConfig.TIMEOUT_MS);
+            conn.setConnectTimeout(2000);
             conn.setReadTimeout(ApiConfig.TIMEOUT_MS);
             conn.setRequestProperty("Accept", "application/json");
             if (token != null) conn.setRequestProperty("Authorization", "Bearer " + token);

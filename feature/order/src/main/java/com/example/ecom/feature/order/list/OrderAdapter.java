@@ -22,11 +22,17 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
         void onClick(Order order);
     }
 
+    public interface OnCancelClick {
+        void onCancel(Order order);
+    }
+
     private final List<Order> items = new ArrayList<>();
     private final OnItemClick onItemClick;
+    private final OnCancelClick onCancelClick;
 
-    public OrderAdapter(OnItemClick onItemClick) {
+    public OrderAdapter(OnItemClick onItemClick, OnCancelClick onCancelClick) {
         this.onItemClick = onItemClick;
+        this.onCancelClick = onCancelClick;
     }
 
     public void submit(List<Order> data) {
@@ -38,17 +44,62 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_order_status, parent, false);
         return new VH(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull VH h, int position) {
         Order o = items.get(position);
-        h.code.setText(h.itemView.getContext().getString(R.string.order_code, o.id));
-        h.status.setText(Formatter.orderStatus(o.status));
-        h.total.setText(Formatter.money(o.total));
-        h.date.setText(Formatter.dateTime(o.createdAt));
+
+        // Tên sản phẩm
+        if (o.items != null && !o.items.isEmpty()) {
+            String name = o.items.get(0).productName;
+            if (o.items.size() > 1) {
+                name += " (+ " + (o.items.size() - 1) + " sản phẩm khác)";
+            }
+            h.productName.setText(name);
+        } else {
+            h.productName.setText("Đơn hàng #" + o.id);
+        }
+
+        // Giá sản phẩm
+        h.productPrice.setText(Formatter.money(o.total));
+
+        // Trạng thái đơn hàng + Màu chấm tròn
+        String statusText;
+        int dotColor;
+
+        if (Order.STATUS_PENDING.equals(o.status)) {
+            statusText = "Đang xử lý";
+            dotColor = 0xFFFFA000;
+        } else if ("SHIPPING".equals(o.status)) {
+            statusText = "Đang giao";
+            dotColor = 0xFF1E88E5;
+        } else if ("DELIVERED".equals(o.status)) {
+            statusText = "Đã giao";
+            dotColor = 0xFF4CAF50;
+        } else if ("CANCELLED".equals(o.status)) {
+            statusText = "Đã hủy";
+            dotColor = 0xFFE53935;
+        } else {
+            statusText = Formatter.orderStatus(o.status);
+            dotColor = 0xFF9E9E9E;
+        }
+
+        h.statusName.setText(statusText);
+        if (h.statusDot != null && h.statusDot.getBackground() != null) {
+            h.statusDot.getBackground().mutate().setTint(dotColor);
+        }
+
+        // Nút Hủy đơn
+        if (o.canCancel() && onCancelClick != null) {
+            h.btnCancel.setVisibility(View.VISIBLE);
+            h.btnCancel.setOnClickListener(v -> onCancelClick.onCancel(o));
+        } else {
+            h.btnCancel.setVisibility(View.GONE);
+        }
+
         h.itemView.setOnClickListener(v -> onItemClick.onClick(o));
     }
 
@@ -58,14 +109,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.VH> {
     }
 
     static class VH extends RecyclerView.ViewHolder {
-        final TextView code, status, total, date;
+        final TextView productName, productPrice, statusName;
+        final View statusDot, btnCancel;
 
         VH(View v) {
             super(v);
-            code = v.findViewById(R.id.textOrderCode);
-            status = v.findViewById(R.id.textOrderStatus);
-            total = v.findViewById(R.id.textOrderTotal);
-            date = v.findViewById(R.id.textOrderDate);
+            productName = v.findViewById(R.id.textProductName);
+            productPrice = v.findViewById(R.id.textProductPrice);
+            statusName = v.findViewById(R.id.textStatusName);
+            statusDot = v.findViewById(R.id.viewStatusDot);
+            btnCancel = v.findViewById(R.id.btnCancelOrder);
         }
     }
 }

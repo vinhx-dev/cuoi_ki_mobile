@@ -46,6 +46,7 @@ public final class ApiClient {
     }
 
     private final ApiTransport transport;
+    private final ApiTransport mockTransport;
     private final SessionManager session;
     private final ExecutorService executor = Executors.newFixedThreadPool(4);
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -54,6 +55,7 @@ public final class ApiClient {
     private ApiClient(Context context) {
         this.session = new SessionManager(context.getApplicationContext());
         this.transport = new HttpTransport();
+        this.mockTransport = new MockTransport();
     }
 
     public static ApiClient getInstance(Context context) {
@@ -125,7 +127,14 @@ public final class ApiClient {
         final String token = session.getToken();
         executor.execute(() -> {
             try {
-                RawResponse raw = transport.execute(method, path, query, body, token);
+                RawResponse tempRaw;
+                try {
+                    tempRaw = transport.execute(method, path, query, body, token);
+                } catch (Exception e) {
+                    Log.w(TAG, "Server connection failed (" + e.getMessage() + "), using MockTransport fallback");
+                    tempRaw = mockTransport.execute(method, path, query, body, token);
+                }
+                final RawResponse raw = tempRaw;
                 JSONObject json = new JSONObject(raw.body);
                 boolean success = json.optBoolean("success", raw.statusCode < 400);
                 String message = json.optString("message", "Có lỗi xảy ra");

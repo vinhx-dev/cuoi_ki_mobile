@@ -31,6 +31,15 @@ public class LoginFragment extends BaseFragment {
 
         inputAccount = view.findViewById(R.id.inputAccount);
         inputPassword = view.findViewById(R.id.inputPassword);
+
+        // Điền sẵn tài khoản mẫu để dùng thử khi chưa kết nối backend
+        if (inputAccount.getText().length() == 0) {
+            inputAccount.setText("0987654321");
+        }
+        if (inputPassword.getText().length() == 0) {
+            inputPassword.setText("123456");
+        }
+
         Button btnLogin = view.findViewById(R.id.btnLogin);
         TextView textRegister = view.findViewById(R.id.textRegister);
         TextView textForgot = view.findViewById(R.id.textForgot);

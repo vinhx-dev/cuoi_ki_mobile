@@ -55,8 +55,8 @@ public final class AppPages {
         // ----- Các tab chính -----
         r.page(HOME,            FEATURE + "home.HomeFragment",                  LayoutType.MAIN,   LOGIN_REQUIRED)
                 .stringArg(ARG_QUERY, "");
-        r.page(ORDERS,          FEATURE + "order.list.OrdersFragment",          LayoutType.MAIN,   LOGIN_REQUIRED);
-        r.page(PROFILE,         FEATURE + "profile.ProfileFragment",            LayoutType.MAIN,   LOGIN_REQUIRED);
+        r.page(ORDERS,          FEATURE + "order.list.OrdersFragment",          LayoutType.NONE,   LOGIN_REQUIRED);
+        r.page(PROFILE,         FEATURE + "profile.ProfileFragment",            LayoutType.NONE,   LOGIN_REQUIRED);
 
         // ----- Trang chi tiết -----
         r.page(PRODUCT_DETAIL,  FEATURE + "product.ProductDetailFragment",      LayoutType.DETAIL, LOGIN_REQUIRED)
