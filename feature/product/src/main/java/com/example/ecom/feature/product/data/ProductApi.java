@@ -24,8 +24,12 @@ public class ProductApi {
 
     /** POST /orders: đặt nhanh 1 sản phẩm, trả về id đơn mới. Địa chỉ rỗng -> backend dùng địa chỉ mặc định. */
     public void createOrder(int productId, int quantity, ApiCallback<Integer> cb) {
-        JSONArray items = new JSONArray().put(ApiClient.json("productId", productId, "quantity", quantity));
-        api.post("/orders", ApiClient.json("items", items, "address", ""),
+        createOrder(productId, quantity, "", cb);
+    }
+
+    public void createOrder(int productId, int quantity, String size, ApiCallback<Integer> cb) {
+        JSONArray items = new JSONArray().put(ApiClient.json("productId", productId, "quantity", quantity, "size", size));
+        api.postRemote("/orders", ApiClient.json("items", items, "address", ""),
                 data -> ((JSONObject) data).getInt("id"), cb);
     }
 }

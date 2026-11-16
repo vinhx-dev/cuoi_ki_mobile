@@ -69,6 +69,10 @@ public final class AppRouter {
         navigate(nav(from), "home?query=" + Uri.encode(query), options);
     }
 
+    public static void toProductList(Fragment from, String category) {
+        navigate(nav(from), "products?category=" + Uri.encode(category), fade());
+    }
+
     public static void toProductDetail(Fragment from, int productId) {
         navigate(nav(from), "product/" + productId, fade());
     }

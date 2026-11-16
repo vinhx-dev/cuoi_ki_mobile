@@ -89,6 +89,15 @@ public final class ApiClient {
         request("DELETE", path, null, null, parser, cb);
     }
 
+    /** Strict network calls for customer catalogue and checkout: never use MockTransport. */
+    public <T> void getRemote(String path, Map<String, String> query, Parser<T> parser, ApiCallback<T> cb) {
+        requestInternal("GET", path, query, null, parser, cb, false);
+    }
+
+    public <T> void postRemote(String path, JSONObject body, Parser<T> parser, ApiCallback<T> cb) {
+        requestInternal("POST", path, null, jsonOrNull(body), parser, cb, false);
+    }
+
     // ---------- Ảnh / file (multipart/form-data) ----------
 
     /**
@@ -124,6 +133,11 @@ public final class ApiClient {
 
     public <T> void request(String method, String path, Map<String, String> query, RequestBody body,
                             Parser<T> parser, ApiCallback<T> cb) {
+        requestInternal(method, path, query, body, parser, cb, true);
+    }
+
+    private <T> void requestInternal(String method, String path, Map<String, String> query, RequestBody body,
+                                    Parser<T> parser, ApiCallback<T> cb, boolean allowMock) {
         final String token = session.getToken();
         executor.execute(() -> {
             try {
@@ -131,6 +145,7 @@ public final class ApiClient {
                 try {
                     tempRaw = transport.execute(method, path, query, body, token);
                 } catch (Exception e) {
+                    if (!allowMock) throw e;
                     Log.w(TAG, "Server connection failed (" + e.getMessage() + "), using MockTransport fallback");
                     tempRaw = mockTransport.execute(method, path, query, body, token);
                 }

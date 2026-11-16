@@ -1,8 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Màu dùng chung cho mọi module. Đổi màu thương hiệu: chỉ sửa ở đây. -->
-<resources>
-    <color name="primary">#FF6200EE</color>
-    <color name="primary_light">#FFBB86FC</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="black">#FF000000</color>
-</resources>
+<resources><color name="primary">#FF6500</color><color name="primary_light">#FFF1E6</color><color name="primary_dark">#F45100</color><color name="white">#FFFFFF</color><color name="black">#202124</color><color name="shop_background">#F8F9FA</color><color name="shop_border">#E5E7EB</color></resources>

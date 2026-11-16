@@ -1,51 +1,53 @@
 package com.example.ecom.feature.home;
-
 import android.app.Application;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
-import com.example.ecom.core.data.SessionManager;
-import com.example.ecom.core.ui.base.BaseViewModel;
-import com.example.ecom.core.ui.base.UiState;
-import com.example.ecom.feature.home.data.Product;
-import com.example.ecom.feature.home.data.ProductApi;
-
-import java.util.List;
-
-/** ≈ useHome(): danh sách sản phẩm + từ khoá tìm kiếm. */
-public class HomeViewModel extends BaseViewModel {
-
-    private final ProductApi productApi;
-    private final SessionManager session;
-
-    private final MutableLiveData<UiState<List<Product>>> products = new MutableLiveData<>();
-    private String query = null;
-
+import androidx.lifecycle.*;
+import com.example.ecom.core.api.ApiCallback;
+import com.example.ecom.core.data.*;
+import com.example.ecom.core.ui.shop.CatalogRepository;
+import java.util.*;
+public class HomeViewModel extends AndroidViewModel {
+    public final MutableLiveData<List<ShopProduct>> products=new MutableLiveData<>();
+    public final MutableLiveData<String> message=new MutableLiveData<>("Đang tải sản phẩm…");
+    private List<ShopProduct> source=new ArrayList<>();
+    public String query="",category="";
+    private boolean loaded=false;
+    private int request=0;
     public HomeViewModel(@NonNull Application app) {
         super(app);
-        productApi = new ProductApi(app);
-        session = new SessionManager(app);
     }
-
-    public LiveData<UiState<List<Product>>> getProducts() {
-        return products;
+    public void load() {
+        if(loaded)return;
+        loaded=true;
+        refresh();
     }
-
-    /** Từ khoá đang tìm; null nếu chưa tải lần nào. */
-    public String getQuery() {
-        return query;
+    public void search(String q) {
+        query=q;
+        render();
     }
-
-    public String getUserName() {
-        return session.getUserName();
+    private void render() {
+        List<ShopProduct> visible=ShopCatalog.filter(source,category,query);
+        if(category.isEmpty()&&query.isEmpty()&&!visible.isEmpty()&&visible.get(0).isSample())visible=new ArrayList<>(visible.subList(0,Math.min(6,visible.size())));
+        if(category.equals("Áo"))visible.removeIf(p->p.id==-1||p.id==-2);
+        products.setValue(visible);
     }
-
-    /** Tìm sản phẩm. Gọi lại với cùng từ khoá (vd. khi xoay màn hình) thì không gọi API lại. */
-    public void search(String keyword) {
-        if (keyword.equals(query)) return;
-        query = keyword;
-        fetch(products, cb -> productApi.getProducts(keyword, cb));
+    public void refresh() {
+        int token=++request;
+        message.setValue("Đang tải sản phẩm…");
+        new CatalogRepository(getApplication()).list("",new ApiCallback<List<ShopProduct>>() {
+            public void onSuccess(List<ShopProduct> p) {
+                if(token!=request)return;
+                source=p;
+                message.setValue("Bộ sưu tập từ cửa hàng · Ảnh đang dùng hình minh họa");
+                render();
+            }
+            public void onError(String error,int code) {
+                if(token!=request)return;
+                source=ShopCatalog.samples();
+                message.setValue("Chế độ xem mẫu · Chưa kết nối được cửa hàng. Chạm để thử lại.");
+                render();
+            }
+        }
+        );
     }
 }

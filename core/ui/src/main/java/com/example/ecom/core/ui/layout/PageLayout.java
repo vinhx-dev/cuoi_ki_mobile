@@ -58,10 +58,21 @@ public final class PageLayout {
         this.loading = root.findViewById(R.id.layoutLoading);
         this.editSearch = root.findViewById(R.id.editSearch);
 
+        View cart = root.findViewById(R.id.headerCart);
+        if (cart != null) cart.setOnClickListener(v -> com.example.ecom.core.ui.shop.ShopViews.showCart(page.requireContext()));
+        View camera = root.findViewById(R.id.iconCamera);
+        if (camera != null) camera.setOnClickListener(v -> android.widget.Toast.makeText(page.requireContext(), "Tìm kiếm bằng ảnh chưa được hỗ trợ", android.widget.Toast.LENGTH_SHORT).show());
+        View search = root.findViewById(R.id.iconSearch);
+        if (search != null) search.setOnClickListener(v -> {
+            if (searchListener != null) searchListener.onSearchQuery(currentQuery());
+            else if (!currentQuery().isEmpty()) AppRouter.toHomeSearch(page,currentQuery());
+        });
         setupBack();
         setupSearch();
         setupBottomBar();
     }
+
+    public void dispose() { if (editSearch != null) editSearch.removeCallbacks(debouncedSearch); searchListener = null; }
 
     public View root() {
         return root;
@@ -171,6 +182,7 @@ public final class PageLayout {
     private void setupBottomBar() {
         BottomNavigationView bar = root.findViewById(R.id.bottomBar);
         if (bar == null) return;
+        bar.setItemActiveIndicatorEnabled(false);
 
         // Đánh dấu tab của trang hiện tại
         Bundle args = page.getArguments();
@@ -186,6 +198,11 @@ public final class PageLayout {
             // false: không đổi tab trên trang cũ; trang mới tự đánh dấu tab của nó
             return false;
         });
-        bar.setOnItemReselectedListener(item -> { /* đang ở tab này rồi */ });
+        bar.setOnItemReselectedListener(item -> {
+            // Category results belong to Home, but pressing Home must still return to the catalogue.
+            if (AppPages.PRODUCT_LIST.equals(route) && item.getItemId() == R.id.tabHome) {
+                AppRouter.toTab(page, "home");
+            }
+        });
     }
 }

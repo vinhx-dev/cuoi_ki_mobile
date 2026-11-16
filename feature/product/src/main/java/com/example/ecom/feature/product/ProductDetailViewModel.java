@@ -1,61 +1,47 @@
 package com.example.ecom.feature.product;
-
 import android.app.Application;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
+import androidx.lifecycle.*;
 import com.example.ecom.core.api.ApiCallback;
-import com.example.ecom.core.ui.base.BaseViewModel;
-import com.example.ecom.core.ui.base.UiState;
-import com.example.ecom.feature.product.data.Product;
+import com.example.ecom.core.data.ShopProduct;
+import com.example.ecom.core.ui.shop.CatalogRepository;
 import com.example.ecom.feature.product.data.ProductApi;
-
-/** ≈ useProductDetail(productId): thông tin sản phẩm + số lượng muốn mua + đặt hàng. */
-public class ProductDetailViewModel extends BaseViewModel {
-
-    private final ProductApi productApi;
-
-    private final MutableLiveData<UiState<Product>> product = new MutableLiveData<>();
-    private final MutableLiveData<Integer> quantity = new MutableLiveData<>(1); // ≈ useState(1)
-    private Integer loadedId = null;
-
+public class ProductDetailViewModel extends AndroidViewModel {
+    public final MutableLiveData<ShopProduct> product=new MutableLiveData<>();
+    public final MutableLiveData<String> error=new MutableLiveData<>();
+    public final MutableLiveData<Boolean> ordering=new MutableLiveData<>(false);
+    private int loadedId=Integer.MIN_VALUE;
     public ProductDetailViewModel(@NonNull Application app) {
         super(app);
-        productApi = new ProductApi(app);
     }
-
-    public LiveData<UiState<Product>> getProduct() {
-        return product;
+    public void load(int id) {
+        if(loadedId==id&&product.getValue()!=null)return;
+        loadedId=id;
+        new CatalogRepository(getApplication()).detail(id,new ApiCallback<ShopProduct>() {
+            public void onSuccess(ShopProduct p) {
+                product.setValue(p);
+                error.setValue("");
+            }
+            public void onError(String message,int code) {
+                error.setValue(message);
+            }
+        }
+        );
     }
-
-    public LiveData<Integer> getQuantity() {
-        return quantity;
-    }
-
-    /** Tải sản phẩm. Đã tải rồi (vd. khi xoay màn hình) thì không gọi API lại. */
-    public void load(int productId) {
-        if (loadedId != null && loadedId == productId) return;
-        loadedId = productId;
-        fetch(product, cb -> productApi.getProduct(productId, cb));
-    }
-
-    public void changeQuantity(int delta) {
-        Product p = currentProduct();
-        if (p == null) return;
-        quantity.setValue(Math.max(1, Math.min(p.stock, quantity.getValue() + delta)));
-    }
-
-    /** Đặt hàng; thành công trả về id đơn mới. */
-    public void placeOrder(ApiCallback<Integer> callback) {
-        Product p = currentProduct();
-        if (p == null) return;
-        productApi.createOrder(p.id, quantity.getValue(), callback);
-    }
-
-    private Product currentProduct() {
-        UiState<Product> s = product.getValue();
-        return s != null ? s.data : null;
+    public void placeOrder(int qty,String size,ApiCallback<Integer> cb) {
+        ShopProduct p=product.getValue();
+        if(p==null||p.isSample()||Boolean.TRUE.equals(ordering.getValue()))return;
+        ordering.setValue(true);
+        new ProductApi(getApplication()).createOrder(p.id,qty,size,new ApiCallback<Integer>() {
+            public void onSuccess(Integer id) {
+                ordering.setValue(false);
+                cb.onSuccess(id);
+            }
+            public void onError(String m,int code) {
+                ordering.setValue(false);
+                cb.onError(m,code);
+            }
+        }
+        );
     }
 }

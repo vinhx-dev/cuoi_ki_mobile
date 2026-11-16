@@ -2,6 +2,6 @@
 <resources>
     <!-- Tên các tab ở bottom bar (menu/main_bottom_bar_menu.xml) -->
     <string name="tab_home">Trang chủ</string>
-    <string name="tab_orders">Đơn hàng</string>
-    <string name="tab_profile">Tài khoản</string>
+    <string name="tab_orders">Trạng thái</string>
+    <string name="tab_profile">Tôi</string>
 </resources>

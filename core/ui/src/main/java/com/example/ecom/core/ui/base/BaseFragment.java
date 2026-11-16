@@ -66,6 +66,8 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
+        if (pageLayout != null) pageLayout.dispose();
+        pageLayout = null;
         loadingSources.clear();
         super.onDestroyView();
     }

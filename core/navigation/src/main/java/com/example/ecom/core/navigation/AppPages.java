@@ -32,6 +32,7 @@ public final class AppPages {
     public static final String LOGIN = "login";
     public static final String REGISTER = "register";
     public static final String HOME = "home?query={query}";
+    public static final String PRODUCT_LIST = "products?category={category}";
     public static final String ORDERS = "orders";
     public static final String PROFILE = "profile";
     public static final String PRODUCT_DETAIL = "product/{productId}";
@@ -55,6 +56,7 @@ public final class AppPages {
         // ----- Các tab chính -----
         r.page(HOME,            FEATURE + "home.HomeFragment",                  LayoutType.MAIN,   LOGIN_REQUIRED)
                 .stringArg(ARG_QUERY, "");
+        r.page(PRODUCT_LIST, FEATURE + "home.HomeFragment", LayoutType.MAIN, LOGIN_REQUIRED).stringArg("category", "");
         r.page(ORDERS,          FEATURE + "order.list.OrdersFragment",          LayoutType.NONE,   LOGIN_REQUIRED);
         r.page(PROFILE,         FEATURE + "profile.ProfileFragment",            LayoutType.NONE,   LOGIN_REQUIRED);
 
