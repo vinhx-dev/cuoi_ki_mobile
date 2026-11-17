@@ -149,7 +149,10 @@ public final class ApiClient {
                 try {
                     tempRaw = transport.execute(method, path, query, body, token);
                 } catch (Exception e) {
-                    if (!allowMock) throw e;
+                    // Authentication must always be confirmed by the server.
+                    String normalizedPath = path.startsWith("/") ? path : "/" + path;
+                    if (!allowMock || normalizedPath.equals("/auth")
+                            || normalizedPath.startsWith("/auth/")) throw e;
                     Log.w(TAG, "Server connection failed (" + e.getMessage() + "), using MockTransport fallback");
                     tempRaw = mockTransport.execute(method, path, query, body, token);
                 }

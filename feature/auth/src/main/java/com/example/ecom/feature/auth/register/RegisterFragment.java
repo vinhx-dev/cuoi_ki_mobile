@@ -22,7 +22,6 @@ public class RegisterFragment extends BaseFragment {
 
     private EditText inputUsername;
     private EditText inputEmail;
-    private EditText inputPhone;
     private Button submit;
     private EditText inputPasswordReg;
     private EditText inputRePassword;
@@ -44,7 +43,6 @@ public class RegisterFragment extends BaseFragment {
 
         inputUsername = view.findViewById(R.id.inputUsername);
         inputEmail = view.findViewById(R.id.inputEmail);
-        inputPhone = view.findViewById(R.id.inputPhone);
         inputPasswordReg = view.findViewById(R.id.inputPasswordReg);
         inputRePassword = view.findViewById(R.id.inputRePassword);
         checkboxTerms = view.findViewById(R.id.checkboxTerms);
@@ -95,7 +93,6 @@ public class RegisterFragment extends BaseFragment {
 
         String name = inputUsername.getText().toString().trim();
         String email = inputEmail.getText().toString().trim();
-        String phone = inputPhone.getText().toString().trim();
         String password = inputPasswordReg.getText().toString();
         String rePassword = inputRePassword.getText().toString();
 
@@ -106,7 +103,6 @@ public class RegisterFragment extends BaseFragment {
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) { showError("Email không hợp lệ"); return; }
         if (password.length()<6 || password.length()>50) { showError("Mật khẩu phải có 6–50 ký tự"); return; }
-        if (!phone.isEmpty() && !phone.matches("0[0-9]{9}")) { showError("Số điện thoại phải có 10 số, bắt đầu bằng 0"); return; }
         if (!password.equals(rePassword)) {
             showError(getString(R.string.err_password_match));
             return;
@@ -118,7 +114,7 @@ public class RegisterFragment extends BaseFragment {
         }
 
         submit.setEnabled(false);
-        vm.register(name, email, phone, password, new com.example.ecom.core.api.ApiCallback<Object>() {
+        vm.register(name, email, "", password, new com.example.ecom.core.api.ApiCallback<Object>() {
             public void onSuccess(Object data) { if(isUiActive()){submit.setEnabled(true);AppRouter.toOtp(RegisterFragment.this,email,true);} }
             public void onError(String message,int status) { if(isUiActive()){submit.setEnabled(true);tvError.setText(message);tvError.setVisibility(View.VISIBLE);} }
         });

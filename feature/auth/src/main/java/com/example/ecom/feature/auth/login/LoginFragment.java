@@ -21,8 +21,6 @@ public class LoginFragment extends BaseFragment {
   email=v.findViewById(R.id.inputAccount);password=v.findViewById(R.id.inputPassword);submit=v.findViewById(R.id.btnLogin);
   submit.setOnClickListener(w->login());
   v.findViewById(R.id.textRegister).setOnClickListener(w->AppRouter.toRegister(this));
-  v.findViewById(R.id.textForgot).setOnClickListener(w->toast(getString(R.string.msg_forgot_coming_soon)));
-  v.findViewById(R.id.layoutSocialIcons).setOnClickListener(w->toast(getString(R.string.msg_social_coming_soon)));
  }
  private boolean pending(String message){
   String m=Normalizer.normalize(message,Normalizer.Form.NFD).replaceAll("\\p{M}", "").toLowerCase(Locale.ROOT);

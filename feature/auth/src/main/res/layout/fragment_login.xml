@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="32dp">
 
         <!-- KHỐI 1: HEADER (Guideline 37% chiều cao màn hình) -->
         <androidx.constraintlayout.widget.Guideline
@@ -146,6 +147,7 @@
             android:layout_marginEnd="@dimen/form_margin_horizontal"
             android:layout_marginTop="28dp"
             android:background="@drawable/bg_button_login"
+            app:backgroundTint="@null"
             android:elevation="8dp"
             android:letterSpacing="0.2"
             android:text="@string/btn_login"
@@ -169,106 +171,6 @@
             android:textSize="@dimen/text_size_link"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
-        <TextView
-            android:id="@+id/textForgot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/form_margin_horizontal"
-            android:layout_marginTop="16dp"
-            android:padding="4dp"
-            android:text="@string/link_forgot"
-            android:textColor="@color/text_dark"
-            android:textSize="@dimen/text_size_link"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
-        <!-- e) PHẦN "ĐĂNG NHẬP BẰNG CÁCH KHÁC" -->
-        <TextView
-            android:id="@+id/textOtherLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/other_login"
-            android:textColor="@color/text_gray"
-            android:textSize="@dimen/text_size_other"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textRegister" />
-
-        <!-- Đường kẻ ngang mảnh -->
-        <View
-            android:id="@+id/viewLine"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/form_margin_horizontal"
-            android:layout_marginEnd="@dimen/form_margin_horizontal"
-            android:layout_marginTop="12dp"
-            android:background="@color/line_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textOtherLogin" />
-
-        <!-- Hàng 3 icon tròn mạng xã hội -->
-        <LinearLayout
-            android:id="@+id/layoutSocialIcons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="40dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/viewLine">
-
-            <!-- Icon 1: Viền green -->
-            <FrameLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginHorizontal="12dp"
-                android:background="@drawable/bg_social_green">
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_social_b" />
-            </FrameLayout>
-
-            <!-- Icon 2: Viền blue -->
-            <FrameLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginHorizontal="12dp"
-                android:background="@drawable/bg_social_blue">
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_social_b" />
-            </FrameLayout>
-
-            <!-- Icon 3: Viền red -->
-            <FrameLayout
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginHorizontal="12dp"
-                android:background="@drawable/bg_social_red">
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_social_b" />
-            </FrameLayout>
-
-        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
