@@ -1,31 +1,13 @@
 package com.example.ecom.feature.profile.data;
-
 import android.content.Context;
-
 import com.example.ecom.core.api.ApiCallback;
-import com.example.ecom.core.api.ApiClient;
-import com.example.ecom.core.data.SessionManager;
-
-import org.json.JSONObject;
-
-/** Thông tin tài khoản + đăng xuất. */
+import com.example.ecom.core.api.auth.AuthRepository;
 public class ProfileApi {
-
-    private final ApiClient api;
-    private final SessionManager session;
-
-    public ProfileApi(Context context) {
-        this.api = ApiClient.getInstance(context);
-        this.session = new SessionManager(context);
-    }
-
-    /** GET /users/me */
-    public void getMe(ApiCallback<User> cb) {
-        api.get("/users/me", null, data -> User.fromJson((JSONObject) data), cb);
-    }
-
-    /** Đăng xuất: chỉ cần xoá phiên đăng nhập trên máy. */
-    public void logout() {
-        session.clear();
-    }
+ private final AuthRepository api;
+ public ProfileApi(Context context){api=new AuthRepository(context);}
+ public void getMe(ApiCallback<User> cb){api.me(new ApiCallback<com.example.ecom.core.data.User>(){
+  public void onSuccess(com.example.ecom.core.data.User u){User profile=new User((int)u.id,u.fullName,u.phone!=null?u.phone:"", "");profile.email=u.email!=null?u.email:"";cb.onSuccess(profile);}
+  public void onError(String m,int s){cb.onError(m,s);}
+ });}
+ public void logout(ApiCallback<Object> cb){api.logout(cb);}
 }

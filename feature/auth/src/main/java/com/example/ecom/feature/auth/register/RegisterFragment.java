@@ -22,6 +22,8 @@ public class RegisterFragment extends BaseFragment {
 
     private EditText inputUsername;
     private EditText inputEmail;
+    private EditText inputPhone;
+    private Button submit;
     private EditText inputPasswordReg;
     private EditText inputRePassword;
     private CheckBox checkboxTerms;
@@ -42,6 +44,7 @@ public class RegisterFragment extends BaseFragment {
 
         inputUsername = view.findViewById(R.id.inputUsername);
         inputEmail = view.findViewById(R.id.inputEmail);
+        inputPhone = view.findViewById(R.id.inputPhone);
         inputPasswordReg = view.findViewById(R.id.inputPasswordReg);
         inputRePassword = view.findViewById(R.id.inputRePassword);
         checkboxTerms = view.findViewById(R.id.checkboxTerms);
@@ -50,6 +53,7 @@ public class RegisterFragment extends BaseFragment {
         ImageView btnTogglePass1 = view.findViewById(R.id.btnTogglePass1);
         ImageView btnTogglePass2 = view.findViewById(R.id.btnTogglePass2);
         Button btnRegisterSubmit = view.findViewById(R.id.btnRegisterSubmit);
+        submit = btnRegisterSubmit;
         TextView textGoLogin = view.findViewById(R.id.textGoLogin);
 
         if (btnTogglePass1 != null) {
@@ -90,15 +94,19 @@ public class RegisterFragment extends BaseFragment {
         if (tvError != null) tvError.setVisibility(View.GONE);
 
         String name = inputUsername.getText().toString().trim();
-        String phone = inputEmail.getText().toString().trim();
+        String email = inputEmail.getText().toString().trim();
+        String phone = inputPhone.getText().toString().trim();
         String password = inputPasswordReg.getText().toString();
         String rePassword = inputRePassword.getText().toString();
 
-        if (name.isEmpty() || phone.isEmpty() || password.isEmpty() || rePassword.isEmpty()) {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || rePassword.isEmpty()) {
             showError(getString(R.string.err_empty_fields));
             return;
         }
 
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) { showError("Email không hợp lệ"); return; }
+        if (password.length()<6 || password.length()>50) { showError("Mật khẩu phải có 6–50 ký tự"); return; }
+        if (!phone.isEmpty() && !phone.matches("0[0-9]{9}")) { showError("Số điện thoại phải có 10 số, bắt đầu bằng 0"); return; }
         if (!password.equals(rePassword)) {
             showError(getString(R.string.err_password_match));
             return;
@@ -109,13 +117,15 @@ public class RegisterFragment extends BaseFragment {
             return;
         }
 
-        vm.register(name, phone, password, apiCallback(userName -> {
-            toast(getString(R.string.msg_register_success));
-            AppRouter.toHome(this);
-        }));
+        submit.setEnabled(false);
+        vm.register(name, email, phone, password, new com.example.ecom.core.api.ApiCallback<Object>() {
+            public void onSuccess(Object data) { if(isUiActive()){submit.setEnabled(true);AppRouter.toOtp(RegisterFragment.this,email,true);} }
+            public void onError(String message,int status) { if(isUiActive()){submit.setEnabled(true);tvError.setText(message);tvError.setVisibility(View.VISIBLE);} }
+        });
     }
 
     private void showError(String message) {
+        toast(message);
         if (tvError != null) {
             tvError.setVisibility(View.VISIBLE);
             tvError.setText(message);

@@ -52,6 +52,10 @@ public final class AppRouter {
         navigate(nav, table.loginRoute(), replaceAll());
     }
 
+    public static void toOtp(Fragment from, String email, boolean sent) {
+        navigate(nav(from), "otp?email=" + Uri.encode(email) + "&sent=" + sent, fade());
+    }
+
     public static void toRegister(Fragment from) {
         navigate(nav(from), "register", fade());
     }

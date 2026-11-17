@@ -134,6 +134,17 @@
                     android:textSize="@dimen/text_size_input" />
             </LinearLayout>
 
+            <EditText
+                android:id="@+id/inputPhone"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="14dp"
+                android:paddingHorizontal="14dp"
+                android:background="@drawable/bg_input"
+                android:hint="Số điện thoại (không bắt buộc)"
+                android:inputType="phone"
+                android:autofillHints="phone"
+                android:maxLines="1" />
             <!-- 3. Mật khẩu -->
             <LinearLayout
                 android:layout_width="match_parent"

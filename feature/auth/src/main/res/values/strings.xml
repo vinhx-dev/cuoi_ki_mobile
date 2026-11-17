@@ -1,8 +1,8 @@
 <resources>
     <string name="logo_desc">Logo ứng dụng</string>
-    <string name="hint_account">Tài khoản (Số điện thoại)</string>
+    <string name="hint_account">Email</string>
     <string name="hint_username">Họ và tên</string>
-    <string name="hint_email">Số điện thoại (10 số)</string>
+    <string name="hint_email">Email</string>
     <string name="hint_password">Mật khẩu</string>
     <string name="hint_repassword">Nhập lại mật khẩu</string>
     <string name="terms_agreement">Tôi đồng ý với Điều khoản và Chính sách</string>

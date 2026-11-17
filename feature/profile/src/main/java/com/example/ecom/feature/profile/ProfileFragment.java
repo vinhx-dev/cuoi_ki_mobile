@@ -56,8 +56,11 @@ public class ProfileFragment extends BaseFragment {
         View btnLogoutItem = view.findViewById(R.id.btnLogoutItem);
         if (btnLogoutItem != null) {
             btnLogoutItem.setOnClickListener(v -> {
-                vm.logout();
-                AppRouter.toLogin(this);
+                btnLogoutItem.setEnabled(false);
+                vm.logout(new com.example.ecom.core.api.ApiCallback<Object>() {
+                    public void onSuccess(Object data) { if(isUiActive()) AppRouter.toLogin(ProfileFragment.this); }
+                    public void onError(String message,int status) { if(isUiActive()) AppRouter.toLogin(ProfileFragment.this); }
+                });
             });
         }
 
@@ -66,7 +69,7 @@ public class ProfileFragment extends BaseFragment {
             if (textName != null) textName.setText(user.name);
             if (textMemberRank != null) textMemberRank.setText("Thành viên thân thiết");
             if (textPhone != null) {
-                String contact = !user.phone.isEmpty() ? user.phone : "user@email.com";
+                String contact = !user.email.isEmpty() ? user.email : user.phone;
                 textPhone.setText(contact);
             }
             if (textTotalOrdersCount != null) textTotalOrdersCount.setText("12 đơn");

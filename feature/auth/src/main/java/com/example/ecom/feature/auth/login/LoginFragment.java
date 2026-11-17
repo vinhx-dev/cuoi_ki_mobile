@@ -1,74 +1,47 @@
 package com.example.ecom.feature.auth.login;
-
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
+import android.widget.*;
+import android.util.Patterns;
+import androidx.annotation.*;
+import com.example.ecom.core.api.ApiCallback;
+import com.example.ecom.core.api.auth.AuthResponse;
 import com.example.ecom.core.navigation.AppRouter;
 import com.example.ecom.core.ui.base.BaseFragment;
 import com.example.ecom.feature.auth.R;
-
-/** Đăng nhập. ≈ LoginPage.jsx */
+import java.text.Normalizer;
+import java.util.Locale;
 public class LoginFragment extends BaseFragment {
-
-    private EditText inputAccount;
-    private EditText inputPassword;
-    private LoginViewModel vm;
-
-    public LoginFragment() {
-        super(R.layout.fragment_login);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        vm = viewModel(LoginViewModel.class);
-
-        inputAccount = view.findViewById(R.id.inputAccount);
-        inputPassword = view.findViewById(R.id.inputPassword);
-
-        // Điền sẵn tài khoản mẫu để dùng thử khi chưa kết nối backend
-        if (inputAccount.getText().length() == 0) {
-            inputAccount.setText("0987654321");
-        }
-        if (inputPassword.getText().length() == 0) {
-            inputPassword.setText("123456");
-        }
-
-        Button btnLogin = view.findViewById(R.id.btnLogin);
-        TextView textRegister = view.findViewById(R.id.textRegister);
-        TextView textForgot = view.findViewById(R.id.textForgot);
-        View layoutSocial = view.findViewById(R.id.layoutSocialIcons);
-
-        btnLogin.setOnClickListener(v -> login());
-        if (textRegister != null) {
-            textRegister.setOnClickListener(v -> AppRouter.toRegister(this));
-        }
-        if (textForgot != null) {
-            textForgot.setOnClickListener(v -> toast(getString(R.string.msg_forgot_coming_soon)));
-        }
-        if (layoutSocial != null) {
-            layoutSocial.setOnClickListener(v -> toast(getString(R.string.msg_social_coming_soon)));
-        }
-    }
-
-    private void login() {
-        String phone = inputAccount.getText().toString().trim();
-        String password = inputPassword.getText().toString();
-
-        if (phone.isEmpty() || password.isEmpty()) {
-            toast(getString(R.string.err_empty_fields));
-            return;
-        }
-
-        vm.login(phone, password, apiCallback(userName -> {
-            toast(getString(R.string.msg_hello, userName));
-            AppRouter.toHome(this);
-        }));
-    }
+ private EditText email,password;
+ private Button submit;
+ private LoginViewModel vm;
+ public LoginFragment(){super(R.layout.fragment_login);}
+ @Override public void onViewCreated(@NonNull View v,@Nullable Bundle state){
+  super.onViewCreated(v,state);vm=viewModel(LoginViewModel.class);
+  email=v.findViewById(R.id.inputAccount);password=v.findViewById(R.id.inputPassword);submit=v.findViewById(R.id.btnLogin);
+  submit.setOnClickListener(w->login());
+  v.findViewById(R.id.textRegister).setOnClickListener(w->AppRouter.toRegister(this));
+  v.findViewById(R.id.textForgot).setOnClickListener(w->toast(getString(R.string.msg_forgot_coming_soon)));
+  v.findViewById(R.id.layoutSocialIcons).setOnClickListener(w->toast(getString(R.string.msg_social_coming_soon)));
+ }
+ private boolean pending(String message){
+  String m=Normalizer.normalize(message,Normalizer.Form.NFD).replaceAll("\\p{M}", "").toLowerCase(Locale.ROOT);
+  return m.contains("chua kich hoat")||m.contains("chua xac thuc")||m.contains("not activated")||m.contains("not verified")||m.contains("inactive")||m.contains("pending")||m.contains("unverified");
+ }
+ private void login(){
+  String e=email.getText().toString().trim(),p=password.getText().toString();
+  if(!Patterns.EMAIL_ADDRESS.matcher(e).matches()||p.isEmpty()){toast("Vui lòng nhập email hợp lệ và mật khẩu");return;}
+  submit.setEnabled(false);
+  vm.login(e,p,new ApiCallback<AuthResponse>(){
+   public void onSuccess(AuthResponse a){if(!isUiActive())return;submit.setEnabled(true);AppRouter.toHome(LoginFragment.this);}
+   public void onError(String m,int s){
+    if(!isUiActive())return;
+    if(s==403&&pending(m)) vm.resend(e,new ApiCallback<Object>(){
+     public void onSuccess(Object o){openOtp(e,true);}
+     public void onError(String message,int code){openOtp(e,false);}
+    });else submit.setEnabled(true);
+   }
+  });
+ }
+ private void openOtp(String e,boolean sent){if(isUiActive()){submit.setEnabled(true);AppRouter.toOtp(this,e,sent);}}
 }

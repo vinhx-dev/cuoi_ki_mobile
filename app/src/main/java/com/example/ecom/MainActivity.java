@@ -40,11 +40,13 @@ public class MainActivity extends AppCompatActivity {
         AppRouter.install(nav, () -> new SessionManager(app).isLoggedIn());
 
         ApiClient.getInstance(this).setUnauthorizedListener(() -> AppRouter.toLogin(nav));
+        com.example.ecom.core.api.auth.AuthNetwork.get(this).setExpiredListener(() -> AppRouter.toLogin(nav));
     }
 
     @Override
     protected void onDestroy() {
         ApiClient.getInstance(this).setUnauthorizedListener(null);
+        com.example.ecom.core.api.auth.AuthNetwork.get(this).setExpiredListener(null);
         super.onDestroy();
     }
 

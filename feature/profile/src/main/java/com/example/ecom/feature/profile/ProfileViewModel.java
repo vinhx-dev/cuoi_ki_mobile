@@ -31,7 +31,7 @@ public class ProfileViewModel extends BaseViewModel {
         fetch(user, profileApi::getMe);
     }
 
-    public void logout() {
-        profileApi.logout();
+    public void logout(com.example.ecom.core.api.ApiCallback<Object> cb) {
+        profileApi.logout(cb);
     }
 }

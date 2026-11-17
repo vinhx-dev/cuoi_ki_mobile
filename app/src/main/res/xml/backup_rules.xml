@@ -3,4 +3,5 @@
      Không sao lưu file lưu phiên đăng nhập (token) của LocalStorage: token không được theo sang máy khác. -->
 <full-backup-content>
     <exclude domain="sharedpref" path="ecom_app_prefs.xml" />
+        <exclude domain="sharedpref" path="auth_v1.xml" />
 </full-backup-content>

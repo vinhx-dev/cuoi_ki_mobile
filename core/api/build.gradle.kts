@@ -10,7 +10,10 @@ val localProperties = Properties().apply {
         localPropertiesFile.inputStream().use { load(it) }
     }
 }
-val baseUrl: String = localProperties.getProperty("api.baseUrl") ?: "http://10.0.2.2:8080/api"
+// Emulator: 10.0.2.2 points to the host computer. For a USB device run
+// adb reverse tcp:8080 tcp:8080 and set api.baseUrl=http://localhost:8080/api/
+// in local.properties, then rebuild.
+val baseUrl: String = localProperties.getProperty("api.baseUrl") ?: "http://10.0.2.2:8080/api/"
 
 android {
     namespace = "com.example.ecom.core.api"
@@ -32,6 +35,11 @@ android {
 }
 
 dependencies {
+    api("com.squareup.retrofit2:retrofit:2.11.0")
+    api("com.squareup.retrofit2:converter-gson:2.11.0")
+    api("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     // api: lấy token đăng nhập từ bộ nhớ cục bộ (SessionManager)
     api(project(":core:data"))
 }

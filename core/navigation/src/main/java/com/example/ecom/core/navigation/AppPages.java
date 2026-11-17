@@ -31,6 +31,7 @@ public final class AppPages {
     public static final String SPLASH = "splash";
     public static final String LOGIN = "login";
     public static final String REGISTER = "register";
+    public static final String OTP = "otp?email={email}&sent={sent}";
     public static final String HOME = "home?query={query}";
     public static final String PRODUCT_LIST = "products?category={category}";
     public static final String ORDERS = "orders";
@@ -52,6 +53,7 @@ public final class AppPages {
         // ----- Chưa đăng nhập -----
         r.page(SPLASH,          FEATURE + "splash.SplashFragment",              LayoutType.NONE,   PUBLIC);
         r.page(LOGIN,           FEATURE + "auth.login.LoginFragment",           LayoutType.NONE,   PUBLIC);
+        r.page(OTP, FEATURE + "auth.otp.OtpFragment", LayoutType.NONE, PUBLIC).stringArg("email", "").stringArg("sent", "false");
         r.page(REGISTER,        FEATURE + "auth.register.RegisterFragment",     LayoutType.NONE,   PUBLIC);
 
         // ----- Các tab chính -----

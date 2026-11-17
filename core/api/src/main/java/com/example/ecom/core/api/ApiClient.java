@@ -54,7 +54,7 @@ public final class ApiClient {
 
     private ApiClient(Context context) {
         this.session = new SessionManager(context.getApplicationContext());
-        this.transport = new HttpTransport();
+        this.transport = new HttpTransport(context);
         this.mockTransport = new MockTransport();
     }
 
