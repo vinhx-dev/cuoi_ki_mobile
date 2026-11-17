@@ -2,7 +2,6 @@ package com.example.ecom.feature.order.cart;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,11 +27,9 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
     private RecyclerView recyclerCart;
     private TextView textEmpty;
     private TextView textTotalPrice;
-    private CheckBox cbSelectAllTop;
     private View btnDeleteSelected;
     private View btnCheckout;
     private CartAdapter adapter;
-    private boolean isUpdatingCheckState = false;
 
     public CartFragment() {
         super(R.layout.fragment_cart);
@@ -53,18 +50,8 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
             btnMore.setOnClickListener(this::showDropdownMenu);
         }
 
-        // Top actions
-        cbSelectAllTop = view.findViewById(R.id.cbSelectAllTop);
+        // Top action xóa
         btnDeleteSelected = view.findViewById(R.id.btnDeleteSelected);
-
-        if (cbSelectAllTop != null) {
-            cbSelectAllTop.setOnCheckedChangeListener((btn, isChecked) -> {
-                if (!isUpdatingCheckState && adapter != null) {
-                    adapter.setAllChecked(isChecked);
-                }
-            });
-        }
-
         if (btnDeleteSelected != null) {
             btnDeleteSelected.setOnClickListener(v -> confirmDeleteSelectedItems());
         }
@@ -124,18 +111,25 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
             textTotalPrice.setText(Formatter.money(total));
         }
 
-        // Cập nhật nút Xóa tất cả được chọn
+        // Cập nhật nút Xóa trên góc phải
         int checkedCount = adapter.getCheckedCount();
-        if (btnDeleteSelected != null) {
-            btnDeleteSelected.setVisibility(checkedCount > 0 ? View.VISIBLE : View.GONE);
-        }
+        int totalCount = items.size();
 
-        // Cập nhật CheckBox Chọn tất cả top
-        isUpdatingCheckState = true;
-        if (cbSelectAllTop != null) {
-            cbSelectAllTop.setChecked(adapter.isAllChecked());
+        if (btnDeleteSelected != null) {
+            if (checkedCount > 0) {
+                btnDeleteSelected.setVisibility(View.VISIBLE);
+                TextView textDelete = btnDeleteSelected.findViewById(R.id.textDeleteAction);
+                if (textDelete != null) {
+                    if (checkedCount == totalCount && totalCount > 0) {
+                        textDelete.setText("Xóa tất cả");
+                    } else {
+                        textDelete.setText("Xóa sản phẩm");
+                    }
+                }
+            } else {
+                btnDeleteSelected.setVisibility(View.GONE);
+            }
         }
-        isUpdatingCheckState = false;
     }
 
     @Override
@@ -173,10 +167,15 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
         int checkedCount = adapter.getCheckedCount();
         if (checkedCount <= 0) return;
 
+        boolean allChecked = adapter.isAllChecked();
+        String title = allChecked ? "Xóa tất cả sản phẩm" : "Xóa sản phẩm đã chọn";
+        String message = allChecked ? "Bạn có chắc chắn muốn xóa toàn bộ sản phẩm khỏi giỏ hàng?" : "Bạn có chắc chắn muốn xóa " + checkedCount + " sản phẩm đã chọn khỏi giỏ hàng?";
+        String btnText = allChecked ? "Xóa tất cả" : "Xóa";
+
         new AlertDialog.Builder(requireContext())
-                .setTitle("Xóa các sản phẩm đã chọn")
-                .setMessage("Bạn có chắc chắn muốn xóa " + checkedCount + " sản phẩm đã chọn khỏi giỏ hàng?")
-                .setPositiveButton("Xóa tất cả", (dialog, which) -> {
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(btnText, (dialog, which) -> {
                     List<LocalCart.CartItem> current = new ArrayList<>(adapter.getItems());
                     for (LocalCart.CartItem item : current) {
                         if (item.checked) {
@@ -192,7 +191,7 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
     private void handleCheckout() {
         int checkedCount = adapter.getCheckedCount();
         if (checkedCount <= 0) {
-            toast("Vui lòng chọn ít nhất 1 sản phẩm để thanh toán");
+            toast("Vui lòng tick chọn ít nhất 1 sản phẩm trong giỏ hàng để thanh toán!");
             return;
         }
 

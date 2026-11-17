@@ -58,33 +58,7 @@
         android:paddingTop="8dp"
         android:paddingBottom="4dp">
 
-        <!-- Ô chọn tất cả ở top (ẩn hoặc hiện đồng bộ) -->
-        <LinearLayout
-            android:id="@+id/layoutSelectAllTop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/cbSelectAllTop"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:buttonTint="#EB6A1B" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="Chọn tất cả"
-                android:textColor="#1F2937"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- Icon Thùng rác xóa toàn bộ các mục được chọn (mặc định ẩn) -->
+        <!-- Action xóa trên góc phải: "Xóa sản phẩm" / "Xóa tất cả" + Icon Thùng rác (mặc định ẩn) -->
         <LinearLayout
             android:id="@+id/btnDeleteSelected"
             android:layout_width="wrap_content"
@@ -96,16 +70,18 @@
             android:focusable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="4dp"
+            android:padding="6dp"
             android:visibility="gone">
 
             <TextView
+                android:id="@+id/textDeleteAction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:text="Xóa tất cả"
+                android:text="Xóa sản phẩm"
                 android:textColor="#757575"
-                android:textSize="13sp" />
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="20dp"
@@ -183,8 +159,10 @@
             android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:background="@drawable/bg_checkout_button"
+            android:clickable="true"
+            android:focusable="true"
             android:paddingHorizontal="24dp"
-            android:text="Thanh toán"
+            android:text="THANH TOÁN"
             android:textColor="#FFFFFF"
             android:textSize="15sp"
             android:textStyle="bold" />
