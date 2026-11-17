@@ -37,6 +37,7 @@ public final class AppPages {
     public static final String PROFILE = "profile";
     public static final String PRODUCT_DETAIL = "product/{productId}";
     public static final String ORDER_DETAIL = "order/{orderId}";
+    public static final String CART = "cart";
 
     // Tên tham số (đọc bằng getArguments() trong Fragment)
     public static final String ARG_QUERY = "query";
@@ -65,6 +66,7 @@ public final class AppPages {
                 .intArg(ARG_PRODUCT_ID);
         r.page(ORDER_DETAIL,    FEATURE + "order.detail.OrderDetailFragment",   LayoutType.DETAIL, LOGIN_REQUIRED)
                 .intArg(ARG_ORDER_ID);
+        r.page(CART,            FEATURE + "order.cart.CartFragment",            LayoutType.NONE,   LOGIN_REQUIRED);
 
         // Trang mở đầu tiên
         r.start(SPLASH);

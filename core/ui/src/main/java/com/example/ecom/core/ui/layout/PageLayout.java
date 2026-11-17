@@ -59,7 +59,7 @@ public final class PageLayout {
         this.editSearch = root.findViewById(R.id.editSearch);
 
         View cart = root.findViewById(R.id.headerCart);
-        if (cart != null) cart.setOnClickListener(v -> com.example.ecom.core.ui.shop.ShopViews.showCart(page.requireContext()));
+        if (cart != null) cart.setOnClickListener(v -> AppRouter.toCart(page));
         View camera = root.findViewById(R.id.iconCamera);
         if (camera != null) camera.setOnClickListener(v -> android.widget.Toast.makeText(page.requireContext(), "Tìm kiếm bằng ảnh chưa được hỗ trợ", android.widget.Toast.LENGTH_SHORT).show());
         View search = root.findViewById(R.id.iconSearch);

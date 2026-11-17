@@ -81,6 +81,10 @@ public final class AppRouter {
         navigate(nav(from), "order/" + orderId, fade());
     }
 
+    public static void toCart(Fragment from) {
+        navigate(nav(from), "cart", fade());
+    }
+
     /** Chuyển tab ở bottom bar: luôn giữ trang chủ ở dưới cùng, không chồng nhiều tab lên nhau. */
     public static void toTab(Fragment from, String path) {
         NavOptions options = new NavOptions.Builder()
