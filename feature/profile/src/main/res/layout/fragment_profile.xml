@@ -50,14 +50,14 @@
             android:padding="16dp">
 
             <!-- 1. KHU VỰC THÔNG TIN USER (Card trắng bo góc 12dp) -->
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:strokeColor="#EEEEEE"
-                app:strokeWidth="1dp">
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="false">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -71,7 +71,7 @@
                         android:id="@+id/imgAvatar"
                         android:layout_width="64dp"
                         android:layout_height="64dp"
-                        android:background="#FFF1E6"
+                        android:background="#F8F9FA"
                         android:contentDescription="@null"
                         android:padding="12dp"
                         android:scaleType="centerCrop"
@@ -115,7 +115,7 @@
                             android:textSize="13sp" />
                     </LinearLayout>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <!-- 2. KHU VỰC THỐNG KÊ MUA SẮM -->
             <TextView
@@ -136,7 +136,7 @@
                 android:orientation="horizontal">
 
                 <!-- Thẻ 1: Tổng số đơn đã mua -->
-                <com.google.android.material.card.MaterialCardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
@@ -144,8 +144,8 @@
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="2dp"
-                    app:strokeColor="#EEEEEE"
-                    app:strokeWidth="1dp">
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -181,10 +181,10 @@
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                </androidx.cardview.widget.CardView>
 
                 <!-- Thẻ 2: Tổng số tiền đã thanh toán -->
-                <com.google.android.material.card.MaterialCardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="4dp"
@@ -192,8 +192,8 @@
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="2dp"
-                    app:strokeColor="#EEEEEE"
-                    app:strokeWidth="1dp">
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -229,10 +229,10 @@
                             android:textSize="13sp"
                             android:textStyle="bold" />
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                </androidx.cardview.widget.CardView>
 
                 <!-- Thẻ 3: Số đơn đang mua -->
-                <com.google.android.material.card.MaterialCardView
+                <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -240,8 +240,8 @@
                     app:cardBackgroundColor="#FFFFFF"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="2dp"
-                    app:strokeColor="#EEEEEE"
-                    app:strokeWidth="1dp">
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -277,12 +277,12 @@
                             android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 
-            <!-- 3. NÚT ĐĂNG XUẤT (Bo tròn viên thuốc giống nút Đăng nhập, nền cùng màu nền màn hình #F6F7F9, viền đỏ nổi bật, đổ bóng, căn giữa) -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- 3. NÚT ĐĂNG XUẤT -->
+            <androidx.cardview.widget.CardView
                 android:id="@+id/btnLogoutItem"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
@@ -292,9 +292,8 @@
                 android:focusable="true"
                 app:cardBackgroundColor="#F6F7F9"
                 app:cardCornerRadius="26dp"
-                app:cardElevation="6dp"
-                app:strokeColor="#E53935"
-                app:strokeWidth="1.5dp">
+                app:cardElevation="4dp"
+                app:cardPreventCornerOverlap="false">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -320,7 +319,7 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
