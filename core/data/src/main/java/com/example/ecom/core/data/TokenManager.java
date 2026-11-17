@@ -5,6 +5,12 @@ import org.json.JSONObject;
 /** All token operations share one lock, including logout and refresh rotation. */
 public final class TokenManager implements TokenStore {
     public static final Object LOCK = new Object();
+    public static TokenManager getInstance(Context context) { return new TokenManager(context); }
+    public void saveTokens(String access, String refresh) { synchronized(LOCK) { save(access, refresh, getUser()); } }
+    public void saveAuthResponse(AuthResponse response) { if(response!=null) save(response.accessToken,response.refreshToken,response.user); }
+    public String getUserName() { User user=getUser();return user==null?"":user.getDisplayName(); }
+    public String getUserEmail() { User user=getUser();return user==null||user.email==null?"":user.email; }
+    public boolean isLoggedIn() { String token=getAccessToken();return token!=null&&!token.isEmpty(); }
     private final SharedPreferences prefs;
     public TokenManager(Context context) { prefs = context.getApplicationContext().getSharedPreferences("auth_v1", Context.MODE_PRIVATE); }
     public String getAccessToken() { synchronized (LOCK) { return prefs.getString("accessToken", null); } }
