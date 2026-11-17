@@ -38,11 +38,13 @@ public final class AppPages {
     public static final String PRODUCT_DETAIL = "product/{productId}";
     public static final String ORDER_DETAIL = "order/{orderId}";
     public static final String CART = "cart";
+    public static final String VERIFY_OTP = "verify_otp?email={email}";
 
     // Tên tham số (đọc bằng getArguments() trong Fragment)
     public static final String ARG_QUERY = "query";
     public static final String ARG_PRODUCT_ID = "productId";
     public static final String ARG_ORDER_ID = "orderId";
+    public static final String ARG_EMAIL = "email";
 
     private static final String FEATURE = "com.example.ecom.feature.";
 
@@ -53,6 +55,8 @@ public final class AppPages {
         r.page(SPLASH,          FEATURE + "splash.SplashFragment",              LayoutType.NONE,   PUBLIC);
         r.page(LOGIN,           FEATURE + "auth.login.LoginFragment",           LayoutType.NONE,   PUBLIC);
         r.page(REGISTER,        FEATURE + "auth.register.RegisterFragment",     LayoutType.NONE,   PUBLIC);
+        r.page(VERIFY_OTP,      FEATURE + "auth.otp.OtpVerifyFragment",         LayoutType.NONE,   PUBLIC)
+                .stringArg(ARG_EMAIL, "");
 
         // ----- Các tab chính -----
         r.page(HOME,            FEATURE + "home.HomeFragment",                  LayoutType.MAIN,   LOGIN_REQUIRED)

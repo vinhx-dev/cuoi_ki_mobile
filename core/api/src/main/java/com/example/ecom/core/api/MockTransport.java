@@ -23,14 +23,16 @@ public class MockTransport implements ApiTransport {
         String description;
         long price;
         int stock;
+        String category;
         String imageUrl;
 
-        MockProduct(int id, String name, String description, long price, int stock, String imageUrl) {
+        MockProduct(int id, String name, String description, long price, int stock, String category, String imageUrl) {
             this.id = id;
             this.name = name;
             this.description = description;
             this.price = price;
             this.stock = stock;
+            this.category = category;
             this.imageUrl = imageUrl;
         }
 
@@ -40,6 +42,10 @@ public class MockTransport implements ApiTransport {
             obj.put("name", name);
             obj.put("price", price);
             obj.put("stock", stock);
+            obj.put("category", category);
+            obj.put("categoryName", category);
+            obj.put("description", description);
+            obj.put("imageUrl", imageUrl);
             return obj;
         }
 
@@ -50,6 +56,8 @@ public class MockTransport implements ApiTransport {
             obj.put("description", description);
             obj.put("price", price);
             obj.put("stock", stock);
+            obj.put("category", category);
+            obj.put("categoryName", category);
             obj.put("imageUrl", imageUrl);
             return obj;
         }
@@ -122,38 +130,38 @@ public class MockTransport implements ApiTransport {
     }
 
     private void initData() {
-        addProduct(new MockProduct(1, "iPhone 15 Pro Max 256GB",
-                "Thiết kế khung Titanium siêu nhẹ và bền bỉ. Chip A17 Pro đem lại hiệu năng chơi game đỉnh cao. Hệ thống camera chuyên nghiệp 48MP zoom 5x.",
-                29990000L, 15, ""));
-        addProduct(new MockProduct(2, "Samsung Galaxy S24 Ultra 512GB",
-                "Khung viền Titanium cao cấp, màn hình Dynamic AMOLED 2X 120Hz siêu nét. Tích hợp AI thông minh với Galaxy AI và bút S-Pen.",
-                27990000L, 20, ""));
-        addProduct(new MockProduct(3, "MacBook Air M3 15 inch (16GB/512GB)",
-                "Thiết kế mỏng nhẹ đẳng cấp, chip M3 hiệu năng mạnh mẽ, thời lượng pin ấn tượng lên đến 18 giờ liên tục.",
-                32990000L, 8, ""));
-        addProduct(new MockProduct(4, "Tai nghe Bluetooth Sony WH-1000XM5",
-                "Chống ồn chủ động đỉnh cao industry-leading ANC. Chất âm Hi-Res sắc nét, thời lượng pin 30 giờ.",
-                8490000L, 25, ""));
-        addProduct(new MockProduct(5, "Apple Watch Series 9 GPS 45mm",
-                "Màn hình Retina Always-On sáng gấp đôi. Thao tác Double Tap thông minh. Đo nhịp tim, nồng độ oxy trong máu SpO2.",
-                10490000L, 12, ""));
-        addProduct(new MockProduct(6, "iPad Air 5 M1 64GB Wi-Fi",
-                "Chip Apple M1 mạnh mẽ, màn hình Liquid Retina 10.9 inch rực rỡ, hỗ trợ Apple Pencil 2 và Magic Keyboard.",
-                14990000L, 5, ""));
-        addProduct(new MockProduct(7, "Bàn phím cơ không dây Keychron K2 V2",
-                "Bàn phím cơ layout 84 phím, kết nối Bluetooth/Type-C, switch Gateron gõ êm, đèn LED RGB rực rỡ.",
-                1950000L, 30, ""));
-        addProduct(new MockProduct(8, "Chuột không dây Logitech MX Master 3S",
-                "Cảm biến 8000 DPI siêu chính xác, nút cuộn cuộn điện từ MagSpeed cực nhanh, cuộn ngang tiện lợi.",
-                2450000L, 18, ""));
+        addProduct(new MockProduct(-3, "Áo Thun Cotton",
+                "Áo thun cotton sọc ngang phong cách thoáng mát, dễ mặc hằng ngày.",
+                150000L, 15, "Áo", ""));
+        addProduct(new MockProduct(-5, "Áo Sơ Mi Caro",
+                "Áo sơ mi caro nam vải mềm mại, phong cách trẻ trung lịch lãm.",
+                280000L, 20, "Áo", ""));
+        addProduct(new MockProduct(-7, "Áo Khoác Nhẹ",
+                "Áo khoác nhẹ thể thao phong cách hiện đại, giữ ấm tốt.",
+                350000L, 8, "Áo", ""));
+        addProduct(new MockProduct(-8, "Áo Polo Nam",
+                "Áo polo nam lịch sự, chất liệu cao cấp thấm hút mồ hôi.",
+                199000L, 25, "Áo", ""));
+        addProduct(new MockProduct(-6, "Giày Thể Thao Nam",
+                "Giày thể thao êm chân, đế cao su chống trượt tốt.",
+                750000L, 12, "Giày", ""));
+        addProduct(new MockProduct(-4, "Váy Nữ Thời Trang",
+                "Váy nữ kiểu dáng trẻ trung thanh lịch.",
+                320000L, 10, "Váy", ""));
+        addProduct(new MockProduct(-9, "Áo Sơ Mi Trắng",
+                "Áo sơ mi trắng nam nữ thanh lịch.",
+                250000L, 18, "Áo", ""));
+        addProduct(new MockProduct(-10, "Áo Hoodie Basic",
+                "Áo hoodie phong cách trẻ trung.",
+                450000L, 14, "Áo", ""));
 
         List<MockOrderItem> items1 = new ArrayList<>();
-        items1.add(new MockOrderItem(4, "Tai nghe Bluetooth Sony WH-1000XM5", 1, 8490000L));
-        orders.add(new MockOrder(101, "PENDING", "123 Nguyễn Trãi, Thanh Xuân, Hà Nội", 8490000L, System.currentTimeMillis() - 3600000L, items1));
+        items1.add(new MockOrderItem(-3, "Áo Thun Cotton", 1, 150000L));
+        orders.add(new MockOrder(101, "PENDING", "123 Nguyễn Trãi, Thanh Xuân, Hà Nội", 150000L, System.currentTimeMillis() - 3600000L, items1));
 
         List<MockOrderItem> items2 = new ArrayList<>();
-        items2.add(new MockOrderItem(2, "Samsung Galaxy S24 Ultra 512GB", 1, 27990000L));
-        orders.add(new MockOrder(100, "DELIVERED", "123 Nguyễn Trãi, Thanh Xuân, Hà Nội", 27990000L, System.currentTimeMillis() - 86400000L, items2));
+        items2.add(new MockOrderItem(-5, "Áo Sơ Mi Caro", 1, 280000L));
+        orders.add(new MockOrder(100, "DELIVERED", "123 Nguyễn Trãi, Thanh Xuân, Hà Nội", 280000L, System.currentTimeMillis() - 86400000L, items2));
     }
 
     private void addProduct(MockProduct p) {

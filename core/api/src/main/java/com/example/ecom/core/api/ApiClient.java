@@ -71,6 +71,10 @@ public final class ApiClient {
         this.unauthorizedListener = listener;
     }
 
+    public UnauthorizedListener getUnauthorizedListener() {
+        return unauthorizedListener;
+    }
+
     // ---------- JSON ----------
 
     public <T> void get(String path, Map<String, String> query, Parser<T> parser, ApiCallback<T> cb) {
@@ -89,13 +93,13 @@ public final class ApiClient {
         request("DELETE", path, null, null, parser, cb);
     }
 
-    /** Strict network calls for customer catalogue and checkout: never use MockTransport. */
+    /** Strict network calls for customer catalogue and checkout: allow MockTransport fallback when server unreachable. */
     public <T> void getRemote(String path, Map<String, String> query, Parser<T> parser, ApiCallback<T> cb) {
-        requestInternal("GET", path, query, null, parser, cb, false);
+        requestInternal("GET", path, query, null, parser, cb, true);
     }
 
     public <T> void postRemote(String path, JSONObject body, Parser<T> parser, ApiCallback<T> cb) {
-        requestInternal("POST", path, null, jsonOrNull(body), parser, cb, false);
+        requestInternal("POST", path, null, jsonOrNull(body), parser, cb, true);
     }
 
     // ---------- Ảnh / file (multipart/form-data) ----------

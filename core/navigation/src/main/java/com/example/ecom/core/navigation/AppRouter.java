@@ -56,6 +56,10 @@ public final class AppRouter {
         navigate(nav(from), "register", fade());
     }
 
+    public static void toVerifyOtp(Fragment from, String email) {
+        navigate(nav(from), "verify_otp?email=" + Uri.encode(email), fade());
+    }
+
     /** Vào trang chủ và xoá toàn bộ lịch sử (sau khi đăng nhập). ≈ navigate("/", { replace: true }) */
     public static void toHome(Fragment from) {
         navigate(nav(from), "home", replaceAll());

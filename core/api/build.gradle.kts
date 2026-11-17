@@ -10,7 +10,7 @@ val localProperties = Properties().apply {
         localPropertiesFile.inputStream().use { load(it) }
     }
 }
-val baseUrl: String = localProperties.getProperty("api.baseUrl") ?: "http://10.0.2.2:8080/api"
+val baseUrl: String = localProperties.getProperty("api.baseUrl") ?: "http://10.0.2.2:8080/api/"
 
 android {
     namespace = "com.example.ecom.core.api"
@@ -32,6 +32,10 @@ android {
 }
 
 dependencies {
-    // api: lấy token đăng nhập từ bộ nhớ cục bộ (SessionManager)
+    // api: lấy token đăng nhập từ bộ nhớ cục bộ (TokenManager/SessionManager)
     api(project(":core:data"))
+    api("com.squareup.retrofit2:retrofit:2.9.0")
+    api("com.squareup.retrofit2:converter-gson:2.9.0")
+    api("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    api("com.google.code.gson:gson:2.10.1")
 }
