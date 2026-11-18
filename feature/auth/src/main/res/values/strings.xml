@@ -29,4 +29,5 @@
     <string name="err_empty_fields">Vui lòng nhập đầy đủ thông tin</string>
     <string name="err_password_match">Mật khẩu xác nhận không khớp</string>
     <string name="err_terms_not_agreed">Vui lòng đồng ý với Điều khoản và Chính sách</string>
+    <string name="auth_admin_preview">Xem bản mẫu quản trị</string>
 </resources>

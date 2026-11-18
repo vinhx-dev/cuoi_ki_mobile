@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@id/adminDashboardFragment" android:title="@string/admin_home" />
+    <item android:id="@id/adminProductsFragment" android:title="@string/admin_title_products" />
+    <item android:id="@id/adminOrdersFragment" android:title="@string/admin_title_orders" />
+    <item android:id="@id/adminRevenueFragment" android:title="@string/admin_statistics" />
+    <item android:id="@id/adminUsersFragment" android:title="@string/admin_title_users" />
+    <item android:id="@id/adminSettingsFragment" android:title="@string/admin_title_settings" />
+    <item android:id="@+id/adminExit" android:title="@string/admin_exit" />
+</menu>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="admin_sizes">
+        <item>XS</item>
+        <item>S</item>
+        <item>M</item>
+        <item>L</item>
+        <item>XL</item>
+        <item>XXL</item>
+    </string-array>
+    <string-array name="admin_colors">
+        <item>Đen</item>
+        <item>Trắng</item>
+        <item>Be</item>
+        <item>Xanh</item>
+        <item>Nâu</item>
+        <item>Hồng</item>
+    </string-array>
+</resources>

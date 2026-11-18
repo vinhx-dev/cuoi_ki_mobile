@@ -20,6 +20,9 @@ public final class AppRouter {
     // Key tham số truyền giữa các trang (khớp với <argument> trong app/src/main/res/navigation/nav_graph.xml)
     public static final String ARG_PRODUCT_ID = "productId";
     public static final String ARG_ORDER_ID = "orderId";
+    public static final String ARG_ADMIN_PRODUCT_ID = "adminProductId";
+    public static final String ARG_ADMIN_ORDER_ID = "adminOrderId";
+    public static final String ARG_ADMIN_USER_ID = "adminUserId";
 
     // ---------- Auth ----------
 
@@ -52,6 +55,71 @@ public final class AppRouter {
         Bundle args = new Bundle();
         args.putInt(ARG_ORDER_ID, orderId);
         navigate(nav(from), R.id.orderDetailFragment, args, false);
+    }
+
+    // ---------- Admin ----------
+
+    public static void toAdminDashboard(Fragment from) {
+        navigate(nav(from), R.id.adminDashboardFragment, null, false);
+    }
+
+    public static void toAdminDashboard(NavController nav) {
+        navigate(nav, R.id.adminDashboardFragment, null, false);
+    }
+
+    public static void toAdminProducts(Fragment from) {
+        toAdminTab(nav(from), R.id.adminProductsFragment);
+    }
+
+    public static void toAdminOrders(Fragment from) {
+        toAdminTab(nav(from), R.id.adminOrdersFragment);
+    }
+
+    public static void toAdminUsers(Fragment from) {
+        toAdminTab(nav(from), R.id.adminUsersFragment);
+    }
+
+    public static void toAdminRevenue(Fragment from) {
+        toAdminTab(nav(from), R.id.adminRevenueFragment);
+    }
+
+    public static void toAdminSettings(Fragment from) { toAdminSettings(nav(from)); }
+
+    public static void toAdminSettings(NavController nav) {
+        navigate(nav, R.id.adminSettingsFragment, null, false);
+    }
+
+    public static void toAdminProductDetail(Fragment from, int id) {
+        adminDetail(from, R.id.adminProductDetailFragment, ARG_ADMIN_PRODUCT_ID, id);
+    }
+
+    public static void toAdminProductForm(Fragment from, int id) {
+        adminDetail(from, R.id.adminProductFormFragment, ARG_ADMIN_PRODUCT_ID, id);
+    }
+
+    public static void toAdminOrderDetail(Fragment from, int id) {
+        adminDetail(from, R.id.adminOrderDetailFragment, ARG_ADMIN_ORDER_ID, id);
+    }
+
+    public static void toAdminUserDetail(Fragment from, int id) {
+        adminDetail(from, R.id.adminUserDetailFragment, ARG_ADMIN_USER_ID, id);
+    }
+
+    private static void adminDetail(Fragment from, int destination, String key, int id) {
+        Bundle args = new Bundle();
+        args.putInt(key, id);
+        navigate(nav(from), destination, args, false);
+    }
+
+    /** Các tab admin quay về cùng dashboard, tránh tích lũy back stack khi đổi tab. */
+    public static void toAdminTab(NavController nav, int destination) {
+        if (destination != R.id.adminDashboardFragment && destination != R.id.adminProductsFragment
+                && destination != R.id.adminOrdersFragment && destination != R.id.adminRevenueFragment
+                && destination != R.id.adminUsersFragment) return;
+        if (nav.getCurrentDestination() != null && nav.getCurrentDestination().getId() == destination) return;
+        NavOptions options = new NavOptions.Builder().setLaunchSingleTop(true)
+                .setPopUpTo(R.id.adminDashboardFragment, false).build();
+        nav.navigate(destination, null, options);
     }
 
     public static void back(Fragment from) {

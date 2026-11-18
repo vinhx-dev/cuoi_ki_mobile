@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@id/adminDashboardFragment"
+        android:icon="@drawable/admin_ic_home"
+        android:title="@string/admin_home" />
+    <item
+        android:id="@id/adminProductsFragment"
+        android:icon="@drawable/admin_ic_box"
+        android:title="@string/admin_title_products" />
+    <item
+        android:id="@id/adminOrdersFragment"
+        android:icon="@drawable/admin_ic_cart"
+        android:title="@string/admin_title_orders" />
+    <item
+        android:id="@id/adminRevenueFragment"
+        android:icon="@drawable/admin_ic_chart"
+        android:title="@string/admin_statistics" />
+    <item
+        android:id="@id/adminUsersFragment"
+        android:icon="@drawable/admin_ic_users"
+        android:title="@string/admin_title_users" />
+</menu>

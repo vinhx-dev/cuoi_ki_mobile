@@ -9,6 +9,18 @@
     android:background="?attr/colorSurface"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/adminStatusBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/admin_primary"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/adminHeader"
+        layout="@layout/layout_admin_header"
+        android:visibility="gone" />
+
     <include
         android:id="@+id/header"
         layout="@layout/header_layout" />
@@ -48,5 +60,10 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_nav_menu"
         app:paddingBottomSystemWindowInsets="false" />
+
+    <include
+        android:id="@+id/adminBottomNav"
+        layout="@layout/layout_admin_bottom_nav"
+        android:visibility="gone" />
 
 </LinearLayout>

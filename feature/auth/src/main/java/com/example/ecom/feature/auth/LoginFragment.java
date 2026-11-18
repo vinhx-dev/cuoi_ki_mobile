@@ -40,6 +40,8 @@ public class LoginFragment extends BaseFragment {
         TextView textForgot = view.findViewById(R.id.textForgot);
         View layoutSocial = view.findViewById(R.id.layoutSocialIcons);
 
+        view.findViewById(R.id.btnAdminPreview).setOnClickListener(v -> AppRouter.toAdminDashboard(this));
+
         btnLogin.setOnClickListener(v -> login());
         if (textRegister != null) {
             textRegister.setOnClickListener(v -> AppRouter.toRegister(this));

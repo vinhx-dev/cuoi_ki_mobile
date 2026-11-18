@@ -44,4 +44,5 @@ dependencies {
     implementation(project(":feature:product"))
     implementation(project(":feature:order"))
     implementation(project(":feature:profile"))
+    implementation(project(":feature:admin"))
 }

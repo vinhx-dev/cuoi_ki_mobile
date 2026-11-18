@@ -12,15 +12,23 @@ public enum LayoutType {
     BLANK(false, false, false),
     AUTH(false, false, false),
     MAIN(true, false, true),
-    DETAIL(true, true, false);
+    DETAIL(true, true, false),
+    ADMIN(true, false, true, true),
+    ADMIN_DETAIL(true, true, false, true);
 
     public final boolean showHeader;
     public final boolean showBack;
     public final boolean showBottomNav;
+    public final boolean isAdmin;
 
     LayoutType(boolean showHeader, boolean showBack, boolean showBottomNav) {
+        this(showHeader, showBack, showBottomNav, false);
+    }
+
+    LayoutType(boolean showHeader, boolean showBack, boolean showBottomNav, boolean isAdmin) {
         this.showHeader = showHeader;
         this.showBack = showBack;
         this.showBottomNav = showBottomNav;
+        this.isAdmin = isAdmin;
     }
 }

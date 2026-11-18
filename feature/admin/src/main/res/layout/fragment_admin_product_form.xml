@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/admin_background_secondary"
+    android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/admin_text"
+            android:textSize="17sp"
+            android:text="@string/admin_images"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+            <LinearLayout
+                android:id="@+id/productImages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+        <com.google.android.material.button.MaterialButton
+            style="@style/Admin.Button.Outlined"
+            android:id="@+id/btnAddImages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/admin_add_images"
+            app:icon="@drawable/admin_ic_photo" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/admin_text"
+            android:textSize="12sp"
+            android:text="@string/admin_images_hint"
+            android:layout_marginBottom="20dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputNameLayout"
+            style="@style/Admin.Input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:hint="@string/admin_product_name">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:textSize="15sp"
+                android:maxLength="121"
+                android:maxLines="2" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputCategoryLayout"
+            style="@style/Admin.Dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:hint="@string/admin_filter_category">
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/inputCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputPriceLayout"
+            style="@style/Admin.Input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:hint="@string/admin_price">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textSize="15sp"
+                android:maxLength="11" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputStockLayout"
+            style="@style/Admin.Input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:hint="@string/admin_stock">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputStock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textSize="15sp"
+                android:maxLength="7" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputDescriptionLayout"
+            style="@style/Admin.Input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:hint="@string/admin_description">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:textSize="15sp"
+                android:minLines="3"
+                android:maxLength="2001"
+                android:gravity="top" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/admin_text"
+            android:textSize="16sp"
+            android:text="@string/admin_sizes"
+            android:layout_marginBottom="6dp" />
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/sizeChips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleSelection="false" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/admin_text"
+            android:textSize="16sp"
+            android:text="@string/admin_colors"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="6dp" />
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/colorChips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleSelection="false" />
+        <com.google.android.material.button.MaterialButton
+            style="@style/Admin.Button"
+            android:id="@+id/btnSaveProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/admin_save"
+            android:layout_marginTop="24dp" />
+        <com.google.android.material.button.MaterialButton
+            style="@style/Admin.Button.Outlined"
+            android:id="@+id/btnCancelProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/admin_cancel" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

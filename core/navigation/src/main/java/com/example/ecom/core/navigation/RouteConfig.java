@@ -31,6 +31,17 @@ public final class RouteConfig {
 
         LAYOUTS.put(R.id.productDetailFragment, LayoutType.DETAIL);
         LAYOUTS.put(R.id.orderDetailFragment, LayoutType.DETAIL);
+
+        LAYOUTS.put(R.id.adminDashboardFragment, LayoutType.ADMIN);
+        LAYOUTS.put(R.id.adminProductsFragment, LayoutType.ADMIN);
+        LAYOUTS.put(R.id.adminOrdersFragment, LayoutType.ADMIN);
+        LAYOUTS.put(R.id.adminRevenueFragment, LayoutType.ADMIN);
+        LAYOUTS.put(R.id.adminUsersFragment, LayoutType.ADMIN);
+        LAYOUTS.put(R.id.adminProductDetailFragment, LayoutType.ADMIN_DETAIL);
+        LAYOUTS.put(R.id.adminProductFormFragment, LayoutType.ADMIN_DETAIL);
+        LAYOUTS.put(R.id.adminOrderDetailFragment, LayoutType.ADMIN_DETAIL);
+        LAYOUTS.put(R.id.adminUserDetailFragment, LayoutType.ADMIN_DETAIL);
+        LAYOUTS.put(R.id.adminSettingsFragment, LayoutType.ADMIN_DETAIL);
     }
 
     public static LayoutType layoutOf(int destinationId) {

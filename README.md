@@ -38,6 +38,7 @@ ecom_app/
 │   └── navigation/            :core:navigation AppRouter, RouteConfig, LayoutType, ids.xml (id các trang)
 └── feature/
     ├── splash/   auth/   home/   product/   order/   profile/
+    └── admin/                  :feature:admin    Tổng quan, quản lý sản phẩm, đơn hàng, người dùng
 ```
 
 Package trùng với namespace của module: `com.example.ecom` (app), `com.example.ecom.core.data`, `com.example.ecom.core.ui`, `com.example.ecom.core.navigation`, `com.example.ecom.feature.<tên>`.
@@ -121,6 +122,36 @@ Path khai báo tập trung ở `core/data/.../api/ApiEndpoints.java`. `BASE_URL`
 2. Thêm model (nếu cần) vào `core/data/model`, có hàm `fromJson(...)`.
 3. Thêm hàm vào Repository tương ứng, gọi `api.get/post/put/delete(...)`.
 4. Trong Fragment: `repository.xxx(apiCallback(data -> { ... }))`.
+
+### Module quản trị (`:feature:admin`)
+
+Giao diện Java + XML sử dụng Material Components và cùng `MainActivity` của ứng dụng. Trên màn đăng nhập, nhấn **Xem bản mẫu quản trị** để mở ngay, không cần backend.
+
+```
+feature/admin/
+├── build.gradle.kts
+└── src/main/
+    ├── java/com/example/ecom/feature/admin/
+    │   ├── activities/AdminShellController.java
+    │   ├── fragments/   # Tổng quan, sản phẩm, form, đơn hàng, thống kê, khách hàng, cài đặt
+    │   ├── adapters/    # RecyclerView sản phẩm, đơn hàng, khách hàng
+    │   ├── models/      # Model hiển thị biểu đồ
+    │   └── utils/       # Biểu đồ Canvas, định dạng, tải ảnh cục bộ
+    └── res/
+        ├── layout/     # Mỗi trang có file fragment_admin_*.xml riêng
+        ├── drawable/   # Material vector icons, ảnh minh họa quần áo, background
+        ├── menu/       # Menu và BottomNavigationView 5 mục
+        ├── color/      # Màu trạng thái selected/focused
+        └── values/     # Chuỗi tiếng Việt, màu, style, size/màu sắc
+```
+
+- `AdminFragment` kế thừa `BaseFragment`. Các trang điều hướng qua `AppRouter`; `LayoutType.ADMIN` và `ADMIN_DETAIL` dùng chung header cam và footer quản trị. Form/chi tiết ẩn footer, hiển thị nút quay lại.
+- Mở bằng `AppRouter.toAdminDashboard(this)`. Chạy trực tiếp bản xem trước bằng `adb shell am start -n com.example.ecom/.MainActivity --ez admin_preview true` sau khi cài APK.
+- Model nghiệp vụ ở `core/data/model/admin`, dữ liệu mẫu và lưu cục bộ bằng SharedPreferences ở `AdminRepository`. Feature chỉ gọi Repository, không phụ thuộc feature khác; khi có backend, thay phần triển khai Repository bằng API quản trị có phân quyền.
+- Dữ liệu mẫu gồm 8 sản phẩm, 8 hồ sơ khách hàng và 24 đơn hàng. Tổng quan có số minh họa theo thiết kế (256 sản phẩm, 1.328 người dùng, 12.450.000 đ) và chuỗi doanh thu minh họa 09/11–15/11. Trang thống kê tính từ các đơn mẫu **đã giao**, theo bộ lọc ngày/tháng/năm, và cập nhật khi đổi trạng thái đơn.
+- Thêm/sửa/xóa sản phẩm, tìm kiếm/bộ lọc, lịch sử khách hàng, cài đặt và quy trình đơn hàng đều hoạt động cục bộ. Chạm sản phẩm để xem chi tiết rồi sửa/xóa; xóa và hủy đơn có xác nhận. Quy trình: chờ xác nhận → đã xác nhận → đang xử lý → đang giao → đã giao; chỉ hủy khi chờ/đã xác nhận.
+- Form kiểm tra tên, danh mục, giá, tồn kho, độ dài mô tả; hỗ trợ chọn size/màu và tối đa 6 ảnh qua trình chọn tài liệu Android. Ảnh được tải giảm kích thước ngoài main thread. Ảnh quần áo mặc định là vector đóng gói sẵn.
+- Biểu đồ vẽ bằng `RevenueChartView` (Canvas), không dùng thư viện biểu đồ cũ hoặc repository bổ sung. Dùng phiên bản Material/AppCompat sẵn có trong version catalog của dự án.
 
 ### Quy ước
 - Mỗi người hoặc nhóm phụ trách một module `feature/*`.

@@ -39,4 +39,4 @@ include(":feature:home")
 include(":feature:product")
 include(":feature:order")
 include(":feature:profile")
- 
+include(":feature:admin")
