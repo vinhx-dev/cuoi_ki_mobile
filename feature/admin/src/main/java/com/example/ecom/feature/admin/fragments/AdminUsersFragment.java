@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.*;
 import com.example.ecom.feature.admin.R;
 import com.example.ecom.feature.admin.adapters.*;
 import com.example.ecom.feature.admin.utils.*;
-import com.example.ecom.core.data.model.admin.*;
-import com.example.ecom.core.navigation.AppRouter;
+import com.example.ecom.feature.admin.data.*;
+import com.example.ecom.feature.admin.navigation.AdminRouter;
 import java.util.*;
 public class AdminUsersFragment extends AdminFragment {
     private AdminCustomerAdapter adapter;
@@ -16,7 +16,7 @@ public class AdminUsersFragment extends AdminFragment {
     }
     @Override protected void bind(View view) {
         search=view.findViewById(R.id.inputSearch);
-        adapter=new AdminCustomerAdapter(repository,item->AppRouter.toAdminUserDetail(this,item.id));
+        adapter=new AdminCustomerAdapter(adminViewModel::customerOrderCount,item->AdminRouter.toAdminUserDetail(this,item.id));
         RecyclerView list=view.findViewById(R.id.adminList);
         list.setLayoutManager(new LinearLayoutManager(requireContext()));
         list.setAdapter(adapter);
@@ -26,7 +26,7 @@ public class AdminUsersFragment extends AdminFragment {
         if(root==null||adapter==null)return;
         String query=AdminUi.normalize(search.getText().toString());
         List<AdminCustomer> result=new ArrayList<>();
-        for(AdminCustomer item:repository.getCustomers())if(AdminUi.normalize(item.name+" "+item.email+" "+item.phone).contains(query))result.add(item);
+        for(AdminCustomer item:adminViewModel.getCustomers())if(AdminUi.normalize(item.name+" "+item.email+" "+item.phone).contains(query))result.add(item);
         adapter.submit(result);
         AdminUi.text(root,R.id.textResultCount,getString(R.string.admin_results,result.size()));
         root.findViewById(R.id.emptyState).setVisibility(result.isEmpty()?View.VISIBLE:View.GONE);

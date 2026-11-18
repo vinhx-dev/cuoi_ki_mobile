@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/adminRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/admin_background"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/adminStatusBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/admin_primary" />
+
+    <include android:id="@+id/adminHeader" layout="@layout/layout_admin_header" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/adminNavHost"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/admin_nav_graph" />
+
+    <include android:id="@+id/adminBottomNav" layout="@layout/layout_admin_bottom_nav" />
+</LinearLayout>

@@ -3,7 +3,7 @@ import android.view.View;
 import android.widget.ImageView;
 import com.example.ecom.feature.admin.R;
 import com.example.ecom.feature.admin.utils.AdminUi;
-import com.example.ecom.core.data.model.admin.AdminProduct;
+import com.example.ecom.feature.admin.data.AdminProduct;
 import java.util.function.Consumer;
 public class AdminProductAdapter extends AdminListAdapter<AdminProduct> {
     public AdminProductAdapter(Consumer<AdminProduct> click) {

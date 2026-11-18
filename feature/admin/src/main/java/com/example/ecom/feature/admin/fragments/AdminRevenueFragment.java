@@ -8,7 +8,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.example.ecom.feature.admin.R;
 import com.example.ecom.feature.admin.utils.*;
 import com.example.ecom.feature.admin.models.ChartPoint;
-import com.example.ecom.core.data.model.admin.*;
+import com.example.ecom.feature.admin.data.*;
 import java.text.*;
 import java.util.*;
 public class AdminRevenueFragment extends AdminFragment {
@@ -94,7 +94,7 @@ public class AdminRevenueFragment extends AdminFragment {
         Map<String,Long> categories=new LinkedHashMap<>();
         long total=0;
         int count=0,sold=0;
-        for(AdminOrder order:repository.getOrders())if("COMPLETED".equals(order.status)&&order.createdAt>=start.getTimeInMillis()&&order.createdAt<end.getTimeInMillis()) {
+        for(AdminOrder order:adminViewModel.getOrders())if("COMPLETED".equals(order.status)&&order.createdAt>=start.getTimeInMillis()&&order.createdAt<end.getTimeInMillis()) {
             total+=order.total();
             count++;
             Calendar time=Calendar.getInstance();

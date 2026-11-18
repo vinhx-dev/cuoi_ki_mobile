@@ -134,7 +134,7 @@
                     android:textSize="@dimen/text_size_input" />
             </LinearLayout>
 
-            <!-- 3. Mật khẩu -->
+<!-- 3. Mật khẩu -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -239,6 +239,7 @@
                 android:layout_height="48dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_button_login"
+                app:backgroundTint="@null"
                 android:elevation="8dp"
                 android:text="@string/btn_register"
                 android:textColor="@color/white"
@@ -342,6 +343,7 @@
                 android:layout_height="48dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/bg_button_login"
+                app:backgroundTint="@null"
                 android:elevation="8dp"
                 android:text="@string/btn_confirm"
                 android:textColor="@color/white"

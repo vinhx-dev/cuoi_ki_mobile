@@ -7,54 +7,110 @@ Tính năng có sẵn: đăng nhập/đăng ký, danh sách và tìm kiếm sả
 
 ---
 
-## 1. Kiến trúc
+## 1. Kiến trúc (đối chiếu với ReactJS)
+
+| ReactJS | Android (dự án này) | Ở đâu |
+|---|---|---|
+| `<RouterProvider>` | `MainActivity`: **chỉ** chứa NavHost để hiển thị trang | `app/` |
+| `<Routes>` + `<ProtectedRoute>` | `AppPages`: khai báo mọi trang, mỗi trang chọn **layout** và **có cần đăng nhập không** | `core/navigation/` |
+| `useNavigate()` | `AppRouter.toXxx(...)` (tự chặn trang cần đăng nhập) | `core/navigation/` |
+| 1 instance `axios` dùng chung | `ApiClient`: `get/post/put/delete` (JSON) + `upload` (ảnh, multipart) | `core/api/` |
+| `localStorage` | `LocalStorage`, `SessionManager` | `core/data/` |
+| `layouts/MainLayout/`, `AdminLayout/`... | `core/ui/src/main/layouts/<tên>/` | `core/ui/` |
+| `features/home/pages/HomePage.jsx` | `HomeFragment` + `fragment_home.xml` | `feature/home/` |
+| `features/home/hooks/useHome.js` | `HomeViewModel` | `feature/home/` |
+| `features/home/api/products.js` | `data/ProductApi` + `data/Product` | `feature/home/data/` |
+| `{ data, isLoading, error }` | `UiState<T>` | `core/ui/.../base/` |
+
+Luồng hiển thị một trang:
 
 ```
-Fragment (feature/*)
-   │  gọi
-   ▼
-Repository (core/data)        ← UI chỉ gọi Repository, không gọi API trực tiếp
-   │
-   ▼
-ApiClient → HttpTransport     ← gắn token, chạy nền, bóc { success, message, data }, xử lý 401
-   │  HTTP/JSON
-   ▼
-Backend server (project riêng)
+MainActivity (NavHost)
+   └─ AppPages: "home" → HomeFragment, layout MAIN, LOGIN_REQUIRED
+         ├─ chưa đăng nhập → AppRouter tự chuyển sang "login"
+         └─ BaseFragment bọc trang bằng layout:  layouts/main/layout_main.xml
+               ├─ main_header.xml        (thanh tìm kiếm)
+               ├─ part_content.xml       ← fragment_home.xml được đặt vào đây
+               └─ main_bottom_bar.xml
 ```
 
-- **MainActivity** (`:app`) là "khung app" (App Shell), gồm header, nút back, bottom nav và loading dùng chung. Khung hiển thị thế nào do `LayoutType` của từng trang quyết định.
-- Fragment kế thừa `BaseFragment`. Hàm `apiCallback(...)` tự bật/tắt loading, tự hiện toast khi lỗi, và bỏ qua kết quả nếu trang đã đóng.
-- Mọi điều hướng đi qua `AppRouter`, Fragment không gọi `NavController` trực tiếp.
-- Khi API trả **401**, `ApiClient` xoá phiên đăng nhập và `MainActivity` đưa người dùng về màn đăng nhập.
+Luồng dữ liệu của 1 trang:
 
-## 2. Cấu trúc module
+```
+HomeFragment (page) ─► HomeViewModel (hook) ─► data/ProductApi (feature) ─► ApiClient (core) ─HTTP─► Backend
+      ▲                       │
+      └── observe(state) ◄────┘   LiveData<UiState<T>>: tự loading, tự toast lỗi, giữ được khi xoay màn hình
+```
+
+- **Mỗi trang tự quản lý dữ liệu của nó** trong ViewModel riêng. Fragment không gọi API trực tiếp.
+- **Mỗi feature tự giữ API và model của nó** trong `data/`. `core:api` chỉ có hàm gọi chung, không biết gì về sản phẩm hay đơn hàng.
+- Hành động (đăng nhập, đặt hàng...): `vm.xxx(..., apiCallback(data -> ...))`, giống `mutation.mutate(data, { onSuccess })`.
+- Khi API trả **401**, `ApiClient` xoá phiên đăng nhập và `MainActivity` đưa về Login.
+
+## 2. Cấu trúc thư mục
 
 ```
 ecom_app/
-├── app/                       :app             MainActivity, nav_graph.xml, header, bottom nav, theme
+├── app/                                   :app   chỉ có MainActivity (hiển thị navigation)
 ├── core/
-│   ├── data/                  :core:data       api/ (ApiClient, HttpTransport, ApiEndpoints), model/, repository/, session/
-│   ├── ui/                    :core:ui         base/ (BaseFragment, AppShell), format/ (Formatter), colors.xml
-│   └── navigation/            :core:navigation AppRouter, RouteConfig, LayoutType, ids.xml (id các trang)
-└── feature/
-    ├── splash/   auth/   home/   product/   order/   profile/
-    └── admin/                  :feature:admin    Tổng quan, quản lý sản phẩm, đơn hàng, người dùng
+│   ├── navigation/                        :core:navigation
+│   │   ├── AppPages.java                  ★ KHAI BÁO TRANG: đường dẫn, class, layout, cần đăng nhập?
+│   │   ├── AppRouter.java                 hàm chuyển trang toXxx() + chặn trang cần đăng nhập
+│   │   ├── LayoutType.java                NONE / MAIN / DETAIL / ADMIN
+│   │   ├── Access.java                    PUBLIC / LOGIN_REQUIRED
+│   │   └── RouteTable.java                bộ dựng NavGraph (không cần sửa)
+│   ├── api/                               :core:api   ≈ axios
+│   │   ├── ApiClient.java                 ★ get / post / put / delete / upload
+│   │   ├── JsonBody.java, MultipartBody.java, FilePart.java   body JSON / form có ảnh
+│   │   └── HttpTransport.java, ApiConfig.java, ApiCallback.java ...
+│   ├── data/                              :core:data  ≈ localStorage
+│   │   ├── LocalStorage.java              get / set / remove / clear
+│   │   └── SessionManager.java            token + tên user đăng nhập
+│   └── ui/                                :core:ui
+│       ├── src/main/layouts/              ★ MỖI LAYOUT 1 THƯ MỤC
+│       │   ├── none/    layout_none.xml
+│       │   ├── main/    layout_main.xml, main_header.xml, main_bottom_bar.xml, menu, icon tab
+│       │   ├── detail/  layout_detail.xml, detail_header.xml
+│       │   └── admin/   layout_admin.xml, admin_header.xml
+│       ├── src/main/res/                  phần dùng chung mọi layout: part_content.xml, view_search_bar.xml, màu, chuỗi
+│       └── java/.../ui/
+│           ├── layout/                    AppLayout (LayoutType → file XML), PageLayout (back, tìm kiếm, tab, loading)
+│           ├── base/                      BaseFragment, BaseViewModel, UiState
+│           └── format/Formatter.java
+└── feature/                               mỗi feature: giao diện + Java + dữ liệu riêng
+    ├── splash/   SplashFragment
+    ├── auth/     data/AuthApi · login/ (Fragment + ViewModel) · register/ (Fragment + ViewModel)
+    ├── home/     data/ProductApi, Product · HomeFragment, HomeViewModel, ProductAdapter
+    ├── product/  data/ProductApi, Product · ProductDetailFragment, ProductDetailViewModel
+    ├── order/    data/OrderApi, Order, OrderItem · list/ (...) · detail/ (...)
+    └── profile/  data/ProfileApi, User · ProfileFragment, ProfileViewModel
 ```
-
-Package trùng với namespace của module: `com.example.ecom` (app), `com.example.ecom.core.data`, `com.example.ecom.core.ui`, `com.example.ecom.core.navigation`, `com.example.ecom.feature.<tên>`.
 
 **Quy tắc phụ thuộc:**
 
 ```
-:app ──► :core:*  +  mọi :feature:*
-:feature:* ──► :core:data, :core:ui, :core:navigation
-:core:ui ──► :core:data          (BaseFragment dùng ApiCallback)
-:core:navigation ──► (không phụ thuộc module nào của dự án)
+:app ──► :core:*  +  mọi :feature:*          (để đóng gói vào APK)
+:feature:* ──► :core:api, :core:data, :core:ui, :core:navigation
+:core:ui ──► :core:api, :core:navigation
+:core:api ──► :core:data                     (lấy token từ LocalStorage)
+:core:navigation, :core:data ──► (không phụ thuộc module nào của dự án)
 ```
 
-- **Feature không được phụ thuộc feature khác.** Muốn mở trang của feature khác thì gọi `AppRouter`.
-- Code, chuỗi hay màu dùng cho nhiều feature thì đặt ở `core`. Thứ chỉ một feature dùng thì đặt ngay trong feature đó.
-- `nav_graph.xml` nằm ở `:app`, vì chỉ `:app` thấy được class của mọi feature. Id các trang khai báo ở `core/navigation/src/main/res/values/ids.xml` để `AppRouter` dùng được.
+- **Feature không phụ thuộc feature khác.** Muốn mở trang của feature khác thì gọi `AppRouter`.
+- Hai feature cần cùng một kiểu dữ liệu (vd. `Product`) thì **mỗi feature tự khai báo bản của mình**, chỉ với các trường nó cần. Chấp nhận lặp một chút để các feature độc lập.
+- `AppPages` khai báo trang bằng **tên class** (chuỗi) vì `core` không được phụ thuộc vào `feature`. Gõ sai tên thì app báo lỗi ngay khi mở, chỉ rõ trang nào sai.
+
+## 2b. Chuyển dữ liệu giữa các trang
+
+Quy tắc chung: **chỉ truyền ID, trang mới tự tải dữ liệu của nó.** Không truyền nguyên object qua lại.
+
+| Tình huống | Cách làm | ≈ React | Trạng thái |
+|---|---|---|---|
+| Mở trang chi tiết (sản phẩm, đơn hàng) | Tham số trên đường dẫn: `product/{productId}`, đọc bằng `getArguments()` | `useParams()` | ✅ đang dùng |
+| Mở trang kèm bộ lọc, từ khoá | Tham số tuỳ chọn: `home?query={query}` | `useSearchParams()` | ✅ đang dùng |
+| Trang con trả kết quả về trang trước (chọn địa chỉ, chọn ảnh...) | `previousBackStackEntry.savedStateHandle` của Navigation | `navigate(-1)` kèm state | Gợi ý, chưa làm |
+| Nhiều bước của 1 luồng (giỏ hàng → địa chỉ → thanh toán) | ViewModel dùng chung cho nhóm trang đó | Context bọc 1 nhóm route | Gợi ý, chưa làm |
+| Dữ liệu cả app cùng dùng (user đăng nhập, số lượng giỏ hàng) | Store dùng chung trong `core` (`LiveData`) | Redux / Zustand / Context | Gợi ý, chưa làm (hiện chỉ có `SessionManager`) |
 
 ## 3. Yêu cầu môi trường
 
@@ -71,7 +127,7 @@ Package trùng với namespace của module: `com.example.ecom` (app), `com.exam
    ./gradlew installDebug
    ```
 
-**Địa chỉ backend** lấy từ `BuildConfig.BASE_URL` (cấu hình trong `core/data/build.gradle.kts`):
+**Địa chỉ backend** lấy từ `BuildConfig.BASE_URL` (cấu hình trong `core/api/build.gradle.kts`):
 
 | Chạy trên | Cấu hình |
 |---|---|
@@ -105,53 +161,35 @@ Khi lỗi thì `success = false`, `data = null`, HTTP status là 4xx hoặc 5xx.
 | POST | `/orders` | ✔ | `{address?, items:[{productId, quantity}]}` | Tạo đơn |
 | POST | `/orders/{id}/cancel` | ✔ | | Huỷ đơn đang `PENDING` |
 
-Path khai báo tập trung ở `core/data/.../api/ApiEndpoints.java`. `BASE_URL` đã gồm sẵn `/api`.
+Path nằm trong class API của từng feature (vd. `feature/order/.../data/OrderApi.java`). `BASE_URL` đã gồm sẵn `/api`.
 
 ## 6. Hướng dẫn mở rộng
 
 ### Thêm một trang mới (ví dụ giỏ hàng)
-1. Tạo module `feature/cart/`: copy `build.gradle.kts` của một feature có sẵn, đổi `namespace = "com.example.ecom.feature.cart"`.
-2. `settings.gradle.kts`: thêm `include(":feature:cart")`. `app/build.gradle.kts`: thêm `implementation(project(":feature:cart"))`.
-3. Tạo `CartFragment extends BaseFragment` cùng layout trong module mới.
-4. Thêm `<item name="cartFragment" type="id" />` vào `core/navigation/src/main/res/values/ids.xml`.
-5. Khai báo `<fragment android:id="@id/cartFragment" ...>` trong `app/src/main/res/navigation/nav_graph.xml`.
-6. Đăng ký `LayoutType` cho trang ở `RouteConfig`, và thêm hàm `toCart(...)` vào `AppRouter`.
+1. (Nếu là feature mới) Tạo module `feature/cart/`: copy `build.gradle.kts` của một feature có sẵn, đổi `namespace`. Thêm `include(":feature:cart")` vào `settings.gradle.kts` và `implementation(project(":feature:cart"))` vào `app/build.gradle.kts`.
+2. Tạo trang trong feature:
+   - `fragment_cart.xml`: chỉ phần nội dung, không có header/bottom bar.
+   - `CartFragment`: `public CartFragment() { super(R.layout.fragment_cart); }`
+   - `CartViewModel extends BaseViewModel`: dữ liệu của trang.
+   - `data/CartApi` + model: các API trang này gọi.
+3. `core/navigation/AppPages.java`: thêm đường dẫn và 1 dòng khai báo, **chọn layout và có cần đăng nhập không**:
+   ```java
+   public static final String CART = "cart";
+   r.page(CART, FEATURE + "cart.CartFragment", LayoutType.DETAIL, LOGIN_REQUIRED);
+   ```
+4. `AppRouter`: thêm hàm `toCart(Fragment from)`.
+
+### Thêm một layout mới
+1. Tạo thư mục `core/ui/src/main/layouts/<tên>/res/layout/layout_<tên>.xml`. **Bắt buộc** có `<include layout="@layout/part_content"/>`. Header, menu, icon riêng của layout cũng đặt trong thư mục này. Đặt tên file có tiền tố `<tên>_` để không trùng với layout khác.
+2. Thêm tên vào `core/navigation/.../LayoutType.java`.
+3. Thêm 1 dòng vào `AppLayout.xmlOf()` trong `core/ui/.../layout/`.
 
 ### Gọi thêm một API
-1. Thêm path vào `ApiEndpoints`.
-2. Thêm model (nếu cần) vào `core/data/model`, có hàm `fromJson(...)`.
-3. Thêm hàm vào Repository tương ứng, gọi `api.get/post/put/delete(...)`.
-4. Trong Fragment: `repository.xxx(apiCallback(data -> { ... }))`.
-
-### Module quản trị (`:feature:admin`)
-
-Giao diện Java + XML sử dụng Material Components và cùng `MainActivity` của ứng dụng. Trên màn đăng nhập, nhấn **Xem bản mẫu quản trị** để mở ngay, không cần backend.
-
-```
-feature/admin/
-├── build.gradle.kts
-└── src/main/
-    ├── java/com/example/ecom/feature/admin/
-    │   ├── activities/AdminShellController.java
-    │   ├── fragments/   # Tổng quan, sản phẩm, form, đơn hàng, thống kê, khách hàng, cài đặt
-    │   ├── adapters/    # RecyclerView sản phẩm, đơn hàng, khách hàng
-    │   ├── models/      # Model hiển thị biểu đồ
-    │   └── utils/       # Biểu đồ Canvas, định dạng, tải ảnh cục bộ
-    └── res/
-        ├── layout/     # Mỗi trang có file fragment_admin_*.xml riêng
-        ├── drawable/   # Material vector icons, ảnh minh họa quần áo, background
-        ├── menu/       # Menu và BottomNavigationView 5 mục
-        ├── color/      # Màu trạng thái selected/focused
-        └── values/     # Chuỗi tiếng Việt, màu, style, size/màu sắc
-```
-
-- `AdminFragment` kế thừa `BaseFragment`. Các trang điều hướng qua `AppRouter`; `LayoutType.ADMIN` và `ADMIN_DETAIL` dùng chung header cam và footer quản trị. Form/chi tiết ẩn footer, hiển thị nút quay lại.
-- Mở bằng `AppRouter.toAdminDashboard(this)`. Chạy trực tiếp bản xem trước bằng `adb shell am start -n com.example.ecom/.MainActivity --ez admin_preview true` sau khi cài APK.
-- Model nghiệp vụ ở `core/data/model/admin`, dữ liệu mẫu và lưu cục bộ bằng SharedPreferences ở `AdminRepository`. Feature chỉ gọi Repository, không phụ thuộc feature khác; khi có backend, thay phần triển khai Repository bằng API quản trị có phân quyền.
-- Dữ liệu mẫu gồm 8 sản phẩm, 8 hồ sơ khách hàng và 24 đơn hàng. Tổng quan có số minh họa theo thiết kế (256 sản phẩm, 1.328 người dùng, 12.450.000 đ) và chuỗi doanh thu minh họa 09/11–15/11. Trang thống kê tính từ các đơn mẫu **đã giao**, theo bộ lọc ngày/tháng/năm, và cập nhật khi đổi trạng thái đơn.
-- Thêm/sửa/xóa sản phẩm, tìm kiếm/bộ lọc, lịch sử khách hàng, cài đặt và quy trình đơn hàng đều hoạt động cục bộ. Chạm sản phẩm để xem chi tiết rồi sửa/xóa; xóa và hủy đơn có xác nhận. Quy trình: chờ xác nhận → đã xác nhận → đang xử lý → đang giao → đã giao; chỉ hủy khi chờ/đã xác nhận.
-- Form kiểm tra tên, danh mục, giá, tồn kho, độ dài mô tả; hỗ trợ chọn size/màu và tối đa 6 ảnh qua trình chọn tài liệu Android. Ảnh được tải giảm kích thước ngoài main thread. Ảnh quần áo mặc định là vector đóng gói sẵn.
-- Biểu đồ vẽ bằng `RevenueChartView` (Canvas), không dùng thư viện biểu đồ cũ hoặc repository bổ sung. Dùng phiên bản Material/AppCompat sẵn có trong version catalog của dự án.
+1. Trong feature cần dùng: thêm hàm vào `data/XxxApi.java`, gọi `api.get / post / put / delete(...)`. Body JSON tạo nhanh bằng `ApiClient.json("key", value, ...)`.
+2. Gửi ảnh: `api.upload(path, fields, List.of(FilePart.fromUri(context, "avatar", uri)), parser, cb)`.
+3. Thêm model vào `data/` (nếu cần), có hàm `fromJson(...)`.
+4. ViewModel: `fetch(state, cb -> xxxApi.getXxx(cb))` để tải dữ liệu, hoặc nhận `ApiCallback` từ Fragment cho hành động.
+5. Fragment: `observe(vm.getXxx(), data -> { ... })`, hoặc `vm.doXxx(apiCallback(data -> { ... }))`.
 
 ### Quy ước
 - Mỗi người hoặc nhóm phụ trách một module `feature/*`.

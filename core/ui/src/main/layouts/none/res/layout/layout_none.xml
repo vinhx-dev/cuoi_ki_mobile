@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ===== NoneLayout: chỉ có nội dung trang, không header, không bottom bar =====
+     ≈ function NoneLayout({ children }) { return <>{children}</> } -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/part_content" />
+
+</FrameLayout>

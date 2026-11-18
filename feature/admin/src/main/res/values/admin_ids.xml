@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="adminDashboardFragment" type="id" />
+    <item name="adminProductsFragment" type="id" />
+    <item name="adminOrdersFragment" type="id" />
+    <item name="adminUsersFragment" type="id" />
+    <item name="adminRevenueFragment" type="id" />
+    <item name="adminSettingsFragment" type="id" />
+    <item name="adminProductDetailFragment" type="id" />
+    <item name="adminProductFormFragment" type="id" />
+    <item name="adminOrderDetailFragment" type="id" />
+    <item name="adminUserDetailFragment" type="id" />
+</resources>

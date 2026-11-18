@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.*;
 import com.example.ecom.feature.admin.R;
 import com.example.ecom.feature.admin.adapters.*;
 import com.example.ecom.feature.admin.utils.*;
-import com.example.ecom.core.data.model.admin.*;
-import com.example.ecom.core.navigation.AppRouter;
+import com.example.ecom.feature.admin.data.*;
+import com.example.ecom.feature.admin.navigation.AdminRouter;
 import java.util.*;
 public class AdminOrdersFragment extends AdminFragment {
     private AdminOrderAdapter adapter;
@@ -22,7 +22,7 @@ public class AdminOrdersFragment extends AdminFragment {
     }
     @Override protected void bind(View view) {
         search=view.findViewById(R.id.inputSearch);
-        adapter=new AdminOrderAdapter(repository,item->AppRouter.toAdminOrderDetail(this,item.id));
+        adapter=new AdminOrderAdapter(adminViewModel::customer,item->AdminRouter.toAdminOrderDetail(this,item.id));
         RecyclerView list=view.findViewById(R.id.adminList);
         list.setLayoutManager(new LinearLayoutManager(requireContext()));
         list.setAdapter(adapter);
@@ -43,7 +43,7 @@ public class AdminOrdersFragment extends AdminFragment {
         if(root==null||adapter==null)return;
         String query=AdminUi.normalize(search.getText().toString());
         List<AdminOrder> result=new ArrayList<>();
-        for(AdminOrder item:repository.getOrders())if((AdminUi.normalize(getString(R.string.admin_order_code,item.id)+" "+AdminUi.customerName(repository,item)).contains(query))&&(selected==0||item.status.equals(STATUSES[selected-1])))result.add(item);
+        for(AdminOrder item:adminViewModel.getOrders())if((AdminUi.normalize(getString(R.string.admin_order_code,item.id)+" "+AdminUi.customerName(adminViewModel.customer(item.customerId))).contains(query))&&(selected==0||item.status.equals(STATUSES[selected-1])))result.add(item);
         adapter.submit(result);
         AdminUi.text(root,R.id.textResultCount,getString(R.string.admin_results,result.size()));
         root.findViewById(R.id.emptyState).setVisibility(result.isEmpty()?View.VISIBLE:View.GONE);

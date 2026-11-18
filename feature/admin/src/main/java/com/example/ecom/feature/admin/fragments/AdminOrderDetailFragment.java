@@ -4,34 +4,34 @@ import android.widget.*;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.example.ecom.feature.admin.R;
 import com.example.ecom.feature.admin.utils.*;
-import com.example.ecom.core.data.model.admin.*;
-import com.example.ecom.core.navigation.AppRouter;
+import com.example.ecom.feature.admin.data.*;
+import com.example.ecom.feature.admin.navigation.AdminRouter;
 public class AdminOrderDetailFragment extends AdminFragment {
     private int id;
     @Override protected int layout() {
         return R.layout.fragment_admin_order_detail;
     }
     @Override protected void bind(View view) {
-        id=requireArguments().getInt(AppRouter.ARG_ADMIN_ORDER_ID);
+        id=requireArguments().getInt(AdminRouter.ARG_ADMIN_ORDER_ID);
         view.findViewById(R.id.btnAdvanceOrder).setOnClickListener(v-> {
-            AdminOrder o=repository.order(id);
+            AdminOrder o=adminViewModel.order(id);
             if(o!=null&&o.nextStatus()!=null)update(o.nextStatus());
         }
         );
         view.findViewById(R.id.btnCancelOrder).setOnClickListener(v->new MaterialAlertDialogBuilder(themedContext()).setTitle(R.string.admin_cancel_order_title).setMessage(getString(R.string.admin_cancel_order_message,getString(R.string.admin_order_code,id))).setNegativeButton(R.string.admin_close,null).setPositiveButton(R.string.admin_order_cancel,(d,which)->update("CANCELLED")).show());
     }
     private void update(String status) {
-        toast(getString(repository.updateOrderStatus(id,status)?R.string.admin_order_updated:R.string.admin_order_conflict));
+        toast(getString(adminViewModel.updateOrderStatus(id,status)?R.string.admin_order_updated:R.string.admin_order_conflict));
         refresh();
     }
     @Override protected void refresh() {
-        AdminOrder o=repository.order(id);
+        AdminOrder o=adminViewModel.order(id);
         if(o==null) {
             toast(getString(R.string.admin_not_found));
-            AppRouter.back(this);
+            AdminRouter.back(this);
             return;
         }
-        AdminCustomer c=repository.customer(o.customerId);
+        AdminCustomer c=adminViewModel.customer(o.customerId);
         AdminUi.text(root,R.id.textOrderCode,getString(R.string.admin_order_code,o.id));
         AdminUi.text(root,R.id.textOrderDate,getString(R.string.admin_order_date,AdminUi.dateTime(o.createdAt)));
         AdminUi.text(root,R.id.textOrderStatus,AdminUi.status(requireContext(),o.status));

@@ -1,16 +1,11 @@
 <resources>
     <string name="logo_desc">Logo ứng dụng</string>
-    <string name="hint_account">Tài khoản (Số điện thoại)</string>
-    <string name="hint_name">Họ và tên</string>
+    <string name="hint_account">Email</string>
     <string name="hint_username">Họ và tên</string>
-    <string name="hint_phone">Số điện thoại</string>
-    <string name="hint_email">Số điện thoại (10 số)</string>
+    <string name="hint_email">Email</string>
     <string name="hint_password">Mật khẩu</string>
     <string name="hint_repassword">Nhập lại mật khẩu</string>
     <string name="terms_agreement">Tôi đồng ý với Điều khoản và Chính sách</string>
-    <string name="go_register">Chưa có tài khoản? Đăng ký</string>
-    <string name="go_login">Đã có tài khoản? Đăng nhập</string>
-    <string name="demo_account_hint">Tài khoản demo: 0123456789 / 123456</string>
     <string name="btn_login">ĐĂNG NHẬP</string>
     <string name="btn_register">ĐĂNG KÝ</string>
     <string name="link_register">Đăng ký tài khoản</string>
@@ -24,10 +19,11 @@
     <string name="btn_confirm">XÁC NHẬN</string>
     <string name="resend_code">Gửi lại mã</string>
     <string name="change_email">Thay đổi thông tin</string>
+    <string name="msg_forgot_coming_soon">Tính năng quên mật khẩu đang được phát triển</string>
+    <string name="msg_social_coming_soon">Đăng nhập mạng xã hội đang được phát triển</string>
     <string name="msg_hello">Xin chào %1$s</string>
     <string name="msg_register_success">Đăng ký thành công</string>
     <string name="err_empty_fields">Vui lòng nhập đầy đủ thông tin</string>
     <string name="err_password_match">Mật khẩu xác nhận không khớp</string>
     <string name="err_terms_not_agreed">Vui lòng đồng ý với Điều khoản và Chính sách</string>
-    <string name="auth_admin_preview">Xem bản mẫu quản trị</string>
 </resources>

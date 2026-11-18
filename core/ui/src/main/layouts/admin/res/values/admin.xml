@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_title">Trang quản trị</string>
+    <color name="admin_header">#FF263238</color>
+</resources>

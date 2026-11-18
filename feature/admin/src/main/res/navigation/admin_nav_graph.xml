@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/admin_nav_graph"
+    app:startDestination="@id/adminDashboardFragment">
+
+    <fragment
+        android:id="@id/adminDashboardFragment"
+        android:name="com.example.ecom.feature.admin.fragments.AdminDashboardFragment"
+        android:label="@string/admin_title_dashboard" />
+
+    <fragment
+        android:id="@id/adminProductsFragment"
+        android:name="com.example.ecom.feature.admin.fragments.AdminProductsFragment"
+        android:label="@string/admin_title_products" />
+
+    <fragment
+        android:id="@id/adminOrdersFragment"
+        android:name="com.example.ecom.feature.admin.fragments.AdminOrdersFragment"
+        android:label="@string/admin_title_orders" />
+
+    <fragment
+        android:id="@id/adminUsersFragment"
+        android:name="com.example.ecom.feature.admin.fragments.AdminUsersFragment"
+        android:label="@string/admin_title_users" />
+
+    <fragment android:id="@id/adminRevenueFragment" android:name="com.example.ecom.feature.admin.fragments.AdminRevenueFragment" android:label="@string/admin_title_revenue" />
+
+    <fragment android:id="@id/adminSettingsFragment" android:name="com.example.ecom.feature.admin.fragments.AdminSettingsFragment" android:label="@string/admin_title_settings" />
+
+    <fragment android:id="@id/adminProductDetailFragment" android:name="com.example.ecom.feature.admin.fragments.AdminProductDetailFragment" android:label="@string/admin_title_product_detail">
+        <argument android:name="adminProductId" app:argType="integer" />
+    </fragment>
+
+    <fragment android:id="@id/adminProductFormFragment" android:name="com.example.ecom.feature.admin.fragments.AdminProductFormFragment" android:label="@string/admin_title_product_add">
+        <argument android:name="adminProductId" app:argType="integer" android:defaultValue="0" />
+    </fragment>
+
+    <fragment android:id="@id/adminOrderDetailFragment" android:name="com.example.ecom.feature.admin.fragments.AdminOrderDetailFragment" android:label="@string/admin_title_order_detail">
+        <argument android:name="adminOrderId" app:argType="integer" />
+    </fragment>
+
+    <fragment android:id="@id/adminUserDetailFragment" android:name="com.example.ecom.feature.admin.fragments.AdminUserDetailFragment" android:label="@string/admin_title_user_detail">
+        <argument android:name="adminUserId" app:argType="integer" />
+    </fragment>
+
+</navigation>

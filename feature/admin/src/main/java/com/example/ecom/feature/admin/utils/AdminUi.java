@@ -3,8 +3,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.*;
 import com.example.ecom.feature.admin.R;
-import com.example.ecom.core.data.model.admin.*;
-import com.example.ecom.core.data.repository.AdminRepository;
+import com.example.ecom.feature.admin.data.*;
 import java.text.*;
 import java.util.*;
 public final class AdminUi {
@@ -66,8 +65,7 @@ public final class AdminUi {
         image.setImageResource(image(p.imageKey));
         if(!p.images.isEmpty())AdminImageLoader.load(image,p.images.get(0),image(p.imageKey));
     }
-    public static String customerName(AdminRepository repo,AdminOrder order) {
-        AdminCustomer c=repo.customer(order.customerId);
+    public static String customerName(AdminCustomer c) {
         return c==null?"":c.name;
     }
     public static void dropdown(AutoCompleteTextView input,List<String> options) {

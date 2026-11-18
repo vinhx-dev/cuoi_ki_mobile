@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutSearchBar"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/bg_search_bar"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="12dp">
+
+    <ImageButton
+        android:id="@+id/iconCamera"
+        android:layout_width="36dp"
+        android:layout_height="match_parent"
+        android:contentDescription="Tìm kiếm bằng ảnh"
+        android:src="@drawable/shop_camera"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:tint="#888888" />
+
+    <EditText
+        android:id="@+id/editSearch"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:background="@null"
+        android:hint="@string/search_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="#333333"
+        android:textColorHint="#9E9E9E"
+        android:textSize="14sp" />
+
+    <ImageButton android:id="@+id/iconSearch" android:layout_width="36dp" android:layout_height="match_parent" android:background="?attr/selectableItemBackgroundBorderless" android:src="@drawable/ic_search" android:contentDescription="Tìm kiếm"/>
+    <ImageButton
+        android:id="@+id/btnClearSearch"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/clear"
+        android:src="@drawable/ic_close"
+        android:visibility="gone"
+        app:tint="#888888" />
+
+</LinearLayout>

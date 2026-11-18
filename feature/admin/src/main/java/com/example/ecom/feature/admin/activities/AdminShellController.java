@@ -8,9 +8,10 @@ import androidx.navigation.*;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.example.ecom.feature.admin.R;
-import com.example.ecom.core.navigation.AppRouter;
-import com.example.ecom.core.data.repository.AdminRepository;
-/** Connects the admin header and footer to the existing single MainActivity. */
+import com.example.ecom.feature.admin.navigation.AdminRouter;
+import androidx.lifecycle.ViewModelProvider;
+import com.example.ecom.feature.admin.AdminViewModel;
+/** Connects the admin header and footer within AdminActivity. */
 public final class AdminShellController {
     private final AppCompatActivity activity;
     private final View header;
@@ -26,7 +27,7 @@ public final class AdminShellController {
         bottom.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
         bottom.setElevation(0);
         bottom.setOnItemSelectedListener(item-> {
-            if(!syncing)AppRouter.toAdminTab(nav,item.getItemId());
+            if(!syncing)AdminRouter.toAdminTab(nav,item.getItemId());
             return true;
         }
         );
@@ -39,11 +40,11 @@ public final class AdminShellController {
         }
         );
         header.findViewById(R.id.adminNotifications).setOnClickListener(v-> {
-            AdminRepository repo=AdminRepository.getInstance(activity);
-            new MaterialAlertDialogBuilder(context()).setTitle(R.string.admin_notifications).setMessage(activity.getString(R.string.admin_notifications_info,repo.pendingCount())).setNegativeButton(R.string.admin_close,null).setPositiveButton(R.string.admin_view_orders,(d,which)->AppRouter.toAdminTab(nav,com.example.ecom.core.navigation.R.id.adminOrdersFragment)).show();
+            AdminViewModel repo=new ViewModelProvider(activity).get(AdminViewModel.class);
+            new MaterialAlertDialogBuilder(context()).setTitle(R.string.admin_notifications).setMessage(activity.getString(R.string.admin_notifications_info,repo.pendingCount())).setNegativeButton(R.string.admin_close,null).setPositiveButton(R.string.admin_view_orders,(d,which)->AdminRouter.toAdminTab(nav,R.id.adminOrdersFragment)).show();
         }
         );
-        header.findViewById(R.id.adminAccount).setOnClickListener(v->new MaterialAlertDialogBuilder(context()).setTitle(R.string.admin_account).setMessage(R.string.admin_account_info).setNegativeButton(R.string.admin_close,null).setPositiveButton(R.string.admin_title_settings,(d,which)->AppRouter.toAdminSettings(nav)).show());
+        header.findViewById(R.id.adminAccount).setOnClickListener(v->new MaterialAlertDialogBuilder(context()).setTitle(R.string.admin_account).setMessage(R.string.admin_account_info).setNegativeButton(R.string.admin_close,null).setPositiveButton(R.string.admin_title_settings,(d,which)->AdminRouter.toAdminSettings(nav)).show());
     }
     private android.content.Context context() {
         return new ContextThemeWrapper(activity,R.style.ThemeOverlay_ShopAdmin);
@@ -67,9 +68,9 @@ public final class AdminShellController {
         PopupMenu menu=new PopupMenu(context(),anchor);
         menu.inflate(R.menu.admin_menu);
         menu.setOnMenuItemClickListener(item-> {
-            if(item.getItemId()==R.id.adminExit)AppRouter.toLogin(nav);
-            else if(item.getItemId()==com.example.ecom.core.navigation.R.id.adminSettingsFragment)AppRouter.toAdminSettings(nav);
-            else AppRouter.toAdminTab(nav,item.getItemId());
+            if(item.getItemId()==R.id.adminExit)activity.finish();
+            else if(item.getItemId()==R.id.adminSettingsFragment)AdminRouter.toAdminSettings(nav);
+            else AdminRouter.toAdminTab(nav,item.getItemId());
             return true;
         }
         );

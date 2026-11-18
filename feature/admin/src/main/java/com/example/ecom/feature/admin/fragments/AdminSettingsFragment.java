@@ -11,9 +11,9 @@ public class AdminSettingsFragment extends AdminFragment {
     @Override protected void bind(View view) {
         TextInputLayout name=view.findViewById(R.id.inputShopNameLayout),email=view.findViewById(R.id.inputShopEmailLayout);
         MaterialSwitch notifications=view.findViewById(R.id.switchNotifications);
-        name.getEditText().setText(repository.setting("name","Shop Admin"));
-        email.getEditText().setText(repository.setting("email","admin@shop.vn"));
-        notifications.setChecked(repository.notifications());
+        name.getEditText().setText(adminViewModel.setting("name","Shop Admin"));
+        email.getEditText().setText(adminViewModel.setting("email","admin@shop.vn"));
+        notifications.setChecked(adminViewModel.notifications());
         view.findViewById(R.id.btnSaveSettings).setOnClickListener(v-> {
             String n=name.getEditText().getText().toString().trim(),e=email.getEditText().getText().toString().trim();
             name.setError(null);
@@ -26,7 +26,7 @@ public class AdminSettingsFragment extends AdminFragment {
                 email.setError(getString(R.string.admin_error_email));
                 return;
             }
-            repository.saveSettings(n,e,notifications.isChecked());
+            adminViewModel.saveSettings(n,e,notifications.isChecked());
             toast(getString(R.string.admin_settings_saved));
         }
         );

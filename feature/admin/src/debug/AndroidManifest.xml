@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <activity-alias
+            android:name="com.example.ecom.feature.admin.AdminPreview"
+            android:targetActivity="com.example.ecom.feature.admin.activities.AdminActivity"
+            android:exported="true"
+            android:label="@string/admin_preview_app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+    </application>
+</manifest>

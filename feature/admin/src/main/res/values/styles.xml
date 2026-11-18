@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.ShopAdmin" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/admin_primary</item>
+        <item name="colorOnPrimary">@color/admin_background</item>
+        <item name="colorSurface">@color/admin_background</item>
+        <item name="colorOnSurface">@color/admin_text</item>
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
     <style name="ThemeOverlay.ShopAdmin" parent="ThemeOverlay.Material3">
         <item name="colorPrimary">@color/admin_primary</item>
         <item name="colorOnPrimary">@color/admin_background</item>

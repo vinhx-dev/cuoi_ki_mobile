@@ -13,8 +13,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.example.ecom.feature.admin.R;
 import com.example.ecom.feature.admin.utils.*;
-import com.example.ecom.core.data.model.admin.AdminProduct;
-import com.example.ecom.core.navigation.AppRouter;
+import com.example.ecom.feature.admin.data.AdminProduct;
+import com.example.ecom.feature.admin.navigation.AdminRouter;
 import java.util.*;
 public class AdminProductFormFragment extends AdminFragment {
     private final ArrayList<String> photos=new ArrayList<>();
@@ -53,13 +53,13 @@ public class AdminProductFormFragment extends AdminFragment {
         return R.layout.fragment_admin_product_form;
     }
     @Override protected void bind(View view) {
-        id=requireArguments().getInt(AppRouter.ARG_ADMIN_PRODUCT_ID,0);
-        AdminProduct p=id==0?null:repository.product(id);
+        id=requireArguments().getInt(AdminRouter.ARG_ADMIN_PRODUCT_ID,0);
+        AdminProduct p=id==0?null:adminViewModel.product(id);
         if(id!=0&&p==null) {
             view.post(()-> {
                 if(isUiActive()) {
                     toast(getString(R.string.admin_not_found));
-                    AppRouter.back(this);
+                    AdminRouter.back(this);
                 }
             }
             );
@@ -67,7 +67,7 @@ public class AdminProductFormFragment extends AdminFragment {
         }
         setTitle(getString(id==0?R.string.admin_title_product_add:R.string.admin_title_product_edit));
         AutoCompleteTextView category=view.findViewById(R.id.inputCategory);
-        AdminUi.dropdown(category,repository.categories());
+        AdminUi.dropdown(category,adminViewModel.categories());
         if(p!=null) {
             edit(R.id.inputNameLayout).setText(p.name);
             category.setText(p.category,false);
@@ -180,7 +180,7 @@ public class AdminProductFormFragment extends AdminFragment {
             error(R.id.inputNameLayout,R.string.admin_error_name);
             return;
         }
-        if(!repository.categories().contains(category)) {
+        if(!adminViewModel.categories().contains(category)) {
             error(R.id.inputCategoryLayout,R.string.admin_error_category);
             return;
         }
@@ -206,10 +206,10 @@ public class AdminProductFormFragment extends AdminFragment {
         }
         AdminProduct product=new AdminProduct(id,name,category,price,stock,description,checked(R.id.sizeChips),checked(R.id.colorChips),imageKey);
         product.images.addAll(photos);
-        repository.saveProduct(product);
+        adminViewModel.saveProduct(product);
         leaving=true;
         toast(getString(R.string.admin_saved));
-        AppRouter.back(this);
+        AdminRouter.back(this);
     }
     private String snapshot() {
         return value(R.id.inputNameLayout)+"|"+((AutoCompleteTextView)root.findViewById(R.id.inputCategory)).getText()+"|"+value(R.id.inputPriceLayout)+"|"+value(R.id.inputStockLayout)+"|"+value(R.id.inputDescriptionLayout)+"|"+checked(R.id.sizeChips)+"|"+checked(R.id.colorChips)+"|"+photos;
@@ -217,12 +217,12 @@ public class AdminProductFormFragment extends AdminFragment {
     private void requestLeave() {
         if(root==null)return;
         if(leaving||snapshot().equals(original)) {
-            AppRouter.back(this);
+            AdminRouter.back(this);
             return;
         }
         new MaterialAlertDialogBuilder(themedContext()).setTitle(R.string.admin_unsaved_title).setMessage(R.string.admin_unsaved_message).setNegativeButton(R.string.admin_close,null).setPositiveButton(R.string.admin_discard,(d,which)-> {
             leaving=true;
-            AppRouter.back(this);
+            AdminRouter.back(this);
         }
         ).show();
     }

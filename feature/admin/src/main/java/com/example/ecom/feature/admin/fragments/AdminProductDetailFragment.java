@@ -4,33 +4,33 @@ import android.widget.*;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.example.ecom.feature.admin.R;
 import com.example.ecom.feature.admin.utils.*;
-import com.example.ecom.core.data.model.admin.AdminProduct;
-import com.example.ecom.core.navigation.AppRouter;
+import com.example.ecom.feature.admin.data.AdminProduct;
+import com.example.ecom.feature.admin.navigation.AdminRouter;
 public class AdminProductDetailFragment extends AdminFragment {
     private int id;
     @Override protected int layout() {
         return R.layout.fragment_admin_product_detail;
     }
     @Override protected void bind(View view) {
-        id=requireArguments().getInt(AppRouter.ARG_ADMIN_PRODUCT_ID);
-        view.findViewById(R.id.btnEditProduct).setOnClickListener(v->AppRouter.toAdminProductForm(this,id));
+        id=requireArguments().getInt(AdminRouter.ARG_ADMIN_PRODUCT_ID);
+        view.findViewById(R.id.btnEditProduct).setOnClickListener(v->AdminRouter.toAdminProductForm(this,id));
         view.findViewById(R.id.btnDeleteProduct).setOnClickListener(v-> {
-            AdminProduct p=repository.product(id);
+            AdminProduct p=adminViewModel.product(id);
             if(p==null)return;
             new MaterialAlertDialogBuilder(themedContext()).setTitle(R.string.admin_delete_title).setMessage(getString(R.string.admin_delete_message,p.name)).setNegativeButton(R.string.admin_cancel,null).setPositiveButton(R.string.admin_delete,(d,which)-> {
-                repository.deleteProduct(id);
+                adminViewModel.deleteProduct(id);
                 toast(getString(R.string.admin_deleted));
-                AppRouter.back(this);
+                AdminRouter.back(this);
             }
             ).show();
         }
         );
     }
     @Override protected void refresh() {
-        AdminProduct p=repository.product(id);
+        AdminProduct p=adminViewModel.product(id);
         if(p==null) {
             toast(getString(R.string.admin_not_found));
-            AppRouter.back(this);
+            AdminRouter.back(this);
             return;
         }
         AdminUi.text(root,R.id.textProductName,p.name);

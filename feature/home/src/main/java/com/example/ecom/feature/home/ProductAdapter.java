@@ -8,12 +8,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.ecom.core.data.model.Product;
 import com.example.ecom.core.ui.format.Formatter;
+import com.example.ecom.feature.home.data.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/** Danh sách sản phẩm. ≈ <ProductList items onItemClick/> */
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.VH> {
 
     public interface OnItemClick {
