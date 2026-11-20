@@ -1,18 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E926BB"
+    android:background="#E9691B"
     android:gravity="center"
     android:orientation="vertical">
 
-    <TextView
+    <!-- Hiển thị Logo của App và tiêu đề Shobi -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/splash_title"
-        android:textColor="@color/white"
-        android:textSize="28sp"
-        android:textStyle="bold" />
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- Logo của App -->
+        <ImageView
+            android:id="@+id/ivSplashLogo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:contentDescription="@string/splash_logo_desc"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/logo" />
+
+        <!-- Tên thương hiệu Shobi bên dưới logo -->
+        <TextView
+            android:id="@+id/tvSplashBrand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/splash_brand_name"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <!-- Slogan phụ -->
+        <TextView
+            android:id="@+id/tvSplashSlogan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/splash_slogan"
+            android:textColor="#FFE0B2"
+            android:textSize="14sp" />
+    </LinearLayout>
 
     <ProgressBar
         android:layout_width="wrap_content"

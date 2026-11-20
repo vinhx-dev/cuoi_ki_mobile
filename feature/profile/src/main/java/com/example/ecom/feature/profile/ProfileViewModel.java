@@ -6,16 +6,18 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.ecom.core.api.ApiCallback;
 import com.example.ecom.core.ui.base.BaseViewModel;
 import com.example.ecom.core.ui.base.UiState;
 import com.example.ecom.feature.profile.data.ProfileApi;
 import com.example.ecom.feature.profile.data.User;
 
-/** ≈ useProfile(): thông tin tài khoản + đăng xuất. */
+/** ≈ useProfile(): thông tin tài khoản + thống kê + đăng xuất. */
 public class ProfileViewModel extends BaseViewModel {
 
     private final ProfileApi profileApi;
     private final MutableLiveData<UiState<User>> user = new MutableLiveData<>();
+    private final MutableLiveData<UiState<ProfileApi.ShoppingStats>> stats = new MutableLiveData<>();
 
     public ProfileViewModel(@NonNull Application app) {
         super(app);
@@ -26,12 +28,16 @@ public class ProfileViewModel extends BaseViewModel {
         return user;
     }
 
-    public void load() {
-        if (user.getValue() != null) return;
-        fetch(user, profileApi::getMe);
+    public LiveData<UiState<ProfileApi.ShoppingStats>> getStats() {
+        return stats;
     }
 
-    public void logout(com.example.ecom.core.api.ApiCallback<Object> cb) {
+    public void load() {
+        fetch(user, profileApi::getMe);
+        fetch(stats, profileApi::getShoppingStats);
+    }
+
+    public void logout(ApiCallback<Object> cb) {
         profileApi.logout(cb);
     }
 }

@@ -35,8 +35,8 @@ public final class PageLayout {
         void onSearchQuery(String query);
     }
 
-    /** Chờ người dùng ngừng gõ bao lâu mới tìm kiếm (tránh gọi API mỗi phím). */
-    private static final long SEARCH_DEBOUNCE_MS = 400;
+    /** Chờ người dùng ngừng gõ 800ms mới tìm kiếm để không gián đoạn bộ gõ tiếng Việt. */
+    private static final long SEARCH_DEBOUNCE_MS = 800;
 
     private final Fragment page;
     private final View root;
@@ -65,14 +65,17 @@ public final class PageLayout {
         View search = root.findViewById(R.id.iconSearch);
         if (search != null) search.setOnClickListener(v -> {
             if (searchListener != null) searchListener.onSearchQuery(currentQuery());
-            else if (!currentQuery().isEmpty()) AppRouter.toHomeSearch(page,currentQuery());
+            else if (!currentQuery().isEmpty()) AppRouter.toHomeSearch(page, currentQuery());
         });
         setupBack();
         setupSearch();
         setupBottomBar();
     }
 
-    public void dispose() { if (editSearch != null) editSearch.removeCallbacks(debouncedSearch); searchListener = null; }
+    public void dispose() {
+        if (editSearch != null) editSearch.removeCallbacks(debouncedSearch);
+        searchListener = null;
+    }
 
     public View root() {
         return root;
@@ -106,11 +109,15 @@ public final class PageLayout {
      */
     public void bindSearch(String currentQuery, SearchListener listener) {
         if (editSearch == null) return;
-        ignoreSearchChange = true;
-        editSearch.setText(currentQuery);
-        editSearch.setSelection(editSearch.length());
-        ignoreSearchChange = false;
         searchListener = listener;
+        if (editSearch.hasFocus() || editSearch.isFocused()) return;
+
+        ignoreSearchChange = true;
+        if (currentQuery != null && !editSearch.getText().toString().equals(currentQuery)) {
+            editSearch.setText(currentQuery);
+            editSearch.setSelection(editSearch.length());
+        }
+        ignoreSearchChange = false;
     }
 
     public void setSearchHint(CharSequence hint) {
@@ -129,6 +136,7 @@ public final class PageLayout {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 btnClear.setVisibility(s.length() > 0 ? View.VISIBLE : View.GONE);
                 if (ignoreSearchChange || searchListener == null) return;
+
                 editSearch.removeCallbacks(debouncedSearch);
                 editSearch.postDelayed(debouncedSearch, SEARCH_DEBOUNCE_MS);
             }

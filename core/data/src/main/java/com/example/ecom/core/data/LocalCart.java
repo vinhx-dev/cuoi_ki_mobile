@@ -61,11 +61,6 @@ public final class LocalCart {
         List<CartItem> list = new ArrayList<>();
         Map<String, ?> all = prefs(c).getAll();
 
-        if (all.isEmpty()) {
-            populateSampleCart(c);
-            all = prefs(c).getAll();
-        }
-
         for (Map.Entry<String, ?> e : all.entrySet()) {
             if (e.getValue() instanceof Integer) {
                 String[] keyParts = e.getKey().split(":");
@@ -85,18 +80,6 @@ public final class LocalCart {
         return list;
     }
 
-    private static void populateSampleCart(Context c) {
-        ShopProduct p1 = ShopCatalog.get(-3); // Áo Thun Cotton
-        ShopProduct p2 = ShopCatalog.get(-5); // Áo Sơ Mi Caro
-        ShopProduct p3 = ShopCatalog.get(-7); // Áo Khoác Nhẹ
-        ShopProduct p4 = ShopCatalog.get(-8); // Áo Polo Nam
-
-        if (p1 != null) add(c, p1, "L", 1);
-        if (p2 != null) add(c, p2, "M", 1);
-        if (p3 != null) add(c, p3, "L", 1);
-        if (p4 != null) add(c, p4, "XL", 1);
-    }
-
     public static synchronized void updateQuantity(Context c, String key, int newQty) {
         if (newQty <= 0) {
             remove(c, key);
@@ -107,6 +90,15 @@ public final class LocalCart {
 
     public static synchronized void remove(Context c, String key) {
         prefs(c).edit().remove(key).apply();
+    }
+
+    public static synchronized void removeMultiple(Context c, List<String> keys) {
+        if (keys == null || keys.isEmpty()) return;
+        SharedPreferences.Editor editor = prefs(c).edit();
+        for (String key : keys) {
+            editor.remove(key);
+        }
+        editor.apply();
     }
 
     public static synchronized void clear(Context c) {

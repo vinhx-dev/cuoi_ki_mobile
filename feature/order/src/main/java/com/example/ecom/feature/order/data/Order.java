@@ -28,22 +28,33 @@ public class Order {
     }
 
     public boolean canCancel() {
-        return STATUS_PENDING.equals(status);
+        return STATUS_PENDING.equalsIgnoreCase(status) || "ACTIVE".equalsIgnoreCase(status) || "CHỜ XÁC NHẬN".equalsIgnoreCase(status);
     }
 
     public static Order fromJson(JSONObject j) throws JSONException {
         List<OrderItem> items = new ArrayList<>();
         JSONArray arr = j.optJSONArray("items");
+        if (arr == null) arr = j.optJSONArray("orderItems");
+        if (arr == null) arr = j.optJSONArray("lines");
         if (arr != null) {
-            for (int i = 0; i < arr.length(); i++) items.add(OrderItem.fromJson(arr.getJSONObject(i)));
+            for (int i = 0; i < arr.length(); i++) {
+                items.add(OrderItem.fromJson(arr.getJSONObject(i)));
+            }
         }
-        return new Order(j.optInt("id"), j.optString("status"), j.optString("address"),
-                j.optLong("total"), j.optLong("createdAt"), items);
+        int id = j.optInt("id", j.optInt("orderId", 0));
+        String status = j.optString("status", j.optString("orderStatus", STATUS_PENDING));
+        String address = j.optString("address", j.optString("shippingAddress", ""));
+        long total = j.optLong("total", j.optLong("totalPrice", j.optLong("totalAmount", 0)));
+        long createdAt = j.optLong("createdAt", System.currentTimeMillis());
+
+        return new Order(id, status, address, total, createdAt, items);
     }
 
     public static List<Order> listFromJson(JSONArray arr) throws JSONException {
         List<Order> list = new ArrayList<>();
-        for (int i = 0; i < arr.length(); i++) list.add(fromJson(arr.getJSONObject(i)));
+        for (int i = 0; i < arr.length(); i++) {
+            list.add(fromJson(arr.getJSONObject(i)));
+        }
         return list;
     }
 }

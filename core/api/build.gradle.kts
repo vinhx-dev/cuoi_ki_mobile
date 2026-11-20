@@ -13,7 +13,9 @@ val localProperties = Properties().apply {
 // Emulator: 10.0.2.2 points to the host computer. For a USB device run
 // adb reverse tcp:8080 tcp:8080 and set api.baseUrl=http://localhost:8080/api/
 // in local.properties, then rebuild.
-val baseUrl: String = localProperties.getProperty("api.baseUrl") ?: "http://10.0.2.2:8080/api/"
+val baseUrl: String = localProperties.getProperty("api.baseUrl")
+    ?: localProperties.getProperty("baseUrl")
+    ?: "http://10.0.2.2:8080/api/"
 
 android {
     namespace = "com.example.ecom.core.api"

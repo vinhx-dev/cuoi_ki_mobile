@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.example.ecom.core.navigation.AppRouter;
 import com.example.ecom.core.ui.base.BaseFragment;
+import com.example.ecom.core.ui.format.Formatter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 /** Trang cá nhân người dùng (Tôi). ≈ ProfilePage.jsx */
@@ -58,13 +59,26 @@ public class ProfileFragment extends BaseFragment {
             btnLogoutItem.setOnClickListener(v -> {
                 btnLogoutItem.setEnabled(false);
                 vm.logout(new com.example.ecom.core.api.ApiCallback<Object>() {
-                    public void onSuccess(Object data) { if(isUiActive()) AppRouter.toLogin(ProfileFragment.this); }
-                    public void onError(String message,int status) { if(isUiActive()) AppRouter.toLogin(ProfileFragment.this); }
+                    @Override
+                    public void onSuccess(Object data) {
+                        if (isUiActive()) {
+                            toast("Đã đăng xuất");
+                            AppRouter.toLogin(ProfileFragment.this);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String message, int status) {
+                        if (isUiActive()) {
+                            toast("Đã đăng xuất");
+                            AppRouter.toLogin(ProfileFragment.this);
+                        }
+                    }
                 });
             });
         }
 
-        // Render thông tin người dùng
+        // Render thông tin người dùng thật từ API
         observe(vm.getUser(), user -> {
             if (textName != null) textName.setText(user.name);
             if (textMemberRank != null) textMemberRank.setText("Thành viên thân thiết");
@@ -72,9 +86,13 @@ public class ProfileFragment extends BaseFragment {
                 String contact = !user.email.isEmpty() ? user.email : user.phone;
                 textPhone.setText(contact);
             }
-            if (textTotalOrdersCount != null) textTotalOrdersCount.setText("12 đơn");
-            if (textTotalPaidAmount != null) textTotalPaidAmount.setText("3.250.000đ");
-            if (textActiveOrdersCount != null) textActiveOrdersCount.setText("2 đơn");
+        });
+
+        // Render thống kê đơn hàng thật từ API
+        observe(vm.getStats(), stats -> {
+            if (textTotalOrdersCount != null) textTotalOrdersCount.setText(stats.totalOrdersCount + " đơn");
+            if (textTotalPaidAmount != null) textTotalPaidAmount.setText(Formatter.money(stats.totalPaidAmount));
+            if (textActiveOrdersCount != null) textActiveOrdersCount.setText(stats.activeOrdersCount + " đơn");
         });
 
         vm.load();

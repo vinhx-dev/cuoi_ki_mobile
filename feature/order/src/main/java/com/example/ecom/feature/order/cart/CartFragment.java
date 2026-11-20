@@ -176,12 +176,18 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(btnText, (dialog, which) -> {
-                    List<LocalCart.CartItem> current = new ArrayList<>(adapter.getItems());
-                    for (LocalCart.CartItem item : current) {
-                        if (item.checked) {
-                            LocalCart.remove(requireContext(), item.key);
+                    if (allChecked) {
+                        LocalCart.clear(requireContext());
+                    } else {
+                        List<String> keysToRemove = new ArrayList<>();
+                        for (LocalCart.CartItem item : adapter.getItems()) {
+                            if (item.checked) {
+                                keysToRemove.add(item.key);
+                            }
                         }
+                        LocalCart.removeMultiple(requireContext(), keysToRemove);
                     }
+                    toast(allChecked ? "Đã xóa tất cả sản phẩm khỏi giỏ hàng!" : "Đã xóa " + checkedCount + " sản phẩm đã chọn!");
                     loadCartItems();
                 })
                 .setNegativeButton("Hủy", null)
@@ -200,15 +206,28 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
                 .setTitle("Xác nhận thanh toán")
                 .setMessage("Thanh toán " + checkedCount + " sản phẩm với tổng tiền " + Formatter.money(total) + "?")
                 .setPositiveButton("Đồng ý", (dialog, which) -> {
-                    // Xóa các món đã thanh toán khỏi giỏ hàng
                     List<LocalCart.CartItem> current = new ArrayList<>(adapter.getItems());
+                    List<com.example.ecom.feature.order.data.OrderItem> orderItems = new ArrayList<>();
+                    List<String> keysToRemove = new ArrayList<>();
+
                     for (LocalCart.CartItem item : current) {
                         if (item.checked) {
-                            LocalCart.remove(requireContext(), item.key);
+                            String pName = item.product != null ? item.product.name : "Sản phẩm";
+                            long pPrice = item.product != null ? item.product.price : 0;
+                            orderItems.add(new com.example.ecom.feature.order.data.OrderItem(item.productId, pName, pPrice, item.quantity));
+                            keysToRemove.add(item.key);
                         }
                     }
-                    toast("Đặt hàng thành công!");
-                    AppRouter.toTab(this, "orders");
+
+                    new com.example.ecom.feature.order.data.OrderApi(requireContext()).createOrder(
+                            "123 Nguyễn Trãi, Thanh Xuân, Hà Nội",
+                            orderItems,
+                            apiCallback(newOrderId -> {
+                                LocalCart.removeMultiple(requireContext(), keysToRemove);
+                                toast("Đặt hàng thành công! Đơn hàng #" + newOrderId);
+                                AppRouter.toTab(this, "orders");
+                            })
+                    );
                 })
                 .setNegativeButton("Bỏ qua", null)
                 .show();
