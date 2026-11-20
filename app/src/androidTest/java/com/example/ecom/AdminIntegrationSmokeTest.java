@@ -26,9 +26,12 @@ public final class AdminIntegrationSmokeTest extends Instrumentation {
     private NavController nav;
     private boolean productCrud;
     private boolean screenshots;
+    private boolean imagesOnly;
     @Override public void onCreate(Bundle args) {
         super.onCreate(args); productCrud="true".equals(args.getString("productCrud"));
-        screenshots="true".equals(args.getString("screenshots")); start();
+        screenshots="true".equals(args.getString("screenshots"));
+        imagesOnly="true".equals(args.getString("imagesOnly"));
+        start();
     }
     private void screenshot(String name) throws Exception {
         if(!screenshots) return;
@@ -78,6 +81,11 @@ public final class AdminIntegrationSmokeTest extends Instrumentation {
         AdminApi api=new AdminApi(getTargetContext());
         AdminProduct temporary=null;
         try {
+            String image=checkInlineImages();
+            if(imagesOnly) {
+                result.putString("stream","PASS: local PNG/JPEG encoding, resize, Base64 preview and product image omission/clear semantics.\n");
+                finish(Activity.RESULT_OK,result); return;
+            }
             TokenManager tokens=new TokenManager(getTargetContext());
             User saved=tokens.getUser();
             if(!tokens.isLoggedIn() || saved==null || !saved.isAdmin()) {
@@ -93,15 +101,22 @@ public final class AdminIntegrationSmokeTest extends Instrumentation {
                 qa.name="QA admin integration "+UUID.randomUUID();
                 qa.price=new java.math.BigDecimal("123456.78"); qa.stock=3; qa.soldCount=0;
                 qa.description="Temporary integration check"; qa.sizes.add("QA-custom-size");
+                qa.image=image;
                 qa.categoryId=categories.isEmpty()?0:categories.get(0).id;
                 qa.forAI=new JSONObject().put("integrationCheck",true).put("values",new JSONArray().put(1).put("test"));
                 temporary=this.<AdminProduct>request(cb -> api.saveProduct(qa,cb));
                 check(temporary.price.compareTo(qa.price)==0 && temporary.sizes.equals(qa.sizes),"POST product mapping");
                 check(temporary.forAI.toString().equals(qa.forAI.toString()),"forAI JSON lost");
+                check(image.equals(temporary.image),"POST did not return Base64 image");
                 temporary.price=new java.math.BigDecimal("234567.89"); temporary.stock=4;
+                temporary.includeImage=false;
                 AdminProduct update=temporary;
                 temporary=this.<AdminProduct>request(cb -> api.saveProduct(update,cb));
                 check(temporary.stock==4 && temporary.price.compareTo(update.price)==0,"PUT product mapping");
+                check(image.equals(temporary.image),"PUT without image did not preserve Base64");
+                AdminProduct fetched=this.<AdminProduct>request(cb -> api.product(update.id,cb));
+                check(image.equals(fetched.image),"GET did not return persisted Base64");
+                checkImageApiContract(temporary,image);
             }
             List<AdminProduct> products=this.<List<AdminProduct>>request(api::products);
             List<AdminOrder> orders=this.<List<AdminOrder>>request(cb -> api.orders(null,null,cb));
@@ -207,7 +222,7 @@ public final class AdminIntegrationSmokeTest extends Instrumentation {
                 waitUi(() -> text(com.example.ecom.feature.admin.R.id.metricProducts,String.valueOf(current.size())),"Dashboard did not refresh after cleanup");
                 screenshot("01-dashboard");
             }
-            result.putString("stream","PASS: server-confirmed admin session restore; dashboard, lists/filters, product form validation, users/detail/stats, revenue/top/category stats. Products="+products.size()+", orders="+orders.size()+", users="+users.size()+". Product detail/edit "+(products.isEmpty()?"SKIPPED (empty)":"PASS")+"; order detail/transitions "+(orders.isEmpty()?"SKIPPED (empty)":"detail PASS, mutations not run")+". Product API CRUD "+(productCrud?"PASS; temporary record deleted":"not run")+". Password login not run (saved session).\n");
+            result.putString("stream","PASS: server-confirmed admin session restore; dashboard, lists/filters, product form validation, users/detail/stats, revenue/top/category stats. Products="+products.size()+", orders="+orders.size()+", users="+users.size()+". Product detail/edit "+(products.isEmpty()?"SKIPPED (empty)":"PASS")+"; order detail/transitions "+(orders.isEmpty()?"SKIPPED (empty)":"detail PASS, mutations not run")+". Product API CRUD "+(productCrud?"PASS; Base64 product/category preserve, clear, raw input and invalid/oversized rejection PASS; temporary records deleted":"not run")+". Password login not run (saved session).\n");
             finish(Activity.RESULT_OK,result);
         } catch(Throwable error) {
             if(temporary!=null) {
@@ -222,5 +237,89 @@ public final class AdminIntegrationSmokeTest extends Instrumentation {
     private androidx.fragment.app.Fragment navHost() {
         return ((NavHostFragment)activity.getSupportFragmentManager().findFragmentById(com.example.ecom.feature.admin.R.id.adminNavHost))
             .getChildFragmentManager().getPrimaryNavigationFragment();
+    }
+
+    private String checkInlineImages() throws Exception {
+        String png=null;
+        for(boolean alpha:new boolean[]{true,false}) {
+            android.graphics.Bitmap bitmap=android.graphics.Bitmap.createBitmap(2200,1100,android.graphics.Bitmap.Config.ARGB_8888);
+            bitmap.setHasAlpha(alpha); bitmap.eraseColor(alpha?0x80123456:0xff123456);
+            java.io.File file=new java.io.File(getTargetContext().getCacheDir(),alpha?"qa-image.png":"qa-image.jpg");
+            try {
+                try(java.io.FileOutputStream output=new java.io.FileOutputStream(file)) {
+                    check(bitmap.compress(alpha?android.graphics.Bitmap.CompressFormat.PNG:android.graphics.Bitmap.CompressFormat.JPEG,90,output),"Fixture encoding");
+                } finally { bitmap.recycle(); }
+                CountDownLatch done=new CountDownLatch(1);
+                AtomicReference<String> value=new AtomicReference<>(),error=new AtomicReference<>();
+                com.example.ecom.feature.admin.utils.AdminImageEncoder.encode(getTargetContext(),android.net.Uri.fromFile(file),(data,message) -> {
+                    value.set(data); error.set(message); done.countDown();
+                });
+                check(done.await(20,TimeUnit.SECONDS),"Image encoder timeout");
+                check(error.get()==null,"Image encoder: "+error.get());
+                String encoded=value.get();
+                check(encoded.startsWith(alpha?"data:image/png;base64,":"data:image/jpeg;base64,"),"Image MIME mapping");
+                byte[] bytes=android.util.Base64.decode(encoded.substring(encoded.indexOf(',')+1),android.util.Base64.DEFAULT);
+                check(bytes.length<=2*1024*1024,"Encoded image exceeds backend limit");
+                android.graphics.BitmapFactory.Options options=new android.graphics.BitmapFactory.Options(); options.inJustDecodeBounds=true;
+                android.graphics.BitmapFactory.decodeByteArray(bytes,0,bytes.length,options);
+                check(options.outWidth>0 && options.outWidth<=1600 && options.outHeight<=1600,"Image was not resized");
+                AtomicReference<android.widget.ImageView> target=new AtomicReference<>();
+                runOnMainSync(() -> {
+                    android.widget.ImageView view=new android.widget.ImageView(getTargetContext()); target.set(view);
+                    com.example.ecom.core.ui.image.InlineImageLoader.load(view,encoded,com.example.ecom.feature.admin.R.drawable.admin_image_placeholder);
+                });
+                waitUi(() -> target.get().getDrawable() instanceof android.graphics.drawable.BitmapDrawable,"Base64 image did not display");
+                if(alpha) png=encoded;
+            } finally { check(file.delete(),"Temporary image cleanup"); }
+        }
+        AdminProduct product=new AdminProduct(); product.image=png;
+        check(product.body().getString("image").equals(png),"Base64 body mapping");
+        product.includeImage=false; check(!product.body().has("image"),"Unchanged image should be omitted");
+        product.includeImage=true; product.image="";
+        check(product.body().getString("image").isEmpty(),"Remove image should send empty string");
+        return png;
+    }
+
+    private JSONObject raw(String method,String path,JSONObject body) throws Exception {
+        return this.<JSONObject>request(cb -> com.example.ecom.core.api.ApiClient.getInstance(getTargetContext())
+            .requestStrict(method,path,null,body,data -> (JSONObject)data,cb));
+    }
+
+    private void expectStatus(String method,String path,JSONObject body,int expected) throws Exception {
+        CountDownLatch done=new CountDownLatch(1); AtomicInteger status=new AtomicInteger(-2);
+        com.example.ecom.core.api.ApiClient.getInstance(getTargetContext()).requestStrict(method,path,null,body,data -> data,
+            new ApiCallback<Object>() {
+                public void onSuccess(Object ignored) { done.countDown(); }
+                public void onError(String message,int code) { status.set(code); done.countDown(); }
+            });
+        check(done.await(45,TimeUnit.SECONDS),"Image validation timeout");
+        check(status.get()==expected,"Expected image HTTP "+expected+", got "+status.get());
+    }
+
+    private void checkImageApiContract(AdminProduct product,String image) throws Exception {
+        String path="/products/"+product.id;
+        JSONObject body=product.body();
+        for(String invalid:new String[]{"https://example.invalid/new.png","content://images/1","%%%",
+                image.replace("data:image/png;","data:image/jpeg;")})
+            expectStatus("PUT",path,body.put("image",invalid),400);
+        String oversized=android.util.Base64.encodeToString(new byte[2*1024*1024+1],android.util.Base64.NO_WRAP);
+        expectStatus("PUT",path,body.put("image",oversized),413);
+        check(raw("PUT",path,body.put("image","")).isNull("image"),"Product image was not cleared");
+        check(image.equals(raw("PUT",path,body.put("image",image.substring(image.indexOf(',')+1))).getString("image")),"Raw product Base64 not canonicalized");
+        long categoryId=0;
+        try {
+            JSONObject category=raw("POST","/categories",new JSONObject().put("name","QA Base64 "+UUID.randomUUID()).put("image",image));
+            categoryId=category.getLong("id");
+            check(image.equals(category.getString("image")),"Category POST image");
+            String categoryPath="/categories/"+categoryId;
+            JSONObject edit=new JSONObject().put("name",category.getString("name"));
+            check(image.equals(raw("PUT",categoryPath,edit).getString("image")),"Category omitted image not preserved");
+            expectStatus("PUT",categoryPath,edit.put("image","https://example.invalid/new.png"),400);
+            check(raw("PUT",categoryPath,edit.put("image","")).isNull("image"),"Category image was not cleared");
+            check(image.equals(raw("PUT",categoryPath,edit.put("image",image.substring(image.indexOf(',')+1))).getString("image")),"Raw category Base64 not canonicalized");
+            check(image.equals(raw("GET",categoryPath,null).getString("image")),"Category GET persisted Base64");
+        } finally {
+            if(categoryId!=0) raw("DELETE","/categories/"+categoryId,null);
+        }
     }
 }

@@ -15,7 +15,8 @@ public final class CatalogRepository {
         Object raw=j.opt("category");
         if(raw instanceof JSONObject)category=((JSONObject)raw).optString("name",category);
         else if(raw instanceof String)category=(String)raw;
-        ShopProduct p=new ShopProduct(j.optInt("id"),j.optString("name"),j.optLong("price"),j.optInt("stock"),category,j.optString("description"),j.optString("imageUrl"));
+        String image=j.isNull("image")?j.optString("imageUrl",""):j.optString("image","");
+        ShopProduct p=new ShopProduct(j.optInt("id"),j.optString("name"),j.optLong("price"),j.optInt("stock"),category,j.optString("description"),image);
         ShopCatalog.cache(p);
         return p;
     }

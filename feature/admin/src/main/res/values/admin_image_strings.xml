@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_choose_image">Chọn ảnh từ máy</string>
+    <string name="admin_clear_image">Xóa ảnh</string>
+    <string name="admin_image_hint">Ảnh sẽ được thu nhỏ nếu cần. Nhấn Lưu để cập nhật ảnh sản phẩm.</string>
+    <string name="admin_image_encoding">Đang xử lý ảnh…</string>
+    <string name="admin_image_empty">Chưa có ảnh</string>
+    <string name="admin_image_ready">Đã có ảnh sản phẩm</string>
+</resources>

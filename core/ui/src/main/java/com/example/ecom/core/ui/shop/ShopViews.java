@@ -77,6 +77,10 @@ public final class ShopViews {
         i.setPadding(dp(c,30),dp(c,24),dp(c,30),dp(c,24));
         i.setScaleType(ImageView.ScaleType.FIT_CENTER);
         i.setContentDescription("Ảnh minh họa "+p.name+"; chưa có ảnh thực tế");
+        if(p.imageUrl!=null && !p.imageUrl.isEmpty()) {
+            com.example.ecom.core.ui.image.InlineImageLoader.load(i,p.imageUrl,icon(p.category));
+            i.setContentDescription("Ảnh "+p.name);
+        }
         i.setLayoutParams(new LinearLayout.LayoutParams(-1,dp(c,height)));
         return i;
     }

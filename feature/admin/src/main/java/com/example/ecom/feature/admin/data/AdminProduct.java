@@ -11,6 +11,7 @@ public final class AdminProduct {
     public String name = "", category = "", description = "", image = "";
     public BigDecimal price = BigDecimal.ZERO;
     public Object forAI = JSONObject.NULL;
+    public boolean includeImage = true;
     public final List<String> sizes = new ArrayList<>();
 
     public static AdminProduct fromJson(JSONObject j) throws JSONException {
@@ -28,9 +29,11 @@ public final class AdminProduct {
     }
 
     public JSONObject body() throws JSONException {
-        return new JSONObject().put("name", name).put("price", price).put("quantity", stock)
-                .put("description", description).put("image", image).put("size", new JSONArray(sizes))
+        JSONObject body = new JSONObject().put("name", name).put("price", price).put("quantity", stock)
+                .put("description", description).put("size", new JSONArray(sizes))
                 .put("categoryId", categoryId).put("soldCount", soldCount)
                 .put("forAI", forAI == null ? JSONObject.NULL : forAI);
+        if (includeImage) body.put("image", image);
+        return body;
     }
 }

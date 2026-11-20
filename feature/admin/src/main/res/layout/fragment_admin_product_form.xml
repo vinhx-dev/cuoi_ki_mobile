@@ -47,13 +47,12 @@
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="18dp">
                     <ImageView android:id="@+id/productImagePreview" android:layout_width="match_parent" android:layout_height="168dp" android:scaleType="fitCenter" android:background="@drawable/admin_image_background" android:padding="24dp" android:contentDescription="@string/admin_images" android:src="@drawable/admin_image_placeholder"/>
                     <Space android:layout_width="1dp" android:layout_height="18dp"/>
-                    <com.google.android.material.textfield.TextInputLayout android:id="@+id/inputImageLayout" style="@style/Admin.Input" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="@string/admin_image_url">
-                        <com.google.android.material.textfield.TextInputEditText android:id="@+id/inputImage" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textUri" android:textSize="14sp" android:textColor="@color/admin_text" android:maxLength="2048"/>
-                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView android:id="@+id/textImageInfo" android:layout_width="match_parent" android:layout_height="wrap_content" android:saveEnabled="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_image_empty"/>
                     <Space android:layout_width="1dp" android:layout_height="8dp"/>
-                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_url_hint" android:textSize="11sp"/>
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_image_hint" android:textSize="11sp"/>
                     <Space android:layout_width="1dp" android:layout_height="14dp"/>
-                    <com.google.android.material.button.MaterialButton android:id="@+id/btnAddImages" style="@style/Admin.Button.Outlined" android:layout_width="match_parent" android:layout_height="52dp" android:text="@string/admin_preview_url" app:icon="@drawable/admin_ic_photo"/>
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btnAddImages" style="@style/Admin.Button.Outlined" android:layout_width="match_parent" android:layout_height="52dp" android:text="@string/admin_choose_image" app:icon="@drawable/admin_ic_photo"/>
+                    <com.google.android.material.button.MaterialButton android:id="@+id/btnRemoveImage" style="@style/Admin.Button.Outlined" android:layout_width="match_parent" android:layout_height="52dp" android:text="@string/admin_clear_image" android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
             <Space android:layout_width="1dp" android:layout_height="20dp"/>

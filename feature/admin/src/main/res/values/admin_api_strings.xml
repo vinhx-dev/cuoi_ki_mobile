@@ -15,12 +15,9 @@
     <string name="admin_user_pending">Chưa kích hoạt</string>
     <string name="admin_user_blocked">Đã khóa</string>
     <string name="admin_no_category">Không có danh mục</string>
-    <string name="admin_image_url">URL ảnh (http/https)</string>
-    <string name="admin_preview_url">Xem ảnh từ URL</string>
     <string name="admin_sizes_csv">Size (ngăn cách bằng dấu phẩy)</string>
     <string name="admin_sold_count_label">Số lượng đã bán</string>
     <string name="admin_for_ai">forAI (JSON; null để xóa)</string>
-    <string name="admin_error_image_url">Nhập URL http/https hợp lệ, tối đa 2048 ký tự.</string>
     <string name="admin_error_size">Mỗi size dài 1–50 ký tự, ngăn cách bằng dấu phẩy.</string>
     <string name="admin_error_nonnegative">Nhập số nguyên không âm.</string>
     <string name="admin_error_json">Nhập JSON hợp lệ hoặc null.</string>

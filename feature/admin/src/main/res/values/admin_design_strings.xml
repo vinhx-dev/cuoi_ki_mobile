@@ -31,7 +31,6 @@
     <string name="admin_product_form_hint">Điền thông tin để khách hàng dễ dàng tìm và chọn mua.</string>
     <string name="admin_product_basics">Thông tin cơ bản</string>
     <string name="admin_pricing_inventory">Giá bán &amp; tồn kho</string>
-    <string name="admin_url_hint">Dán liên kết ảnh công khai để xem trước và lưu ảnh sản phẩm.</string>
     <string name="admin_additional_info">Thông tin bổ sung</string>
     <string name="admin_delete_short">Xóa sản phẩm</string>
     <string name="admin_edit_short">Chỉnh sửa</string>
