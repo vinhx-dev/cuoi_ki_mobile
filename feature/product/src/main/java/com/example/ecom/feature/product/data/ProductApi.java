@@ -5,7 +5,6 @@ import android.content.Context;
 import com.example.ecom.core.api.ApiCallback;
 import com.example.ecom.core.api.ApiClient;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /** Các API trang chi tiết sản phẩm dùng. */
@@ -19,7 +18,7 @@ public class ProductApi {
 
     /** GET /products/{id} */
     public void getProduct(int id, ApiCallback<Product> cb) {
-        api.get("/products/" + id, null, data -> Product.fromJson((JSONObject) data), cb);
+        api.requestStrict("GET", "/products/" + id, null, null, data -> Product.fromJson((JSONObject) data), cb);
     }
 
     /** POST /orders: đặt nhanh 1 sản phẩm, trả về id đơn mới. Địa chỉ rỗng -> backend dùng địa chỉ mặc định. */
@@ -28,8 +27,8 @@ public class ProductApi {
     }
 
     public void createOrder(int productId, int quantity, String size, ApiCallback<Integer> cb) {
-        JSONArray items = new JSONArray().put(ApiClient.json("productId", productId, "quantity", quantity, "size", size));
-        api.postRemote("/orders", ApiClient.json("items", items, "address", ""),
+        api.requestStrict("POST", "/orders", null,
+                ApiClient.json("productId", productId, "quantity", quantity, "size", size),
                 data -> ((JSONObject) data).getInt("id"), cb);
     }
 }

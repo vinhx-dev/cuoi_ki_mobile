@@ -16,14 +16,38 @@ public final class CatalogRepository {
         if(raw instanceof JSONObject)category=((JSONObject)raw).optString("name",category);
         else if(raw instanceof String)category=(String)raw;
         String image=j.isNull("image")?j.optString("imageUrl",""):j.optString("image","");
-        ShopProduct p=new ShopProduct(j.optInt("id"),j.optString("name"),j.optLong("price"),j.optInt("stock"),category,j.optString("description"),image);
+        ShopProduct p=new ShopProduct(j.optInt("id"),j.optString("name"),j.optLong("price"),j.optInt("quantity", j.optInt("stock")),category,j.optString("description"), image, sizes(j.optJSONArray("size")));
         ShopCatalog.cache(p);
         return p;
     }
+    private List<String> sizes(JSONArray values) {
+        List<String> result = new ArrayList<>();
+        if (values != null) {
+            for (int i = 0; i < values.length(); i++) result.add(values.optString(i));
+        }
+        return result;
+    }
     public void list(String query,ApiCallback<List<ShopProduct>> cb) {
-        Map<String,String> params=new HashMap<>();
-        if(!query.isEmpty())params.put("keyword",query);
-        api.getRemote("/products",params,data-> {
+        list(query, null, cb);
+    }
+
+    public void categories(ApiCallback<Map<String, Long>> cb) {
+        api.requestStrict("GET", "/categories", null, null, data -> {
+            Map<String, Long> categories = new LinkedHashMap<>();
+            JSONArray array = (JSONArray) data;
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject category = array.getJSONObject(i);
+                categories.put(category.getString("name"), category.getLong("id"));
+            }
+            return categories;
+        }, cb);
+    }
+
+    public void list(String query, Long categoryId, ApiCallback<List<ShopProduct>> cb) {
+        Map<String, String> params = new HashMap<>();
+        if (!query.trim().isEmpty()) params.put("keyword", query.trim());
+        if (categoryId != null) params.put("categoryId", categoryId.toString());
+        api.requestStrict("GET", params.isEmpty() ? "/products/home" : "/products/search", params, null,data-> {
             JSONArray a=(JSONArray)data;
             List<ShopProduct> r=new ArrayList<>();
             for(int i=0;i<a.length();i++)r.add(parse(a.getJSONObject(i)));
@@ -38,6 +62,6 @@ public final class CatalogRepository {
             else cb.onError("Không tìm thấy sản phẩm",404);
             return;
         }
-        api.getRemote("/products/"+id,null,data->parse((JSONObject)data),cb);
+        api.requestStrict("GET", "/products/"+id, null, null,data->parse((JSONObject)data),cb);
     }
 }

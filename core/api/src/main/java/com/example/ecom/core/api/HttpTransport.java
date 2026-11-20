@@ -11,7 +11,7 @@ public class HttpTransport implements ApiTransport {
   if(query!=null)for(Map.Entry<String,String> e:query.entrySet())if(e.getValue()!=null)url.addQueryParameter(e.getKey(),e.getValue());
   okhttp3.RequestBody payload=null;
   if(body!=null){ByteArrayOutputStream out=new ByteArrayOutputStream();body.writeTo(out);payload=okhttp3.RequestBody.create(MediaType.parse(body.contentType()),out.toByteArray());}
-  if(payload==null&&(method.equals("POST")||method.equals("PUT")))payload=okhttp3.RequestBody.create(null,new byte[0]);
+  if(payload==null&&(method.equals("POST")||method.equals("PUT")||method.equals("PATCH")))payload=okhttp3.RequestBody.create(null,new byte[0]);
   Request request=new Request.Builder().url(url.build()).method(method,payload).build();
   try(Response response=client.newCall(request).execute()){return new RawResponse(response.code(),response.body()!=null?response.body().string():"");}
  }

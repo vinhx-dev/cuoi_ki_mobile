@@ -89,6 +89,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.VH> {
         LocalCart.CartItem item = items.get(position);
 
         h.productName.setText(item.product != null ? item.product.name : "Sản phẩm");
+        h.productSize.setVisibility(item.size.isEmpty() ? View.GONE : View.VISIBLE);
         h.productSize.setText("Size: " + item.size);
         h.productPrice.setText(Formatter.money(item.product != null ? item.product.price : 0));
         h.quantity.setText(String.valueOf(item.quantity));

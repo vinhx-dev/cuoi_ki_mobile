@@ -20,10 +20,10 @@ public class ProductApi {
         this.api = ApiClient.getInstance(context);
     }
 
-    /** GET /products?keyword= */
+    /** GET /products/search?keyword= */
     public void getProducts(String keyword, ApiCallback<List<Product>> cb) {
         Map<String, String> query = new HashMap<>();
         if (keyword != null && !keyword.trim().isEmpty()) query.put("keyword", keyword.trim());
-        api.get("/products", query, data -> Product.listFromJson((JSONArray) data), cb);
+        api.requestStrict("GET", query.isEmpty() ? "/products/home" : "/products/search", query, null, data -> Product.listFromJson((JSONArray) data), cb);
     }
 }

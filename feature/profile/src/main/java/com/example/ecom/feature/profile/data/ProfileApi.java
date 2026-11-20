@@ -6,17 +6,16 @@ import com.example.ecom.core.api.ApiCallback;
 import com.example.ecom.core.api.ApiClient;
 import com.example.ecom.core.api.auth.AuthRepository;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class ProfileApi {
 
     public static class ShoppingStats {
-        public final int totalOrdersCount;
+        public final long totalOrdersCount;
         public final long totalPaidAmount;
-        public final int activeOrdersCount;
+        public final long activeOrdersCount;
 
-        public ShoppingStats(int totalOrdersCount, long totalPaidAmount, int activeOrdersCount) {
+        public ShoppingStats(long totalOrdersCount, long totalPaidAmount, long activeOrdersCount) {
             this.totalOrdersCount = totalOrdersCount;
             this.totalPaidAmount = totalPaidAmount;
             this.activeOrdersCount = activeOrdersCount;
@@ -48,28 +47,10 @@ public class ProfileApi {
     }
 
     public void getShoppingStats(ApiCallback<ShoppingStats> cb) {
-        apiClient.get("/orders", null, data -> {
-            int totalCount = 0;
-            long totalPaid = 0;
-            int activeCount = 0;
-
-            if (data instanceof JSONArray) {
-                JSONArray arr = (JSONArray) data;
-                totalCount = arr.length();
-                for (int i = 0; i < arr.length(); i++) {
-                    JSONObject obj = arr.getJSONObject(i);
-                    String status = obj.optString("status", "PENDING");
-                    long total = obj.optLong("total", obj.optLong("totalPrice", 0));
-
-                    if ("DELIVERED".equalsIgnoreCase(status) || "COMPLETED".equalsIgnoreCase(status)) {
-                        totalPaid += total;
-                    }
-                    if ("PENDING".equalsIgnoreCase(status) || "SHIPPING".equalsIgnoreCase(status) || "ACTIVE".equalsIgnoreCase(status)) {
-                        activeCount++;
-                    }
-                }
-            }
-            return new ShoppingStats(totalCount, totalPaid, activeCount);
+        apiClient.requestStrict("GET", "/users/me/stats", null, null, data -> {
+            JSONObject stats = (JSONObject) data;
+            return new ShoppingStats(stats.getLong("purchasedOrders"), stats.getLong("totalSpent"),
+                    stats.getLong("pendingOrders") + stats.getLong("shippingOrders"));
         }, cb);
     }
 

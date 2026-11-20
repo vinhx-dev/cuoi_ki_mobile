@@ -13,6 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ecom.core.data.LocalCart;
+import com.example.ecom.core.data.ShopProduct;
+import com.example.ecom.core.api.ApiCallback;
+import com.example.ecom.core.api.ApiClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import com.example.ecom.core.navigation.AppRouter;
 import com.example.ecom.core.ui.base.BaseFragment;
 import com.example.ecom.core.ui.format.Formatter;
@@ -30,6 +35,8 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
     private View btnDeleteSelected;
     private View btnCheckout;
     private CartAdapter adapter;
+    private ApiClient api;
+    private boolean busy;
 
     public CartFragment() {
         super(R.layout.fragment_cart);
@@ -72,13 +79,55 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
             btnCheckout.setOnClickListener(v -> handleCheckout());
         }
 
+        api = ApiClient.getInstance(requireContext());
+        updateCartState();
         loadCartItems();
     }
 
     private void loadCartItems() {
-        List<LocalCart.CartItem> items = LocalCart.getItems(requireContext());
-        adapter.submit(items);
-        updateCartState();
+        requestCart("GET", "/cart", null);
+    }
+
+    private void requestCart(String method, String path, JSONObject body) {
+        if (busy) return;
+        busy = true;
+        View view = requireView();
+        api.requestStrict(method, path, null, body, data -> {
+            List<LocalCart.CartItem> items = new ArrayList<>();
+            if (data == null) return items;
+            JSONArray rows = ((JSONObject) data).getJSONArray("items");
+            for (int i = 0; i < rows.length(); i++) {
+                JSONObject row = rows.getJSONObject(i);
+                int productId = row.getInt("productId");
+                ShopProduct product = new ShopProduct(productId, row.getString("name"),
+                        row.getLong("unitPrice"), 0, "", "", row.optString("image", ""));
+                items.add(new LocalCart.CartItem(productId, row.isNull("size") ? "" : row.getString("size"),
+                        Long.toString(row.getLong("id")), product, row.getInt("quantity")));
+            }
+            return items;
+        }, new ApiCallback<List<LocalCart.CartItem>>() {
+            @Override public void onSuccess(List<LocalCart.CartItem> items) {
+                busy = false;
+                if (getView() == null) return;
+                if (getView() != view) {
+                    loadCartItems();
+                    return;
+                }
+                for (LocalCart.CartItem item : items) {
+                    for (LocalCart.CartItem previous : adapter.getItems()) {
+                        if (item.key.equals(previous.key)) item.checked = previous.checked;
+                    }
+                }
+                adapter.submit(items);
+                updateCartState();
+            }
+
+            @Override public void onError(String message, int code) {
+                busy = false;
+                if (getView() == view) toast(message);
+                else if (getView() != null) loadCartItems();
+            }
+        });
     }
 
     private void showDropdownMenu(View anchor) {
@@ -115,6 +164,7 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
         int checkedCount = adapter.getCheckedCount();
         int totalCount = items.size();
 
+        btnCheckout.setEnabled(checkedCount > 0);
         if (btnDeleteSelected != null) {
             if (checkedCount > 0) {
                 btnDeleteSelected.setVisibility(View.VISIBLE);
@@ -139,31 +189,30 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
 
     @Override
     public void onItemQuantityChanged(LocalCart.CartItem item, int delta) {
+        if (busy) return;
         int newQty = item.quantity + delta;
         if (newQty <= 0) {
             onItemDeleted(item);
         } else {
-            item.quantity = newQty;
-            LocalCart.updateQuantity(requireContext(), item.key, newQty);
-            adapter.notifyDataSetChanged();
-            updateCartState();
+            requestCart("PUT", "/cart/items/" + item.key, ApiClient.json("quantity", newQty));
         }
     }
 
     @Override
     public void onItemDeleted(LocalCart.CartItem item) {
+        if (busy) return;
         new AlertDialog.Builder(requireContext())
                 .setTitle("Xóa sản phẩm")
                 .setMessage("Bạn có chắc chắn muốn xóa " + (item.product != null ? item.product.name : "sản phẩm này") + " khỏi giỏ hàng?")
                 .setPositiveButton("Xóa", (dialog, which) -> {
-                    LocalCart.remove(requireContext(), item.key);
-                    loadCartItems();
+                    requestCart("DELETE", "/cart/items/" + item.key, null);
                 })
                 .setNegativeButton("Hủy", null)
                 .show();
     }
 
     private void confirmDeleteSelectedItems() {
+        if (busy) return;
         int checkedCount = adapter.getCheckedCount();
         if (checkedCount <= 0) return;
 
@@ -176,25 +225,44 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(btnText, (dialog, which) -> {
+                    if (busy) return;
                     if (allChecked) {
-                        LocalCart.clear(requireContext());
+                        requestCart("DELETE", "/cart", null);
                     } else {
-                        List<String> keysToRemove = new ArrayList<>();
+                        List<String> selected = new ArrayList<>();
                         for (LocalCart.CartItem item : adapter.getItems()) {
-                            if (item.checked) {
-                                keysToRemove.add(item.key);
-                            }
+                            if (item.checked) selected.add(item.key);
                         }
-                        LocalCart.removeMultiple(requireContext(), keysToRemove);
+                        removeSelected(selected, 0, requireView());
                     }
-                    toast(allChecked ? "Đã xóa tất cả sản phẩm khỏi giỏ hàng!" : "Đã xóa " + checkedCount + " sản phẩm đã chọn!");
-                    loadCartItems();
                 })
                 .setNegativeButton("Hủy", null)
                 .show();
     }
 
+    private void removeSelected(List<String> ids, int index, View view) {
+        if (index == ids.size()) {
+            busy = false;
+            if (getView() != null) loadCartItems();
+            return;
+        }
+        busy = true;
+        api.requestStrict("DELETE", "/cart/items/" + ids.get(index), null, null, null,
+                new ApiCallback<Void>() {
+                    @Override public void onSuccess(Void ignored) {
+                        removeSelected(ids, index + 1, view);
+                    }
+
+                    @Override public void onError(String message, int code) {
+                        busy = false;
+                        if (getView() == view) toast(message);
+                        if (getView() != null) loadCartItems();
+                    }
+                });
+    }
+
     private void handleCheckout() {
+        if (busy) return;
         int checkedCount = adapter.getCheckedCount();
         if (checkedCount <= 0) {
             toast("Vui lòng tick chọn ít nhất 1 sản phẩm trong giỏ hàng để thanh toán!");
@@ -206,28 +274,35 @@ public class CartFragment extends BaseFragment implements CartAdapter.Listener {
                 .setTitle("Xác nhận thanh toán")
                 .setMessage("Thanh toán " + checkedCount + " sản phẩm với tổng tiền " + Formatter.money(total) + "?")
                 .setPositiveButton("Đồng ý", (dialog, which) -> {
-                    List<LocalCart.CartItem> current = new ArrayList<>(adapter.getItems());
-                    List<com.example.ecom.feature.order.data.OrderItem> orderItems = new ArrayList<>();
-                    List<String> keysToRemove = new ArrayList<>();
-
-                    for (LocalCart.CartItem item : current) {
-                        if (item.checked) {
-                            String pName = item.product != null ? item.product.name : "Sản phẩm";
-                            long pPrice = item.product != null ? item.product.price : 0;
-                            orderItems.add(new com.example.ecom.feature.order.data.OrderItem(item.productId, pName, pPrice, item.quantity));
-                            keysToRemove.add(item.key);
-                        }
+                    if (busy) return;
+                    JSONArray ids = new JSONArray();
+                    for (LocalCart.CartItem item : adapter.getItems()) {
+                        if (item.checked) ids.put(Long.parseLong(item.key));
                     }
+                    if (ids.length() == 0) return;
+                    busy = true;
+                    View view = requireView();
+                    api.requestStrict("POST", "/orders/checkout", null,
+                            ApiClient.json("cartItemIds", ids), data -> ((JSONArray) data).length(),
+                            new ApiCallback<Integer>() {
+                                @Override public void onSuccess(Integer count) {
+                                    busy = false;
+                                    if (getView() == null) return;
+                                    if (getView() != view) {
+                                        loadCartItems();
+                                        return;
+                                    }
+                                    toast("Đặt hàng thành công (" + count + " đơn)");
+                                    loadCartItems();
+                                    AppRouter.toTab(CartFragment.this, "orders");
+                                }
 
-                    new com.example.ecom.feature.order.data.OrderApi(requireContext()).createOrder(
-                            "123 Nguyễn Trãi, Thanh Xuân, Hà Nội",
-                            orderItems,
-                            apiCallback(newOrderId -> {
-                                LocalCart.removeMultiple(requireContext(), keysToRemove);
-                                toast("Đặt hàng thành công! Đơn hàng #" + newOrderId);
-                                AppRouter.toTab(this, "orders");
-                            })
-                    );
+                                @Override public void onError(String message, int code) {
+                                    busy = false;
+                                    if (getView() == view) toast(message);
+                                    if (getView() != null) loadCartItems();
+                                }
+                            });
                 })
                 .setNegativeButton("Bỏ qua", null)
                 .show();

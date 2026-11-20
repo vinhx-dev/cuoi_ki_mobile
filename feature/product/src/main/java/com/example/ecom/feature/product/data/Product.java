@@ -22,6 +22,6 @@ public class Product {
 
     public static Product fromJson(JSONObject j) {
         return new Product(j.optInt("id"), j.optString("name"), j.optString("description"),
-                j.optLong("price"), j.optInt("stock"), j.optString("imageUrl"));
+                j.optLong("price"), j.optInt("quantity", j.optInt("stock")), j.optString("image", j.optString("imageUrl")));
     }
 }

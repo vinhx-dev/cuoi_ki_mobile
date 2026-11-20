@@ -176,7 +176,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="12 đơn"
+                            android:text="—"
                             android:textColor="#1F2937"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -224,7 +224,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="3.250.000đ"
+                            android:text="—"
                             android:textColor="#1F2937"
                             android:textSize="13sp"
                             android:textStyle="bold" />

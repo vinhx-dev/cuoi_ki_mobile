@@ -8,7 +8,7 @@
     <string name="terms_agreement">Tôi đồng ý với Điều khoản và Chính sách</string>
     <string name="btn_login">ĐĂNG NHẬP</string>
     <string name="btn_register">ĐĂNG KÝ</string>
-    <string name="link_register">Đăng ký tài khoản</string>
+    <string name="link_register">Chưa có tài khoản? <b>Đăng ký ngay</b></string>
     <string name="link_forgot">Quên mật khẩu?</string>
     <string name="other_login">Đăng nhập bằng cách khác</string>
     <string name="reg_title">Tạo tài khoản</string>

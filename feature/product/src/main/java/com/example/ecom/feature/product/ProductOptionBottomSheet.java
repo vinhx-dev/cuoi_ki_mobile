@@ -5,6 +5,9 @@ import android.widget.*;
 import androidx.annotation.*;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.ecom.core.data.*;
+import com.example.ecom.core.api.ApiCallback;
+import com.example.ecom.core.api.CartApi;
+import org.json.JSONObject;
 import com.example.ecom.core.ui.shop.ShopViews;
 import com.example.ecom.core.ui.format.Formatter;
 import com.google.android.material.bottomsheet.*;
@@ -66,7 +69,7 @@ public class ProductOptionBottomSheet extends BottomSheetDialogFragment {
             content.addView(ShopViews.text(c,"Không thể tải sản phẩm. Vui lòng đóng và mở lại.",14,false));
             return scroll;
         }
-        int available=buy?product.stock:Math.max(0,product.stock-LocalCart.quantity(c,product.id));
+        int available = Math.min(product.stock, 1000);
         quantity=Math.max(1,Math.min(quantity,Math.max(1,available)));
         LinearLayout summary=ShopViews.row(c);
         ImageView image=ShopViews.image(c,product,100);
@@ -105,14 +108,11 @@ public class ProductOptionBottomSheet extends BottomSheetDialogFragment {
         }
         );
         render.run();
-        content.addView(ShopViews.heading(c,"Chọn size"));
+        if (!product.sizes.isEmpty()) content.addView(ShopViews.heading(c,"Chọn size"));
         ChipGroup sizes=new ChipGroup(c);
         sizes.setSingleSelection(true);
         sizes.setSelectionRequired(true);
-        for(String label:new String[] {
-            "S","M","L","XL"
-        }
-        ) {
+        for (String label : product.sizes) {
             Chip chip=new Chip(c);
             chip.setId(View.generateViewId());
             chip.setText(label);
@@ -147,7 +147,7 @@ public class ProductOptionBottomSheet extends BottomSheetDialogFragment {
         content.addView(confirm,new LinearLayout.LayoutParams(-1,-2));
         if(available==0)error.setText("Đã hết tồn kho khả dụng; kiểm tra số lượng trong giỏ hàng.");
         confirm.setOnClickListener(v-> {
-            if(size.isEmpty()) {
+            if (!product.sizes.isEmpty() && !product.sizes.contains(size)) {
                 error.setText("Vui lòng chọn size trước khi xác nhận.");
                 return;
             }
@@ -155,12 +155,20 @@ public class ProductOptionBottomSheet extends BottomSheetDialogFragment {
                 error.setText("Số lượng vượt tồn kho.");
                 return;
             }
-            if(!buy) {
-                if(LocalCart.add(c,product,size,quantity)) {
-                    Toast.makeText(c,"Đã thêm "+quantity+" sản phẩm, size "+size+" vào giỏ hàng",Toast.LENGTH_SHORT).show();
-                    dismiss();
-                }
-                else error.setText("Số lượng trong giỏ đã đạt tồn kho. Vui lòng giảm số lượng.");
+            if (!buy && !product.isSample()) {
+                confirm.setEnabled(false);
+                new CartApi(c).add(product.id, quantity, size, new ApiCallback<JSONObject>() {
+                    @Override public void onSuccess(JSONObject cart) {
+                        if (getView() != scroll) return;
+                        Toast.makeText(c, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                        dismiss();
+                    }
+                    @Override public void onError(String message, int code) {
+                        if (getView() != scroll) return;
+                        confirm.setEnabled(true);
+                        error.setText(message);
+                    }
+                });
             }
             else if(product.isSample()) {
                 error.setText("Đây là sản phẩm mẫu. Cần kết nối cửa hàng để đặt mua; chưa tạo đơn hàng.");

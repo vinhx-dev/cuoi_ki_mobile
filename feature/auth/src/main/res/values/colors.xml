@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="auth_cobalt">#244FA7</color>
     <color name="text_dark">#333333</color>
     <color name="hint_gray">#9E9E9E</color>
     <color name="text_gray">#757575</color>

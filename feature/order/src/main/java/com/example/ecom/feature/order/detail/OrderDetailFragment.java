@@ -41,6 +41,7 @@ public class OrderDetailFragment extends BaseFragment {
         observe(vm.getOrder(), o -> {
             textStatus.setText(getString(R.string.order_status, Formatter.orderStatus(o.status)));
             textDate.setText(getString(R.string.order_date, Formatter.dateTime(o.createdAt)));
+            textAddress.setVisibility(o.address.isEmpty() ? View.GONE : View.VISIBLE);
             textAddress.setText(getString(R.string.order_address, o.address));
 
             StringBuilder sb = new StringBuilder();

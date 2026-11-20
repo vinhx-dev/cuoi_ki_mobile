@@ -31,29 +31,32 @@ public class HomeFragment extends BaseFragment {
             header.addView(ShopViews.heading(c,"Danh mục"));
             GridLayout categories=new GridLayout(c);
             categories.setColumnCount(4);
-            for(String category:ShopCatalog.CATEGORIES) {
-                LinearLayout item=ShopViews.column(c);
-                item.setGravity(Gravity.CENTER);
-                item.setPadding(0,0,0,ShopViews.dp(c,14));
-                ImageView icon=new ImageView(c);
-                icon.setImageResource(ShopViews.icon(category));
-                icon.setPadding(ShopViews.dp(c,12),ShopViews.dp(c,12),ShopViews.dp(c,12),ShopViews.dp(c,12));
-                icon.setBackground(ShopViews.background(0xFFFFF1E6,28,c));
-                item.addView(icon,new LinearLayout.LayoutParams(ShopViews.dp(c,54),ShopViews.dp(c,54)));
-                TextView label=ShopViews.text(c,category,12,false);
-                label.setPadding(0,ShopViews.dp(c,6),0,0);
-                label.setGravity(Gravity.CENTER);
-                item.addView(label,new LinearLayout.LayoutParams(-1,-2));
-                GridLayout.LayoutParams lp=new GridLayout.LayoutParams();
-                lp.width=0;
-                lp.setGravity(Gravity.FILL_HORIZONTAL);
-                lp.columnSpec=GridLayout.spec(GridLayout.UNDEFINED,1f);
-                item.setLayoutParams(lp);
-                item.setOnClickListener(v->AppRouter.toProductList(this,category));
-                item.setFocusable(true);
-                item.setContentDescription("Xem danh mục "+category);
-                categories.addView(item);
-            }
+            vm.categories.observe(getViewLifecycleOwner(), names -> {
+                categories.removeAllViews();
+                for (String category : names) {
+                    LinearLayout item=ShopViews.column(c);
+                    item.setGravity(Gravity.CENTER);
+                    item.setPadding(0,0,0,ShopViews.dp(c,14));
+                    ImageView icon=new ImageView(c);
+                    icon.setImageResource(ShopViews.icon(category));
+                    icon.setPadding(ShopViews.dp(c,12),ShopViews.dp(c,12),ShopViews.dp(c,12),ShopViews.dp(c,12));
+                    icon.setBackground(ShopViews.background(0xFFFFF1E6,28,c));
+                    item.addView(icon,new LinearLayout.LayoutParams(ShopViews.dp(c,54),ShopViews.dp(c,54)));
+                    TextView label=ShopViews.text(c,category,12,false);
+                    label.setPadding(0,ShopViews.dp(c,6),0,0);
+                    label.setGravity(Gravity.CENTER);
+                    item.addView(label,new LinearLayout.LayoutParams(-1,-2));
+                    GridLayout.LayoutParams lp=new GridLayout.LayoutParams();
+                    lp.width=0;
+                    lp.setGravity(Gravity.FILL_HORIZONTAL);
+                    lp.columnSpec=GridLayout.spec(GridLayout.UNDEFINED,1f);
+                    item.setLayoutParams(lp);
+                    item.setOnClickListener(v->AppRouter.toProductList(this,category));
+                    item.setFocusable(true);
+                    item.setContentDescription("Xem danh mục "+category);
+                    categories.addView(item);
+                }
+            });
             header.addView(categories);
             header.addView(ShopViews.heading(c,"Gợi ý cho bạn"));
         }
@@ -100,7 +103,6 @@ public class HomeFragment extends BaseFragment {
         vm.message.observe(getViewLifecycleOwner(),note::setText);
         bindSearchBar(vm.query,vm::search);
         vm.load();
-        vm.search(vm.query);
     }
     @Override public void onSaveInstanceState(@NonNull Bundle out) {
         super.onSaveInstanceState(out);

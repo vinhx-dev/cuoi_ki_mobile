@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/bg_auth_surface"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -158,17 +158,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutPassword" />
 
-        <!-- d) HÀNG LINK (Cách nút đăng nhập 16dp, trái: Đăng ký tài khoản, phải: Quên mật khẩu?) -->
         <TextView
             android:id="@+id/textRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/form_margin_horizontal"
-            android:layout_marginTop="16dp"
-            android:padding="4dp"
+            android:layout_marginTop="8dp"
+            android:minHeight="48dp"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
             android:text="@string/link_register"
-            android:textColor="@color/text_dark"
+            android:textColor="@color/auth_cobalt"
             android:textSize="@dimen/text_size_link"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
