@@ -31,7 +31,7 @@ public class LoginFragment extends BaseFragment {
   if(!Patterns.EMAIL_ADDRESS.matcher(e).matches()||p.isEmpty()){toast("Vui lòng nhập email hợp lệ và mật khẩu");return;}
   submit.setEnabled(false);
   vm.login(e,p,new ApiCallback<AuthResponse>(){
-   public void onSuccess(AuthResponse a){if(!isUiActive())return;submit.setEnabled(true);AppRouter.toHome(LoginFragment.this);}
+   public void onSuccess(AuthResponse a){if(!isUiActive())return;submit.setEnabled(true);AppRouter.afterLogin(LoginFragment.this,a.user.isAdmin());}
    public void onError(String m,int s){
     if(!isUiActive())return;
     if(s==403&&pending(m)) vm.resend(e,new ApiCallback<Object>(){

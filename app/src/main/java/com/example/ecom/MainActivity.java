@@ -26,6 +26,7 @@ import com.example.ecom.core.navigation.AppRouter;
  * Không khai báo trang, không chứa header / bottom bar ở đây.
  */
 public class MainActivity extends AppCompatActivity {
+    private NavController nav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +35,25 @@ public class MainActivity extends AppCompatActivity {
         applyWindowInsets();
 
         NavHostFragment navHost = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.navHostFragment);
-        NavController nav = navHost.getNavController();
+        nav = navHost.getNavController();
 
         Context app = getApplicationContext();
         AppRouter.install(nav, () -> new SessionManager(app).isLoggedIn());
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         ApiClient.getInstance(this).setUnauthorizedListener(() -> AppRouter.toLogin(nav));
         com.example.ecom.core.api.auth.AuthNetwork.get(this).setExpiredListener(() -> AppRouter.toLogin(nav));
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onPause() {
         ApiClient.getInstance(this).setUnauthorizedListener(null);
         com.example.ecom.core.api.auth.AuthNetwork.get(this).setExpiredListener(null);
-        super.onDestroy();
+        super.onPause();
     }
 
     /** targetSdk 35+ bắt buộc edge-to-edge: chừa chỗ cho status bar / navigation bar / bàn phím. */

@@ -69,6 +69,15 @@ public final class AppRouter {
         navigate(nav(from), "home", replaceAll());
     }
 
+    /** Role comes from login/me response; core navigation has no feature dependency. */
+    public static void afterLogin(Fragment from, boolean admin) {
+        if (!admin) { toHome(from); return; }
+        android.content.Intent intent = new android.content.Intent().setClassName(from.requireContext(),
+                "com.example.ecom.feature.admin.activities.AdminActivity");
+        from.startActivity(intent);
+        from.requireActivity().finish();
+    }
+
     /** Mở trang chủ kèm từ khoá tìm kiếm. ≈ navigate(`/?query=${query}`) */
     public static void toHomeSearch(Fragment from, String query) {
         NavOptions options = new NavOptions.Builder()

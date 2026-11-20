@@ -11,8 +11,9 @@ public class AdminSettingsFragment extends AdminFragment {
     @Override protected void bind(View view) {
         TextInputLayout name=view.findViewById(R.id.inputShopNameLayout),email=view.findViewById(R.id.inputShopEmailLayout);
         MaterialSwitch notifications=view.findViewById(R.id.switchNotifications);
-        name.getEditText().setText(adminViewModel.setting("name","Shop Admin"));
-        email.getEditText().setText(adminViewModel.setting("email","admin@shop.vn"));
+        com.example.ecom.core.data.TokenManager tokens=new com.example.ecom.core.data.TokenManager(requireContext());
+        name.getEditText().setText(adminViewModel.setting("name",tokens.getUserName()));
+        email.getEditText().setText(adminViewModel.setting("email",tokens.getUserEmail()));
         notifications.setChecked(adminViewModel.notifications());
         view.findViewById(R.id.btnSaveSettings).setOnClickListener(v-> {
             String n=name.getEditText().getText().toString().trim(),e=email.getEditText().getText().toString().trim();

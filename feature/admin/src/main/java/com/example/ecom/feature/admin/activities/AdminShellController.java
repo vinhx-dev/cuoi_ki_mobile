@@ -23,8 +23,7 @@ public final class AdminShellController {
         this.header=header;
         this.bottom=bottom;
         this.nav=nav;
-        bottom.setItemActiveIndicatorEnabled(false);
-        bottom.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE));
+        bottom.setItemActiveIndicatorEnabled(true);
         bottom.setElevation(0);
         bottom.setOnItemSelectedListener(item-> {
             if(!syncing)AdminRouter.toAdminTab(nav,item.getItemId());
@@ -40,17 +39,26 @@ public final class AdminShellController {
         }
         );
         header.findViewById(R.id.adminNotifications).setOnClickListener(v-> {
-            AdminViewModel repo=new ViewModelProvider(activity).get(AdminViewModel.class);
-            new MaterialAlertDialogBuilder(context()).setTitle(R.string.admin_notifications).setMessage(activity.getString(R.string.admin_notifications_info,repo.pendingCount())).setNegativeButton(R.string.admin_close,null).setPositiveButton(R.string.admin_view_orders,(d,which)->AdminRouter.toAdminTab(nav,R.id.adminOrdersFragment)).show();
+            androidx.fragment.app.Fragment host=activity.getSupportFragmentManager().findFragmentById(R.id.adminNavHost);
+            androidx.fragment.app.Fragment page=host==null?null:host.getChildFragmentManager().getPrimaryNavigationFragment();
+            if(page instanceof com.example.ecom.feature.admin.fragments.AdminFragment)
+                ((com.example.ecom.feature.admin.fragments.AdminFragment)page).refreshData();
         }
         );
-        header.findViewById(R.id.adminAccount).setOnClickListener(v->new MaterialAlertDialogBuilder(context()).setTitle(R.string.admin_account).setMessage(R.string.admin_account_info).setNegativeButton(R.string.admin_close,null).setPositiveButton(R.string.admin_title_settings,(d,which)->AdminRouter.toAdminSettings(nav)).show());
+        header.findViewById(R.id.adminAccount).setOnClickListener(v -> {
+            com.example.ecom.core.data.TokenManager tokens=new com.example.ecom.core.data.TokenManager(activity);
+            new MaterialAlertDialogBuilder(context()).setTitle(R.string.admin_account)
+                .setMessage(tokens.getUserName()+"\n"+tokens.getUserEmail())
+                .setNegativeButton(R.string.admin_close,null)
+                .setPositiveButton(R.string.admin_logout,(d,which) -> ((AdminActivity)activity).logout()).show();
+        });
     }
     private android.content.Context context() {
         return new ContextThemeWrapper(activity,R.style.ThemeOverlay_ShopAdmin);
     }
     public void apply(NavDestination destination,boolean isDetail) {
         detail=isDetail;
+        header.findViewById(R.id.adminNotifications).setVisibility(destination.getId()==R.id.adminSettingsFragment?View.INVISIBLE:View.VISIBLE);
         ImageButton menu=header.findViewById(R.id.adminMenu);
         menu.setImageResource(detail?R.drawable.admin_ic_back:R.drawable.admin_ic_menu);
         menu.setContentDescription(activity.getString(detail?R.string.admin_back:R.string.admin_menu));
@@ -68,7 +76,7 @@ public final class AdminShellController {
         PopupMenu menu=new PopupMenu(context(),anchor);
         menu.inflate(R.menu.admin_menu);
         menu.setOnMenuItemClickListener(item-> {
-            if(item.getItemId()==R.id.adminExit)activity.finish();
+            if(item.getItemId()==R.id.adminExit)((AdminActivity)activity).logout();
             else if(item.getItemId()==R.id.adminSettingsFragment)AdminRouter.toAdminSettings(nav);
             else AdminRouter.toAdminTab(nav,item.getItemId());
             return true;

@@ -4,14 +4,14 @@
     android:id="@+id/adminRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/admin_background"
+    android:background="@color/admin_background_secondary"
     android:orientation="vertical">
 
     <View
         android:id="@+id/adminStatusBar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/admin_primary" />
+        android:background="@color/admin_background_secondary" />
 
     <include android:id="@+id/adminHeader" layout="@layout/layout_admin_header" />
 

@@ -93,6 +93,12 @@ public final class ApiClient {
         request("DELETE", path, null, null, parser, cb);
     }
 
+    /** Server-only requests, including admin mutations. Never use MockTransport. */
+    public <T> void requestStrict(String method, String path, Map<String, String> query,
+                                  JSONObject body, Parser<T> parser, ApiCallback<T> cb) {
+        requestInternal(method, path, query, jsonOrNull(body), parser, cb, false);
+    }
+
     /** Strict network calls for customer catalogue and checkout: allow MockTransport fallback when server unreachable. */
     public <T> void getRemote(String path, Map<String, String> query, Parser<T> parser, ApiCallback<T> cb) {
         requestInternal("GET", path, query, null, parser, cb, true);
@@ -151,14 +157,15 @@ public final class ApiClient {
                 } catch (Exception e) {
                     // Authentication must always be confirmed by the server.
                     String normalizedPath = path.startsWith("/") ? path : "/" + path;
-                    if (!allowMock || normalizedPath.equals("/auth")
+                    if (!allowMock || normalizedPath.equals("/admin") || normalizedPath.startsWith("/admin/")
+                            || normalizedPath.equals("/auth")
                             || normalizedPath.startsWith("/auth/")) throw e;
                     Log.w(TAG, "Server connection failed (" + e.getMessage() + "), using MockTransport fallback");
                     tempRaw = mockTransport.execute(method, path, query, body, token);
                 }
                 final RawResponse raw = tempRaw;
                 JSONObject json = new JSONObject(raw.body);
-                boolean success = json.optBoolean("success", raw.statusCode < 400);
+                boolean success = json.optBoolean("success", allowMock && raw.statusCode < 400);
                 String message = json.optString("message", "Có lỗi xảy ra");
 
                 if (success && raw.statusCode < 400) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="admin_title_dashboard">Shop Admin</string>
+    <string name="admin_title_dashboard">Tổng quan</string>
     <string name="admin_title_products">Sản phẩm</string>
     <string name="admin_title_orders">Đơn hàng</string>
     <string name="admin_title_users">Người dùng</string>
@@ -70,7 +70,7 @@
     <string name="admin_details">Thông tin sản phẩm</string>
     <string name="admin_error_required">Vui lòng nhập thông tin này</string>
     <string name="admin_error_price">Giá phải từ 1 đến 1.000.000.000 đ</string>
-    <string name="admin_error_stock">Tồn kho phải là số nguyên từ 0 đến 999.999</string>
+    <string name="admin_error_stock">Tồn kho phải là số nguyên từ 0 đến 2.147.483.647</string>
     <string name="admin_error_category">Vui lòng chọn danh mục trong danh sách</string>
     <string name="admin_error_name">Tên sản phẩm tối đa 120 ký tự</string>
     <string name="admin_error_description">Mô tả tối đa 2.000 ký tự</string>

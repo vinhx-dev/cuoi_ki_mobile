@@ -1,59 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Admin.Card"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?attr/selectableItemBackground">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:padding="12dp">
-        <ImageView
-            android:id="@+id/itemImage"
-            android:layout_width="80dp"
-            android:layout_height="96dp"
-            android:background="@drawable/admin_image_background"
-            android:clipToOutline="true"
-            android:padding="6dp"
-            android:scaleType="centerInside"
-            android:contentDescription="@null" />
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="14dp"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/admin_text"
-                android:textSize="15sp"
-                android:id="@+id/itemName"
-                android:fontFamily="sans-serif-medium"
-                android:maxLines="2"
-                android:ellipsize="end" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/admin_primary"
-                android:textSize="15sp"
-                android:id="@+id/itemPrice"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/admin_text_secondary"
-                android:textSize="12sp"
-                android:id="@+id/itemStock"
-                android:layout_marginTop="6dp" />
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" android:clickable="true" android:focusable="true" android:foreground="?attr/selectableItemBackground">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp">
+        <ImageView android:id="@+id/itemImage" android:layout_width="80dp" android:layout_height="102dp" android:background="@drawable/admin_image_background" android:clipToOutline="true" android:padding="10dp" android:scaleType="centerInside" android:contentDescription="@null"/>
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="14dp">
+            <TextView android:id="@+id/itemCategory" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Kicker" android:maxLines="1" android:ellipsize="end"/>
+            <Space android:layout_width="1dp" android:layout_height="7dp"/>
+            <TextView android:id="@+id/itemName" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:textSize="15sp" android:maxLines="2" android:ellipsize="end"/>
+            <Space android:layout_width="1dp" android:layout_height="10dp"/>
+            <TextView android:id="@+id/itemPrice" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:textSize="17sp"/>
+            <Space android:layout_width="1dp" android:layout_height="9dp"/>
+            <TextView android:id="@+id/itemStock" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="10sp" android:fontFamily="sans-serif-medium"/>
         </LinearLayout>
+        <ImageView android:layout_width="16dp" android:layout_height="16dp" android:src="@drawable/admin_ic_chevron" app:tint="@color/admin_nav_inactive" android:contentDescription="@null" android:layout_marginStart="6dp"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

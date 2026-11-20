@@ -12,7 +12,7 @@ public class SplashFragment extends BaseFragment {
  @Override public void onViewCreated(@NonNull View v,@Nullable Bundle state){super.onViewCreated(v,state);
   if(new TokenManager(requireContext()).getAccessToken()==null){v.post(()->{if(isUiActive())AppRouter.toLogin(this);});return;}
   new AuthRepository(requireContext()).me(new ApiCallback<User>(){
-   public void onSuccess(User u){if(isUiActive())AppRouter.toHome(SplashFragment.this);}
+   public void onSuccess(User u){if(isUiActive())AppRouter.afterLogin(SplashFragment.this,u.isAdmin());}
    public void onError(String m,int s){if(isUiActive())AppRouter.toLogin(SplashFragment.this);}
   });
  }

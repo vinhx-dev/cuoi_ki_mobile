@@ -1,441 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/admin_primary">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp"
-        android:background="@drawable/admin_rounded_top">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/admin_text"
-            android:textSize="22sp"
-            android:text="@string/admin_dashboard_heading"
-            android:fontFamily="sans-serif-medium" />
-        <Space android:layout_width="1dp" android:layout_height="12dp" />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Admin.Card"
-                android:layout_width="0dp"
-                android:layout_height="68dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                app:cardBackgroundColor="@color/admin_primary_light"
-                app:strokeWidth="0dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/admin_ic_cart"
-                        android:contentDescription="@null" />
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/admin_text"
-                            android:textSize="13sp"
-                            android:text="@string/admin_metric_orders"
-                            android:maxLines="1" />
-                        <TextView
-                            android:id="@+id/metricOrders"
-                            android:layout_width="match_parent"
-                            android:layout_height="32dp"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/admin_text"
-                            android:fontFamily="sans-serif-medium"
-                            android:maxLines="1"
-                            app:autoSizeTextType="uniform"
-                            app:autoSizeMinTextSize="12sp"
-                            app:autoSizeMaxTextSize="24sp"
-                            app:autoSizeStepGranularity="1sp"
-                            tools:text="24" />
-                    </LinearLayout>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/admin_background_secondary" android:fillViewport="true" android:clipToPadding="false">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="20dp" android:paddingTop="12dp" android:paddingBottom="24dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Kicker" android:text="@string/admin_overview_eyebrow"/>
+        <Space android:layout_width="1dp" android:layout_height="7dp"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.PageTitle" android:text="@string/admin_overview_title"/>
+        <Space android:layout_width="1dp" android:layout_height="8dp"/>
+        <TextView android:id="@+id/dashboardDate" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body"/>
+        <Space android:layout_width="1dp" android:layout_height="22dp"/>
+        <com.google.android.material.card.MaterialCardView style="@style/Admin.Card.Hero" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="22dp">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                    <ImageView android:layout_width="23dp" android:layout_height="23dp" android:src="@drawable/admin_ic_coins" app:tint="@color/admin_hero_muted" android:contentDescription="@null"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="10dp" android:text="@string/admin_revenue_eyebrow" android:textColor="@color/admin_hero_muted" android:fontFamily="sans-serif-medium" android:textSize="11sp" android:letterSpacing="0.07"/>
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Admin.Card"
-                android:layout_width="0dp"
-                android:layout_height="68dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                app:cardBackgroundColor="@color/admin_primary_light"
-                app:strokeWidth="0dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/admin_ic_coins"
-                        android:contentDescription="@null" />
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/admin_text"
-                            android:textSize="13sp"
-                            android:text="@string/admin_metric_revenue"
-                            android:maxLines="1" />
-                        <TextView
-                            android:id="@+id/metricRevenue"
-                            android:layout_width="match_parent"
-                            android:layout_height="32dp"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/admin_text"
-                            android:fontFamily="sans-serif-medium"
-                            android:maxLines="1"
-                            app:autoSizeTextType="uniform"
-                            app:autoSizeMinTextSize="12sp"
-                            app:autoSizeMaxTextSize="24sp"
-                            app:autoSizeStepGranularity="1sp"
-                            tools:text="12.450.000 đ" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Admin.Card"
-                android:layout_width="0dp"
-                android:layout_height="68dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                app:cardBackgroundColor="@color/admin_primary_light"
-                app:strokeWidth="0dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/admin_ic_box"
-                        android:contentDescription="@null" />
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/admin_text"
-                            android:textSize="13sp"
-                            android:text="@string/admin_metric_products"
-                            android:maxLines="1" />
-                        <TextView
-                            android:id="@+id/metricProducts"
-                            android:layout_width="match_parent"
-                            android:layout_height="32dp"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/admin_text"
-                            android:fontFamily="sans-serif-medium"
-                            android:maxLines="1"
-                            app:autoSizeTextType="uniform"
-                            app:autoSizeMinTextSize="12sp"
-                            app:autoSizeMaxTextSize="24sp"
-                            app:autoSizeStepGranularity="1sp"
-                            tools:text="256" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.card.MaterialCardView
-                style="@style/Admin.Card"
-                android:layout_width="0dp"
-                android:layout_height="68dp"
-                android:layout_weight="1"
-                android:layout_margin="4dp"
-                app:cardBackgroundColor="@color/admin_primary_light"
-                app:strokeWidth="0dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="12dp">
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/admin_ic_users"
-                        android:contentDescription="@null" />
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="10dp"
-                        android:orientation="vertical">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/admin_text"
-                            android:textSize="13sp"
-                            android:text="@string/admin_metric_users"
-                            android:maxLines="1" />
-                        <TextView
-                            android:id="@+id/metricUsers"
-                            android:layout_width="match_parent"
-                            android:layout_height="32dp"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/admin_text"
-                            android:fontFamily="sans-serif-medium"
-                            android:maxLines="1"
-                            app:autoSizeTextType="uniform"
-                            app:autoSizeMinTextSize="12sp"
-                            app:autoSizeMaxTextSize="24sp"
-                            app:autoSizeStepGranularity="1sp"
-                            tools:text="1.328" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Admin.Card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="12dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/admin_text"
-                    android:textSize="18sp"
-                    android:text="@string/admin_week_revenue"
-                    android:fontFamily="sans-serif-medium" />
-                <com.example.ecom.feature.admin.utils.RevenueChartView
-                    android:id="@+id/dashboardChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="132dp"
-                    android:layout_marginTop="12dp"
-                    android:importantForAccessibility="yes" />
+                <Space android:layout_width="1dp" android:layout_height="18dp"/>
+                <TextView android:id="@+id/metricRevenue" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:textSize="34sp" android:textColor="@color/admin_background" android:maxLines="1" app:autoSizeTextType="uniform" app:autoSizeMinTextSize="23sp" app:autoSizeMaxTextSize="34sp"/>
+                <Space android:layout_width="1dp" android:layout_height="10dp"/>
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_revenue_explainer" android:textColor="@color/admin_hero_muted" android:textSize="12sp"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Admin.Card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/admin_text"
-                    android:textSize="19sp"
-                    android:text="@string/admin_management"
-                    android:fontFamily="sans-serif-medium"
-                    android:layout_marginBottom="10dp" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <com.google.android.material.card.MaterialCardView
-                        style="@style/Admin.Card"
-                        android:id="@+id/btnAdminProducts"
-                        android:layout_width="0dp"
-                        android:layout_height="78dp"
-                        android:layout_weight="1"
-                        android:layout_margin="4dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="6dp">
-                            <ImageView
-                                android:layout_width="26dp"
-                                android:layout_height="26dp"
-                                android:src="@drawable/admin_ic_box"
-                                android:contentDescription="@null" />
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:gravity="center"
-                                android:text="@string/admin_manage_products"
-                                android:textColor="@color/admin_text"
-                                android:textSize="12sp"
-                                android:includeFontPadding="false" />
+        <Space android:layout_width="1dp" android:layout_height="12dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="5dp">
+                <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="14dp">
+                        <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/admin_ic_cart" app:tint="@color/admin_blue" android:contentDescription="@null"/>
+                        <Space android:layout_width="1dp" android:layout_height="12dp"/>
+                        <TextView android:id="@+id/metricOrders" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:textSize="27sp" android:maxLines="1" app:autoSizeTextType="uniform" app:autoSizeMinTextSize="17sp" app:autoSizeMaxTextSize="27sp"/>
+                        <Space android:layout_width="1dp" android:layout_height="5dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_title_orders" android:textSize="11sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginHorizontal="5dp">
+                <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="14dp">
+                        <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/admin_ic_box" app:tint="@color/admin_primary" android:contentDescription="@null"/>
+                        <Space android:layout_width="1dp" android:layout_height="12dp"/>
+                        <TextView android:id="@+id/metricProducts" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:textSize="27sp" android:maxLines="1" app:autoSizeTextType="uniform" app:autoSizeMinTextSize="17sp" app:autoSizeMaxTextSize="27sp"/>
+                        <Space android:layout_width="1dp" android:layout_height="5dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_title_products" android:textSize="11sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="5dp">
+                <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="14dp">
+                        <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/admin_ic_users" app:tint="@color/admin_success" android:contentDescription="@null"/>
+                        <Space android:layout_width="1dp" android:layout_height="12dp"/>
+                        <TextView android:id="@+id/metricUsers" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:textSize="27sp" android:maxLines="1" app:autoSizeTextType="uniform" app:autoSizeMinTextSize="17sp" app:autoSizeMaxTextSize="27sp"/>
+                        <Space android:layout_width="1dp" android:layout_height="5dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_title_users" android:textSize="11sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:text="@string/admin_quick_actions" android:layout_marginTop="24dp" android:layout_marginBottom="12dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="6dp">
+                <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/btnAdminProducts" android:clickable="true" android:focusable="true" android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/admin_ic_box" app:tint="@color/admin_primary" android:contentDescription="@null"/>
+                            <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+                            <ImageView android:layout_width="15dp" android:layout_height="15dp" android:src="@drawable/admin_ic_chevron" app:tint="@color/admin_nav_inactive" android:contentDescription="@null"/>
                         </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                    <com.google.android.material.card.MaterialCardView
-                        style="@style/Admin.Card"
-                        android:id="@+id/btnAdminOrders"
-                        android:layout_width="0dp"
-                        android:layout_height="78dp"
-                        android:layout_weight="1"
-                        android:layout_margin="4dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="6dp">
-                            <ImageView
-                                android:layout_width="26dp"
-                                android:layout_height="26dp"
-                                android:src="@drawable/admin_ic_cart"
-                                android:contentDescription="@null" />
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:gravity="center"
-                                android:text="@string/admin_manage_orders"
-                                android:textColor="@color/admin_text"
-                                android:textSize="12sp"
-                                android:includeFontPadding="false" />
+                        <Space android:layout_width="1dp" android:layout_height="16dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:text="@string/admin_title_products" android:textSize="15sp"/>
+                        <Space android:layout_width="1dp" android:layout_height="5dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_products_action_hint" android:textSize="11sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="6dp">
+                <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/btnAdminOrders" android:clickable="true" android:focusable="true" android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/admin_ic_cart" app:tint="@color/admin_primary" android:contentDescription="@null"/>
+                            <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+                            <ImageView android:layout_width="15dp" android:layout_height="15dp" android:src="@drawable/admin_ic_chevron" app:tint="@color/admin_nav_inactive" android:contentDescription="@null"/>
                         </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                    <com.google.android.material.card.MaterialCardView
-                        style="@style/Admin.Card"
-                        android:id="@+id/btnAdminRevenue"
-                        android:layout_width="0dp"
-                        android:layout_height="78dp"
-                        android:layout_weight="1"
-                        android:layout_margin="4dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:gravity="center"
-                            android:padding="6dp">
-                            <ImageView
-                                android:layout_width="26dp"
-                                android:layout_height="26dp"
-                                android:src="@drawable/admin_ic_chart"
-                                android:contentDescription="@null" />
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:gravity="center"
-                                android:text="@string/admin_manage_revenue"
-                                android:textColor="@color/admin_text"
-                                android:textSize="12sp"
-                                android:includeFontPadding="false" />
+                        <Space android:layout_width="1dp" android:layout_height="16dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:text="@string/admin_title_orders" android:textSize="15sp"/>
+                        <Space android:layout_width="1dp" android:layout_height="5dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_orders_action_hint" android:textSize="11sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="12dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="6dp">
+                <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/btnAdminUsers" android:clickable="true" android:focusable="true" android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/admin_ic_users" app:tint="@color/admin_primary" android:contentDescription="@null"/>
+                            <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+                            <ImageView android:layout_width="15dp" android:layout_height="15dp" android:src="@drawable/admin_ic_chevron" app:tint="@color/admin_nav_inactive" android:contentDescription="@null"/>
                         </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <com.google.android.material.card.MaterialCardView
-                        style="@style/Admin.Card"
-                        android:id="@+id/btnAdminUsers"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:layout_margin="4dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:gravity="center"
-                            android:padding="8dp">
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:src="@drawable/admin_ic_users"
-                                android:contentDescription="@null" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:gravity="center"
-                                android:text="@string/admin_manage_users"
-                                android:textColor="@color/admin_text"
-                                android:textSize="12sp"
-                                android:includeFontPadding="false" />
+                        <Space android:layout_width="1dp" android:layout_height="16dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:text="@string/admin_title_users" android:textSize="15sp"/>
+                        <Space android:layout_width="1dp" android:layout_height="5dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_users_action_hint" android:textSize="11sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="6dp">
+                <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/btnAdminRevenue" android:clickable="true" android:focusable="true" android:foreground="?attr/selectableItemBackground">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/admin_ic_chart" app:tint="@color/admin_primary" android:contentDescription="@null"/>
+                            <Space android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+                            <ImageView android:layout_width="15dp" android:layout_height="15dp" android:src="@drawable/admin_ic_chevron" app:tint="@color/admin_nav_inactive" android:contentDescription="@null"/>
                         </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                    <com.google.android.material.card.MaterialCardView
-                        style="@style/Admin.Card"
-                        android:id="@+id/btnAdminSettings"
-                        android:layout_width="0dp"
-                        android:layout_height="48dp"
-                        android:layout_weight="1"
-                        android:layout_margin="4dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground">
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:gravity="center"
-                            android:padding="8dp">
-                            <ImageView
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:src="@drawable/admin_ic_settings"
-                                android:contentDescription="@null" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
-                                android:gravity="center"
-                                android:text="@string/admin_manage_settings"
-                                android:textColor="@color/admin_text"
-                                android:textSize="12sp"
-                                android:includeFontPadding="false" />
-                        </LinearLayout>
-                    </com.google.android.material.card.MaterialCardView>
-                </LinearLayout>
+                        <Space android:layout_width="1dp" android:layout_height="16dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:text="@string/admin_statistics" android:textSize="15sp"/>
+                        <Space android:layout_width="1dp" android:layout_height="5dp"/>
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_stats_action_hint" android:textSize="11sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:text="@string/admin_revenue_snapshot" android:layout_marginTop="24dp" android:layout_marginBottom="12dp"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="6dp">
+                <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_revenue_today" android:textSize="11sp"/>
+                        <Space android:layout_width="1dp" android:layout_height="9dp"/>
+                        <TextView android:id="@+id/dashboardToday" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:textSize="18sp" android:maxLines="1" app:autoSizeTextType="uniform" app:autoSizeMinTextSize="12sp" app:autoSizeMaxTextSize="20sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="6dp">
+                <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_revenue_month" android:textSize="11sp"/>
+                        <Space android:layout_width="1dp" android:layout_height="9dp"/>
+                        <TextView android:id="@+id/dashboardMonth" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:textSize="18sp" android:maxLines="1" app:autoSizeTextType="uniform" app:autoSizeMinTextSize="12sp" app:autoSizeMaxTextSize="20sp"/>
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:text="@string/admin_orders_overview" android:layout_marginTop="24dp" android:layout_marginBottom="12dp"/>
+        <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/dashboardOrderStates" android:padding="18dp"/>
+        </com.google.android.material.card.MaterialCardView>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:text="@string/admin_store_health" android:layout_marginTop="24dp" android:layout_marginBottom="12dp"/>
+        <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/dashboardStats" android:padding="18dp"/>
+        </com.google.android.material.card.MaterialCardView>
+        <Space android:layout_width="1dp" android:layout_height="18dp"/>
+        <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/btnAdminSettings" android:clickable="true" android:focusable="true" android:foreground="?attr/selectableItemBackground">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="18dp">
+                <ImageView android:layout_width="23dp" android:layout_height="23dp" android:src="@drawable/admin_ic_settings" app:tint="@color/admin_text_secondary" android:contentDescription="@null"/>
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="12dp" android:text="@string/admin_title_settings" android:textAppearance="@style/Admin.Heading" android:textSize="14sp"/>
+                <ImageView android:layout_width="17dp" android:layout_height="17dp" android:src="@drawable/admin_ic_chevron" app:tint="@color/admin_text_secondary" android:contentDescription="@null"/>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

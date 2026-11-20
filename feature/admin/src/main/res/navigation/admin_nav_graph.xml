@@ -29,19 +29,19 @@
     <fragment android:id="@id/adminSettingsFragment" android:name="com.example.ecom.feature.admin.fragments.AdminSettingsFragment" android:label="@string/admin_title_settings" />
 
     <fragment android:id="@id/adminProductDetailFragment" android:name="com.example.ecom.feature.admin.fragments.AdminProductDetailFragment" android:label="@string/admin_title_product_detail">
-        <argument android:name="adminProductId" app:argType="integer" />
+        <argument android:name="adminProductId" app:argType="long" />
     </fragment>
 
     <fragment android:id="@id/adminProductFormFragment" android:name="com.example.ecom.feature.admin.fragments.AdminProductFormFragment" android:label="@string/admin_title_product_add">
-        <argument android:name="adminProductId" app:argType="integer" android:defaultValue="0" />
+        <argument android:name="adminProductId" app:argType="long" android:defaultValue="0L" />
     </fragment>
 
     <fragment android:id="@id/adminOrderDetailFragment" android:name="com.example.ecom.feature.admin.fragments.AdminOrderDetailFragment" android:label="@string/admin_title_order_detail">
-        <argument android:name="adminOrderId" app:argType="integer" />
+        <argument android:name="adminOrderId" app:argType="long" />
     </fragment>
 
     <fragment android:id="@id/adminUserDetailFragment" android:name="com.example.ecom.feature.admin.fragments.AdminUserDetailFragment" android:label="@string/admin_title_user_detail">
-        <argument android:name="adminUserId" app:argType="integer" />
+        <argument android:name="adminUserId" app:argType="long" />
     </fragment>
 
 </navigation>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_logout">Đăng xuất</string>
+    <string name="admin_busy">Đang xử lý yêu cầu, vui lòng chờ.</string>
+    <string name="admin_refresh">Làm mới</string>
+    <string name="admin_retry">Thử lại</string>
+    <string name="admin_loading">Đang tải dữ liệu…</string>
+    <string name="admin_saving">Đang gửi yêu cầu…</string>
+    <string name="admin_session_expired">Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại.</string>
+    <string name="admin_forbidden">Máy chủ từ chối quyền truy cập.</string>
+    <string name="admin_invalid_user_id">Nhập ID người dùng là số nguyên dương.</string>
+    <string name="admin_filter_user_id">ID người dùng (để trống: tất cả)</string>
+    <string name="admin_apply_filter">Lọc</string>
+    <string name="admin_user_active">Đang hoạt động</string>
+    <string name="admin_user_pending">Chưa kích hoạt</string>
+    <string name="admin_user_blocked">Đã khóa</string>
+    <string name="admin_no_category">Không có danh mục</string>
+    <string name="admin_image_url">URL ảnh (http/https)</string>
+    <string name="admin_preview_url">Xem ảnh từ URL</string>
+    <string name="admin_sizes_csv">Size (ngăn cách bằng dấu phẩy)</string>
+    <string name="admin_sold_count_label">Số lượng đã bán</string>
+    <string name="admin_for_ai">forAI (JSON; null để xóa)</string>
+    <string name="admin_error_image_url">Nhập URL http/https hợp lệ, tối đa 2048 ký tự.</string>
+    <string name="admin_error_size">Mỗi size dài 1–50 ký tự, ngăn cách bằng dấu phẩy.</string>
+    <string name="admin_error_nonnegative">Nhập số nguyên không âm.</string>
+    <string name="admin_error_json">Nhập JSON hợp lệ hoặc null.</string>
+    <string name="admin_error_price_decimal">Giá từ 0 đến 9.999.999.999.999,99; tối đa 2 chữ số thập phân.</string>
+    <string name="admin_sold_count">Đã bán: %1$d</string>
+    <string name="admin_order_line_server">Size %1$s · SL %2$d</string>
+    <string name="admin_revenue_today">Doanh thu hôm nay</string>
+    <string name="admin_revenue_month">Doanh thu tháng này</string>
+    <string name="admin_active_users">Người dùng hoạt động</string>
+    <string name="admin_blocked_users">Người dùng bị khóa</string>
+    <string name="admin_new_users">Người dùng mới tháng này</string>
+    <string name="admin_out_of_stock">Sản phẩm hết hàng</string>
+    <string name="admin_total_categories">Tổng danh mục</string>
+    <string name="admin_total_spent">Tổng chi tiêu (đã giao)</string>
+    <string name="admin_cart_items">Số dòng giỏ hàng</string>
+    <string name="admin_category_product_count">%1$d sản phẩm</string>
+    <string name="admin_top_products">Sản phẩm bán chạy (theo lượt bán)</string>
+    <string name="admin_category_counts">Số sản phẩm theo danh mục</string>
+    <string name="admin_real_revenue_note">Doanh thu từ đơn đã giao. Backend chưa cung cấp chuỗi doanh thu theo thời gian.</string>
+    <string name="admin_live_stats">Thống kê từ máy chủ</string>
+    <string name="admin_local_settings_note">Tùy chọn lưu trên thiết bị; không thay đổi cấu hình cửa hàng trên máy chủ.</string>
+</resources>

@@ -1,29 +1,36 @@
 package com.example.ecom.feature.admin.data;
+
 import org.json.*;
+import java.math.BigDecimal;
 import java.util.*;
-public class AdminProduct {
-    public int id, stock;
-    public String name, category, description, sizes, colors, imageKey;
-    public long price;
-    public final List<String> images = new ArrayList<>();
-    public AdminProduct(int id,String name,String category,long price,int stock,String description,String sizes,String colors,String imageKey) {
-        this.id=id;
-        this.name=name;
-        this.category=category;
-        this.price=price;
-        this.stock=stock;
-        this.description=description;
-        this.sizes=sizes;
-        this.colors=colors;
-        this.imageKey=imageKey;
-    }
-    public JSONObject toJson() throws JSONException {
-        return new JSONObject().put("id",id).put("name",name).put("category",category).put("price",price).put("stock",stock).put("description",description).put("sizes",sizes).put("colors",colors).put("imageKey",imageKey).put("images",new JSONArray(images));
-    }
+
+/** Full admin DTO, preserving arbitrary sizes and the JSON type of forAI. */
+public final class AdminProduct {
+    public long id, categoryId;
+    public int stock, soldCount;
+    public String name = "", category = "", description = "", image = "";
+    public BigDecimal price = BigDecimal.ZERO;
+    public Object forAI = JSONObject.NULL;
+    public final List<String> sizes = new ArrayList<>();
+
     public static AdminProduct fromJson(JSONObject j) throws JSONException {
-        AdminProduct p=new AdminProduct(j.getInt("id"),j.getString("name"),j.getString("category"),j.getLong("price"),j.getInt("stock"),j.optString("description"),j.optString("sizes"),j.optString("colors"),j.optString("imageKey","tee"));
-        JSONArray a=j.optJSONArray("images");
-        if(a!=null)for(int i=0;i<a.length();i++)p.images.add(a.getString(i));
+        AdminProduct p = new AdminProduct();
+        p.id = j.getLong("id"); p.name = j.getString("name");
+        p.price = new BigDecimal(j.get("price").toString());
+        p.stock = j.getInt("quantity"); p.soldCount = j.getInt("soldCount");
+        p.categoryId = j.optLong("categoryId");
+        p.category = AdminJson.text(j, "categoryName");
+        p.description = AdminJson.text(j, "description"); p.image = AdminJson.text(j, "image");
+        p.forAI = j.opt("forAI");
+        JSONArray sizes = j.getJSONArray("size");
+        for (int i = 0; i < sizes.length(); i++) p.sizes.add(sizes.getString(i));
         return p;
+    }
+
+    public JSONObject body() throws JSONException {
+        return new JSONObject().put("name", name).put("price", price).put("quantity", stock)
+                .put("description", description).put("image", image).put("size", new JSONArray(sizes))
+                .put("categoryId", categoryId).put("soldCount", soldCount)
+                .put("forAI", forAI == null ? JSONObject.NULL : forAI);
     }
 }

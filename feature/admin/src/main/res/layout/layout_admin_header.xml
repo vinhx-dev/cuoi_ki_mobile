@@ -1,50 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="64dp"
-    android:background="@color/admin_primary"
-    android:gravity="center_vertical"
-    android:paddingHorizontal="8dp"
-    android:theme="@style/ThemeOverlay.ShopAdmin">
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/adminMenu"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:padding="12dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/admin_ic_menu"
-        android:contentDescription="@string/admin_menu"
-        app:tint="@color/admin_background" />
-    <TextView
-        android:id="@+id/adminHeaderTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:text="@string/admin_title_dashboard"
-        android:textColor="@color/admin_background"
-        android:fontFamily="sans-serif-medium"
-        android:textSize="22sp" />
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/adminNotifications"
-        android:layout_width="44dp"
-        android:layout_height="48dp"
-        android:padding="11dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/admin_ic_bell"
-        android:contentDescription="@string/admin_notifications"
-        app:tint="@color/admin_background" />
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/adminAccount"
-        android:layout_width="44dp"
-        android:layout_height="48dp"
-        android:padding="10dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/admin_ic_account"
-        android:contentDescription="@string/admin_account"
-        app:tint="@color/admin_background" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="72dp" android:background="@color/admin_background_secondary" android:gravity="center_vertical" android:paddingHorizontal="12dp" android:theme="@style/ThemeOverlay.ShopAdmin">
+    <androidx.appcompat.widget.AppCompatImageButton android:id="@+id/adminMenu" android:layout_width="48dp" android:layout_height="48dp" android:padding="13dp" android:background="?attr/selectableItemBackgroundBorderless" android:src="@drawable/admin_ic_menu" android:contentDescription="@string/admin_menu" app:tint="@color/admin_text"/>
+    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="6dp">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/admin_workspace" style="@style/Admin.Kicker" android:textColor="@color/admin_primary"/>
+        <TextView android:id="@+id/adminHeaderTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:maxLines="1" android:ellipsize="end" android:text="@string/admin_title_dashboard" android:textColor="@color/admin_text" android:fontFamily="sans-serif-medium" android:textSize="17sp" android:layout_marginTop="3dp"/>
+    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatImageButton android:id="@+id/adminNotifications" android:layout_width="48dp" android:layout_height="48dp" android:padding="14dp" android:background="?attr/selectableItemBackgroundBorderless" android:src="@drawable/admin_ic_refresh" android:contentDescription="@string/admin_refresh" app:tint="@color/admin_text_secondary"/>
+    <androidx.appcompat.widget.AppCompatImageButton android:id="@+id/adminAccount" android:layout_width="48dp" android:layout_height="48dp" android:padding="13dp" android:background="@drawable/admin_avatar_background" android:src="@drawable/admin_ic_account" android:contentDescription="@string/admin_account" app:tint="@color/admin_primary"/>
 </LinearLayout>

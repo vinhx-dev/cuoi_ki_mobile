@@ -25,19 +25,19 @@ public final class AdminRouter {
     public static void toAdminSettings(Fragment from) { toAdminSettings(nav(from)); }
     public static void toAdminSettings(NavController nav) { nav.navigate(R.id.adminSettingsFragment); }
 
-    public static void toAdminProductDetail(Fragment from, int id) {
+    public static void toAdminProductDetail(Fragment from, long id) {
         detail(from, R.id.adminProductDetailFragment, ARG_ADMIN_PRODUCT_ID, id);
     }
 
-    public static void toAdminProductForm(Fragment from, int id) {
+    public static void toAdminProductForm(Fragment from, long id) {
         detail(from, R.id.adminProductFormFragment, ARG_ADMIN_PRODUCT_ID, id);
     }
 
-    public static void toAdminOrderDetail(Fragment from, int id) {
+    public static void toAdminOrderDetail(Fragment from, long id) {
         detail(from, R.id.adminOrderDetailFragment, ARG_ADMIN_ORDER_ID, id);
     }
 
-    public static void toAdminUserDetail(Fragment from, int id) {
+    public static void toAdminUserDetail(Fragment from, long id) {
         detail(from, R.id.adminUserDetailFragment, ARG_ADMIN_USER_ID, id);
     }
 
@@ -57,9 +57,9 @@ public final class AdminRouter {
 
     public static void back(Fragment from) { nav(from).navigateUp(); }
 
-    private static void detail(Fragment from, int destination, String key, int id) {
+    private static void detail(Fragment from, int destination, String key, long id) {
         Bundle args = new Bundle();
-        args.putInt(key, id);
+        args.putLong(key, id);
         nav(from).navigate(destination, args);
     }
 

@@ -1,79 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/admin_background_secondary"
-    android:padding="16dp">
-    <com.google.android.material.card.MaterialCardView
-        style="@style/Admin.Card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/admin_text"
-                android:textSize="22sp"
-                android:id="@+id/textCustomerName"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/admin_text"
-                android:textSize="14sp"
-                android:id="@+id/textCustomerEmail"
-                android:layout_marginTop="10dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/admin_text"
-                android:textSize="14sp"
-                android:id="@+id/textCustomerPhone"
-                android:layout_marginTop="6dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/admin_text"
-                android:textSize="14sp"
-                android:id="@+id/textCustomerAddress"
-                android:layout_marginTop="6dp" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/admin_text"
-                android:textSize="14sp"
-                android:id="@+id/textCustomerOrders"
-                android:layout_marginTop="12dp" />
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@color/admin_background_secondary" android:fillViewport="true" android:clipToPadding="false">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="20dp" android:paddingTop="12dp" android:paddingBottom="24dp">
+        <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="22dp">
+                <ImageView android:layout_width="72dp" android:layout_height="72dp" android:src="@drawable/admin_ic_account" app:tint="@color/admin_primary" android:contentDescription="@null" android:layout_gravity="center_horizontal" android:padding="16dp" android:background="@drawable/admin_avatar_background"/>
+                <Space android:layout_width="1dp" android:layout_height="16dp"/>
+                <TextView android:id="@+id/textCustomerName" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.PageTitle" android:gravity="center" android:textSize="24sp"/>
+                <Space android:layout_width="1dp" android:layout_height="10dp"/>
+                <TextView android:id="@+id/textCustomerEmail" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:gravity="center" android:lineSpacingExtra="4dp"/>
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/admin_border" android:layout_marginVertical="16dp"/>
+                <TextView android:id="@+id/textCustomerPhone" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:textColor="@color/admin_text"/>
+                <Space android:layout_width="1dp" android:layout_height="10dp"/>
+                <TextView android:id="@+id/textCustomerAddress" android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:lineSpacingExtra="4dp"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:text="@string/admin_shopping_overview" android:layout_marginTop="24dp" android:layout_marginBottom="12dp"/>
+        <com.google.android.material.card.MaterialCardView style="@style/Admin.Card" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/textCustomerOrders" android:padding="20dp"/>
+        </com.google.android.material.card.MaterialCardView>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Heading" android:text="@string/admin_user_history" android:layout_marginTop="24dp" android:layout_marginBottom="12dp"/>
+        <androidx.recyclerview.widget.RecyclerView android:id="@+id/customerOrders" android:layout_width="match_parent" android:layout_height="wrap_content" android:nestedScrollingEnabled="false"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/emptyState" android:paddingVertical="28dp" android:visibility="gone">
+            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/admin_ic_cart" app:tint="@color/admin_nav_inactive" android:contentDescription="@null" android:layout_gravity="center_horizontal"/>
+            <Space android:layout_width="1dp" android:layout_height="12dp"/>
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:includeFontPadding="false" android:textAppearance="@style/Admin.Body" android:text="@string/admin_user_no_orders" android:gravity="center"/>
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/admin_text"
-        android:textSize="18sp"
-        android:text="@string/admin_user_history"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="12dp"
-        android:textStyle="bold" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/customerOrders"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/admin_text"
-        android:textSize="14sp"
-        android:id="@+id/emptyState"
-        android:text="@string/admin_user_no_orders"
-        android:visibility="gone" />
-</LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

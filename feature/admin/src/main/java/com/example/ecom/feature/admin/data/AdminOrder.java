@@ -1,43 +1,31 @@
 package com.example.ecom.feature.admin.data;
 import org.json.*;
+import java.math.BigDecimal;
 import java.util.*;
-public class AdminOrder {
-    public final int id,customerId;
-    public final long createdAt;
-    public String status;
-    public final List<AdminOrderLine> items=new ArrayList<>();
-    public AdminOrder(int id,int customerId,long createdAt,String status) {
-        this.id=id;
-        this.customerId=customerId;
-        this.createdAt=createdAt;
-        this.status=status;
-    }
-    public long total() {
-        long n=0;
-        for(AdminOrderLine line:items)n+=line.price*line.quantity;
-        return n;
-    }
-    public boolean canCancel() {
-        return "PENDING".equals(status)||"CONFIRMED".equals(status);
-    }
+
+public final class AdminOrder {
+    public long id, customerId, createdAt;
+    public String status, userName, userEmail, userPhone, userAddress;
+    private BigDecimal total;
+    public final List<AdminOrderLine> items = new ArrayList<>();
+    public BigDecimal total() { return total; }
+    public boolean canCancel() { return "PENDING".equals(status) || "SHIPPING".equals(status); }
     public String nextStatus() {
-        switch(status) {
-            case "PENDING":return "CONFIRMED";
-            case "CONFIRMED":return "PROCESSING";
-            case "PROCESSING":return "SHIPPING";
-            case "SHIPPING":return "COMPLETED";
-            default:return null;
-        }
+        if ("PENDING".equals(status)) return "SHIPPING";
+        if ("SHIPPING".equals(status)) return "DELIVERED";
+        return null;
     }
-    public JSONObject toJson()throws JSONException {
-        JSONArray a=new JSONArray();
-        for(AdminOrderLine line:items)a.put(line.toJson());
-        return new JSONObject().put("id",id).put("customerId",customerId).put("createdAt",createdAt).put("status",status).put("items",a);
-    }
-    public static AdminOrder fromJson(JSONObject j)throws JSONException {
-        AdminOrder o=new AdminOrder(j.getInt("id"),j.getInt("customerId"),j.getLong("createdAt"),j.getString("status"));
-        JSONArray a=j.getJSONArray("items");
-        for(int i=0;i<a.length();i++)o.items.add(AdminOrderLine.fromJson(a.getJSONObject(i)));
+    public static AdminOrder fromJson(JSONObject j) throws JSONException {
+        AdminOrder o = new AdminOrder();
+        o.id = j.getLong("id"); o.customerId = j.getLong("userId");
+        o.createdAt = AdminJson.date(j, "createdAt"); o.status = j.getString("status");
+        o.userName = AdminJson.text(j, "userFullName"); o.userEmail = AdminJson.text(j, "userEmail");
+        o.userPhone = AdminJson.text(j, "userPhone"); o.userAddress = AdminJson.text(j, "userAddress");
+        o.total = new BigDecimal(j.get("totalPrice").toString());
+        AdminOrderLine line = new AdminOrderLine();
+        line.name = j.getString("name"); line.image = AdminJson.text(j, "image");
+        line.size = AdminJson.text(j, "size"); line.price = new BigDecimal(j.get("unitPrice").toString());
+        line.quantity = j.getInt("quantity"); o.items.add(line);
         return o;
     }
 }

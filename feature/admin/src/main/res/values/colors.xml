@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="admin_primary">#FF6A00</color>
-    <color name="admin_primary_light">#FFF3E8</color>
+    <color name="admin_primary">#C95127</color>
+    <color name="admin_primary_light">#FFF0E8</color>
     <color name="admin_background">#FFFFFF</color>
-    <color name="admin_background_secondary">#F8F9FA</color>
-    <color name="admin_text">#171717</color>
-    <color name="admin_text_secondary">#666666</color>
-    <color name="admin_border">#E5E5E5</color>
-    <color name="admin_nav_inactive">#383838</color>
-    <color name="admin_chart_fill">#1AFF6A00</color>
+    <color name="admin_background_secondary">#F5F6F8</color>
+    <color name="admin_text">#17232F</color>
+    <color name="admin_text_secondary">#697582</color>
+    <color name="admin_border">#E6E9ED</color>
+    <color name="admin_nav_inactive">#77818D</color>
+    <color name="admin_chart_fill">#1AC95127</color>
+    <color name="admin_hero">#192A35</color>
+    <color name="admin_hero_muted">#B7C5CF</color>
+    <color name="admin_success">#237A57</color>
+    <color name="admin_success_light">#E9F5EF</color>
+    <color name="admin_warning">#96600F</color>
+    <color name="admin_warning_light">#FFF4DA</color>
+    <color name="admin_danger">#BD3F45</color>
+    <color name="admin_danger_light">#FDEEF0</color>
+    <color name="admin_blue">#3D65A2</color>
+    <color name="admin_blue_light">#EDF2FC</color>
 </resources>

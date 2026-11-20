@@ -10,10 +10,12 @@ public final class AdminUi {
     private AdminUi() {
     }
     public static final Locale VI=Locale.forLanguageTag("vi-VN");
-    public static String money(long n) {
-        return NumberFormat.getIntegerInstance(VI).format(n)+" đ";
+    public static String money(Number n) {
+        NumberFormat format=NumberFormat.getNumberInstance(VI);
+        format.setMaximumFractionDigits(2);
+        return format.format(n)+" đ";
     }
-    public static String number(int n) {
+    public static String number(long n) {
         return NumberFormat.getIntegerInstance(VI).format(n);
     }
     public static String date(long n) {
@@ -36,15 +38,14 @@ public final class AdminUi {
         switch(s) {
             case "PENDING":id=R.string.admin_status_pending;
             break;
-            case "CONFIRMED":id=R.string.admin_status_confirmed;
-            break;
-            case "PROCESSING":id=R.string.admin_status_processing;
-            break;
             case "SHIPPING":id=R.string.admin_status_shipping;
             break;
-            case "COMPLETED":id=R.string.admin_status_completed;
+            case "DELIVERED":
+            id=R.string.admin_status_completed;
             break;
-            default:id=R.string.admin_status_cancelled;
+            case "CANCELLED":id=R.string.admin_status_cancelled;
+            break;
+            default:return s;
         }
         return c.getString(id);
     }
@@ -61,9 +62,7 @@ public final class AdminUi {
         }
     }
     public static void productImage(ImageView image,AdminProduct p) {
-        image.setTag(null);
-        image.setImageResource(image(p.imageKey));
-        if(!p.images.isEmpty())AdminImageLoader.load(image,p.images.get(0),image(p.imageKey));
+        AdminImageLoader.load(image,p.image,R.drawable.admin_image_placeholder);
     }
     public static String customerName(AdminCustomer c) {
         return c==null?"":c.name;
@@ -74,8 +73,33 @@ public final class AdminUi {
         input.setOnClickListener(v -> input.showDropDown());
     }
     public static String initials(String name) {
+        if(name==null||name.trim().isEmpty())return "?";
         String[] parts=name.trim().split("\\s+");
         return parts.length==1?parts[0].substring(0,1):parts[0].substring(0,1)+parts[parts.length-1].substring(0,1);
+    }
+    public static String userStatus(Context c,String status) {
+        if("ACTIVE".equals(status))return c.getString(R.string.admin_user_active);
+        if("BLOCKED".equals(status))return c.getString(R.string.admin_user_blocked);
+        if("PENDING".equals(status))return c.getString(R.string.admin_user_pending);
+        return status;
+    }
+    public static void badge(TextView view,String value,int foreground,int background) {
+        view.setText(value);
+        view.setTextColor(androidx.core.content.ContextCompat.getColor(view.getContext(),foreground));
+        android.graphics.drawable.GradientDrawable shape=new android.graphics.drawable.GradientDrawable();
+        shape.setColor(androidx.core.content.ContextCompat.getColor(view.getContext(),background));
+        shape.setCornerRadius(dp(view.getContext(),8)); view.setBackground(shape);
+        view.setPadding(dp(view.getContext(),9),dp(view.getContext(),5),dp(view.getContext(),9),dp(view.getContext(),5));
+    }
+    public static void orderBadge(TextView view,String status) {
+        int color=R.color.admin_text_secondary,background=R.color.admin_background_secondary;
+        switch(status) {
+            case "PENDING":color=R.color.admin_warning;background=R.color.admin_warning_light;break;
+            case "SHIPPING":color=R.color.admin_blue;background=R.color.admin_blue_light;break;
+            case "DELIVERED":color=R.color.admin_success;background=R.color.admin_success_light;break;
+            case "CANCELLED":color=R.color.admin_danger;background=R.color.admin_danger_light;break;
+        }
+        badge(view,status(view.getContext(),status),color,background);
     }
     public static void watch(android.widget.EditText input,Runnable action) {
         input.addTextChangedListener(new android.text.TextWatcher() {
